@@ -8,15 +8,14 @@ import numpy as np, pandas as pd, matplotlib.pyplot as plt
 from astropy import units as u, constants as c
 from math import pi as π
 
-
-def draw_star_positions(d_max, N_stars, sys_type=None):
+def draw_star_positions(d_max, N_sys, sys_type=None):
     '''
     Args:
 
         d_max: maximum distance out to which stars (of either single or binary
                class) are selected by mag-limit
 
-        N_stars (int): the number of total stars to draw
+        N_sys (int): the number of total stellar systems to draw
 
         sys_type: 'single' or 'binary' (star systems)
 
@@ -28,33 +27,29 @@ def draw_star_positions(d_max, N_stars, sys_type=None):
     '''
 
     assert sys_type == 'single' or sys_type == 'binary'
-    assert type(N_stars) == int
+    assert type(N_sys) == int
 
-    x_l,y_l,z_l,r_l = [], [], [], []
+    # Vectorized draw:
+    # vol sphere / vol cube = π/6 ~= half. Draw 10* the number of systems you
+    # really need. Then cut.
+    _x = d_max * np.random.rand( (10*N_sys) )
+    _y = d_max * np.random.rand( (10*N_sys) )
+    _z = d_max * np.random.rand( (10*N_sys) )
+    _r = np.sqrt(_x**2 + _y**2 + _z**2)
 
-    while len(r_l) < N_stars:
-        if len(r_l) % 10 == 0:
-            print('{:d}/{:d}'.format(len(r_l), N_stars))
+    assert len(_x[_r < d_max]) > N_sys
 
-        x = d_max * np.random.rand()
-        y = d_max * np.random.rand()
-        z = d_max * np.random.rand()
-
-        if x**2 + y**2 + z**2 <= d_max**2:
-            x_l.append(x.value)
-            y_l.append(y.value)
-            z_l.append(z.value)
-            r_l.append( ((x**2 + y**2 + z**2)**(1/2)).value )
-
-    x_a, y_a, z_a = np.array(x_l)*u.pc, np.array(y_l)*u.pc, np.array(z_l)*u.pc
-    r_a = np.array(r_l)*u.pc
+    x = _x[_r < d_max][:N_sys]*u.pc
+    y = _y[_r < d_max][:N_sys]*u.pc
+    z = _z[_r < d_max][:N_sys]*u.pc
+    r = _r[_r < d_max][:N_sys]*u.pc
 
     return pd.DataFrame({
-        'x': x_a,
-        'y': y_a,
-        'z': z_a,
-        'r': r_a,
-        'sys_type': [sys_type for _ in range(len(r_a))]
+        'x': x,
+        'y': y,
+        'z': z,
+        'r': r,
+        'sys_type': [sys_type for _ in range(len(r))]
         })
 
 
