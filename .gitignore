@@ -5,3 +5,4 @@ src/*csv
 jnw_overview_paper*
 *synctex.gz
 *.log
+*aux

@@ -1374,7 +1374,8 @@ number of stars, but somehow knows his completeness for single
 stars. This is possible, because Astronomer A can correctly derive a 
 completeness estimate and geometric transit probability for single stars only. 
 For Astronomer $A'$ below, including the planets in binary star systems in the 
-numerator actually introduces confusion that precludes nice math.
+numerator introduces mistakes in the estimated completeness, and so the picture 
+is more complicated.
 Then
 \begin{equation}
 	\Gamma_{{\rm A}, R_p} = \frac{N_{\rm det,s}/(f_{s,g} f_{s,c})}{N_s + N_d}.
@@ -1406,15 +1407,17 @@ for
 In the limit where the $R_p$ planet has the same occurrence rate about every 
 host type regardless of its mass, $\chi=2$, and this simplifies to $X_\Gamma = 
 1+\beta$.
-Although this is same expression as what we found for Model \#1, the value of 
+This is same expression as what we found for Model \#1, but now the value of 
 $\beta$ will be smaller in this model because of the 
 smaller volume of searchable binary stars.
+From numerics, we find $\beta = N_d/N_s = 0.59$, so the occurrence rate 
+correction factor is $X_\Gamma(\chi=2) = 1.59$.
 
 If we consider the opposite limit of the $R_p$ planet \textit{only} 
 existing around single stars and the primaries of double star systems with 
-equal occurrence, $\chi = 1$, and $\Delta = \beta^2 / (1+2\beta)$.
-For $\beta = 0.59$, this gives $\Delta = 0.16$.
-
+equal occurrence, $\chi = 1$, and $X_\Gamma = (1 +\beta)^2 / (1+2\beta)$.
+For $\beta = 0.59$, this gives $X_\Gamma(\chi=1) = 1.16$.
+The true correction factor is somewhere between these two limits.
 
 
 
@@ -1429,12 +1432,12 @@ For Model \#2, since all planets have radius $R_p$, we only care about
 the smaller radius case, \textit{i.e.}, we want to count $R_p > R_p^{\rm 
 	obs} > (1 - x) R_p$, for instance with $x=0.1$.
 
-All of these diluted detections will be from binary systems. The number of 
+The diluted detections only occur in binary systems. The number of 
 planets detected in double star systems with observed radius $R_p^{\rm obs}$ 
 is
 \begin{align}
 N_{\rm det,d}(R_p^{\rm obs}) &= N_{\rm det, d1}(R_p^{\rm obs}) + 
-															  N_{\rm det, d2}(R_p^{\rm obs}) \\
+								N_{\rm det, d2}(R_p^{\rm obs}) \\
 &= \Gamma_{t,d1} f_{d1}(R_p^{\rm obs}) N_{d1}(R_p^{\rm obs})\  + \nonumber \\
 &\quad\quad \quad\Gamma_{t,d2} f_{d2}(R_p^{\rm obs}) N_{d2}(R_p^{\rm obs}).
 \end{align}
@@ -1444,8 +1447,8 @@ We're writing both them and the number of stars for which a given observed
 radius would be seen as functions of $R_p^{\rm obs}$.
 
 To save on notational horribleness, write $R_p' \equiv \{(1-x) R_p < R_p^{\rm 
-	obs} < R_p\}$, in other words let $R_p'$ denote the set of planets 
-	that are observed in the desired radius range.
+obs} < R_p\}$, in other words let $R_p'$ denote the set of planets that are 
+observed in the desired radius range.
 
 Then writing $N_{d1}(R_p')$, the number of double systems for which a $(R_p, 
 P)$ planet would be observed in $R_p'$ if it orbiting the primary, is 
@@ -1453,6 +1456,7 @@ relatively straight-forward:
 \begin{equation}
 N_{d1}(R_p') = \int_{0}^{{\rm min}(1,\gamma_{R,u})} N_d(\gamma_R) 
 \,{\rm prob}(\gamma_R) \,{\rm d}(\gamma_R),
+\label{eq:N_d1}
 \end{equation}
 where the upper limit is set by equating the limiting radius $(1-x)R_p$ to the 
 observed diluted radius $(1+\gamma_R)^{-1/2}R_p$, giving
@@ -1461,10 +1465,13 @@ observed diluted radius $(1+\gamma_R)^{-1/2}R_p$, giving
 \end{equation}
 If $x > (1 - 2^{-1/2})$, bad things happen (cf. Fig.~\ref{fig:rad_vs_gammaR}), 
 hence the need for the minimum.
+Note that Eq.~\ref{eq:N_d1} is not an expression for the number of detected 
+planets about primaries -- that quantity is expressed as $\Gamma_{t,d1} 
+f_{d1}(R_p^{\rm obs}) N_{d1}(R_p^{\rm obs})$.
 
-The analogous equation for $N_{d1}(R_p')$, the number of double systems for 
-which a $(R_p, P)$ planet would be observed in $R_p'$ if it orbiting the 
-secondary, is
+The analogous equation to Eq.~\ref{eq:N_d1} for $N_{d2}(R_p')$, the number of 
+double systems for which a $(R_p, P)$ planet would be observed in $R_p'$ if it 
+orbited the secondary, is
 \begin{equation}
 N_{d2}(R_p') = 
   \Bigg\{\begin{array}{lr}
@@ -1472,7 +1479,7 @@ N_{d2}(R_p') =
   \,{\rm prob}(\gamma_R) \,{\rm d}(\gamma_R),\\ 
   \quad\quad\quad\quad\quad\quad\quad\quad x > 1 - 
   2^{-1/2}\\
-  0, \quad\quad\quad\quad\quad\quad\quad x \leq 1 - 2^{-1/2}
+  0, \quad\quad\quad\quad\quad\quad\quad x \leq 1 - 2^{-1/2} % lol
   \end{array}
 \label{eq:N_Rp_secondary}
 \end{equation}
@@ -1485,16 +1492,28 @@ $R_p$ to better than $\approx 29\%$ if the planet orbits the secondary of an
 unidentified binary.
 This was originally noted in Fig.~\ref{fig:rad_vs_gammaR}.
 
-If we were forward-modelling (\textit{i.e.} we actually wanted to compute 
-$N_{\rm det,d}(R_p')$) we would need to evaluate the completeness 
-term and this ``fraction of slightly diluted stars'' terms together, and 
-integrate jointly to find $N_{\rm det,d1}(R_p')$ and $N_{\rm det,d2}(R_p')$.
+If we were forward-modelling, \textit{i.e.} if we actually wanted to compute 
+$N_{\rm det,d}(R_p')$, we would also need to evaluate the total detection 
+efficiency term $f_{d1}(R_p^{\rm obs})$, which is a product of the geometric 
+transit probability and the fraction of signals of a given depth that are 
+detectable.
+We would need to integrate this product over the domain of allowable radii 
+$R_p'$ to find the number of detected planets.
 
-\texttt{If we ask the right question, this will not be necessary.}
+However, the procedure of estimating the geometric transit probability, as well 
+as the completeness, is complicated by the errors that are introduced by 
+including binary star systems that are thought to be single in the numerator.
+These stars will have incorrectly estimated masses and radii, which influences 
+both $f_c(R_p')$ and $f_g(R_p')$.
+
+\texttt{If we ask the right question, we will not need to actually compute 
+either term.}
 
 Astronomer A misclassifies planetary radii, miscounts the total number of 
-stars, but knows his completeness and geometric correction for single stars as 
-a function of radius $f_s(R_p')$.
+stars, and (incorrectly) estimates his completeness and geometric correction 
+for ``single'' stars as a function of radius $f(R_p')$ (omitting a ``s'' 
+subscript because the stars for which this incorrect occurrence rate are 
+derived are not all single).
 His occurrence rate for planets of radius \textit{near} $R_p$, \textit{i.e.} 
 the set of planets with $\{ (1-x)R_p < R_p^{\rm obs} < R_p \}$, is
 \begin{equation}
@@ -1504,10 +1523,12 @@ the set of planets with $\{ (1-x)R_p < R_p^{\rm obs} < R_p \}$, is
 
 For him,
 \begin{equation}
-f_s(R_p') = f_{s,g}(R_p') f_{s,c}(R_p').
+f(R_p') = f_{g}(R_p') f_{c}(R_p').
 \end{equation}
 
 Astronomer D, who had everything right, doesn't change anything.
+
+%TODO: LEFT OFF HERE!
 
 The new difference between the two rates is
 \begin{align}
