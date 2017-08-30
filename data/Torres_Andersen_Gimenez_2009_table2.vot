@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VOTABLE version="1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.ivoa.net/xml/VOTable/v1.2"
+  xsi:schemaLocation="http://www.ivoa.net/xml/VOTable/v1.2 http://www.ivoa.net/xml/VOTable/v1.2">
+ <DESCRIPTION>
+   VizieR Astronomical Server vizier.cfa.harvard.edu
+    Date: 2017-08-02T19:30:36 [V1.99+ (14-Oct-2013)]
+   Explanations and Statistics of UCDs:			See LINK below
+   In case of problem, please report to:	cds-question@unistra.fr
+   In this version, NULL integer columns are written as an empty string
+   &lt;TD&gt;&lt;/TD&gt;, explicitely possible from VOTable-1.3
+ </DESCRIPTION>
+<!-- VOTable description at http://www.ivoa.net/Documents/latest/VOT.html -->
+<INFO ID="VERSION" name="votable-version" value="1.99+ (14-Oct-2013)"/>
+<INFO ID="Ref" name="-ref" value="VIZ598228320c7f"/>
+<INFO ID="MaxTuples" name="-out.max" value="unlimited"/>
+<INFO name="queryParameters" value="36">
+-oc.form=dec
+-out.max=unlimited
+-out.all=2
+-nav=cat:J/other/A+ARV/18.67&amp;tab:{J/other/A+ARV/18.67/table2}&amp;key:source=J/other/A+ARV/18.67/table2&amp;HTTPPRM:&amp;
+-c.eq=J2000
+-c.r=  2
+-c.u=arcmin
+-c.geom=r
+-source=J/other/A+ARV/18.67/table2
+-order=I
+-out=Seq
+-out=Name
+-out=n_Name
+-out=Dist
+-out=e_Dist
+-out=E(B-V)
+-out=e_E(B-V)
+-out=vAsini
+-out=e_vAsini
+-out=vBsini
+-out.all=2
+-out=e_vBsini
+-out=[Fe/H]
+-out=e_[Fe/H]
+-out=n_[Fe/H]
+-out=logAge
+-out=u_logAge
+-out=Ref1
+-out=Ref2
+-out=Ref3
+-out=Ref4
+-out=Ref5
+-out=SimbadName
+-out=_RA
+-out=_DE
+-out.all=2
+</INFO>
+
+<!--
+Execution Reports
+ -->
+
+<RESOURCE ID="yCat_1039001801" name="J/other/A+ARV/18.67">
+  <DESCRIPTION>Accurate masses and radii of normal stars (Torres+, 2010)</DESCRIPTION>
+  <COOSYS ID="J2000" system="eq_FK5" equinox="J2000"/>
+  <TABLE ID="J_other_A_ARV_18_67_table2" name="J/other/A+ARV/18.67/table2">
+    <DESCRIPTION>Other parameters and references for the 95 binary systems</DESCRIPTION>
+    <!-- RowName: ${Seq} -->
+    <!-- Definitions of GROUPs and FIELDs -->
+    <FIELD name="Seq" ucd="meta.record" datatype="short" width="2"><!-- ucd="ID_NUMBER" -->
+      <DESCRIPTION>[1/95] System sequential number \linkRole{parameters of components from other tables }</DESCRIPTION>
+    </FIELD>
+    <FIELD name="Name" ucd="meta.id;pos.frame" datatype="char" arraysize="14*"><!-- ucd="ID_MAIN" -->
+      <DESCRIPTION>Name of the system</DESCRIPTION>
+    </FIELD>
+    <FIELD name="n_Name" ucd="meta.note" datatype="char" arraysize="1"><!-- ucd="NOTE" -->
+      <DESCRIPTION>[*] Pre-main-sequence phase (1)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="Dist" ucd="pos.distance" datatype="float" width="7" precision="1" unit="pc"><!-- ucd="POS_GAL_HC" -->
+      <DESCRIPTION>Heliocentric distance</DESCRIPTION>
+    </FIELD>
+    <FIELD name="e_Dist" ucd="stat.error" datatype="float" width="7" precision="1" unit="pc"><!-- ucd="ERROR" -->
+      <DESCRIPTION>rms uncertainty on Dist</DESCRIPTION>
+    </FIELD>
+    <FIELD name="E(B-V)" ucd="phot.color.excess" datatype="float" width="6" precision="3" unit="mag"><!-- ucd="PHOT_COLOR_EXCESS" -->
+      <DESCRIPTION>? Interstellar redenning</DESCRIPTION>
+      <VALUES null="NaN" />
+    </FIELD>
+    <FIELD name="e_E(B-V)" ucd="stat.error" datatype="float" width="6" precision="3" unit="mag"><!-- ucd="ERROR" -->
+      <DESCRIPTION>? rms uncertainty on E(B-V)</DESCRIPTION>
+      <VALUES null="NaN" />
+    </FIELD>
+    <FIELD name="vAsini" ucd="phys.veloc.rotat" datatype="float" width="5" precision="1" unit="km/s"><!-- ucd="VELOC_ROTAT" -->
+      <DESCRIPTION>? Rotation velocity of A component</DESCRIPTION>
+      <VALUES null="NaN" />
+    </FIELD>
+    <FIELD name="e_vAsini" ucd="stat.error" datatype="float" width="4" precision="1" unit="km/s"><!-- ucd="ERROR" -->
+      <DESCRIPTION>? rms uncertainty on vAsini</DESCRIPTION>
+      <VALUES null="NaN" />
+    </FIELD>
+    <FIELD name="vBsini" ucd="phys.veloc.rotat" datatype="float" width="5" precision="1" unit="km/s"><!-- ucd="VELOC_ROTAT" -->
+      <DESCRIPTION>? Rotation velocity of B component</DESCRIPTION>
+      <VALUES null="NaN" />
+    </FIELD>
+    <FIELD name="e_vBsini" ucd="stat.error" datatype="float" width="4" precision="1" unit="km/s"><!-- ucd="ERROR" -->
+      <DESCRIPTION>? rms uncertainty on vBsini</DESCRIPTION>
+      <VALUES null="NaN" />
+    </FIELD>
+    <FIELD name="[Fe/H]" ucd="phys.abund.Z" datatype="float" width="5" precision="2" unit="[Sun]"><!-- ucd="PHYS_ABUND_FE/H" -->
+      <DESCRIPTION>? Metallicity</DESCRIPTION>
+      <VALUES null="NaN" />
+    </FIELD>
+    <FIELD name="e_[Fe/H]" ucd="stat.error;phys.abund.Fe" datatype="float" width="5" precision="2" unit="[Sun]"><!-- ucd="ERROR" -->
+      <DESCRIPTION>? rms uncertainty on [Fe/H]</DESCRIPTION>
+      <VALUES null="NaN" />
+    </FIELD>
+    <FIELD name="n_[Fe/H]" ucd="meta.note" datatype="char" arraysize="1"><!-- ucd="NOTE" -->
+      <DESCRIPTION>[*] Adopted value of [Fe/H] (2)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="logAge" ucd="time.age" datatype="float" width="4" precision="1" unit="[yr]"><!-- ucd="TIME_AGE" -->
+      <DESCRIPTION>Age of the system</DESCRIPTION>
+    </FIELD>
+    <FIELD name="u_logAge" ucd="meta.code.error;time.age" datatype="char" arraysize="1"><!-- ucd="CODE_ERROR" -->
+      <DESCRIPTION>Uncertainty flag on Age</DESCRIPTION>
+    </FIELD>
+    <FIELD name="Ref1" ucd="meta.ref;pos.frame" datatype="char" arraysize="19"><!-- ucd="REFER_CODE" -->
+      <DESCRIPTION>Reference (BibCode)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="Ref2" ucd="meta.ref;pos.frame" datatype="char" arraysize="19"><!-- ucd="REFER_CODE" -->
+      <DESCRIPTION>Reference (BibCode)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="Ref3" ucd="meta.ref;pos.frame" datatype="char" arraysize="19"><!-- ucd="REFER_CODE" -->
+      <DESCRIPTION>Reference (BibCode)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="Ref4" ucd="meta.ref;pos.frame" datatype="char" arraysize="19"><!-- ucd="REFER_CODE" -->
+      <DESCRIPTION>Reference (BibCode)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="Ref5" ucd="meta.ref;pos.frame" datatype="char" arraysize="19"><!-- ucd="REFER_CODE" -->
+      <DESCRIPTION>Reference (BibCode)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="SimbadName" ucd="meta.id" datatype="char" arraysize="24*"><!-- ucd="ID_ALTERNATIVE" -->
+      <DESCRIPTION>Designation understandable by the {\bf\fg{FireBrick}Simbad} data-base</DESCRIPTION>
+    </FIELD>
+    <FIELD name="_RA" ucd="pos.eq.ra;meta.main" ref="J2000" datatype="double" width="9" precision="5" unit="deg"><!-- ucd="POS_EQ_RA_MAIN" -->
+      <DESCRIPTION>Right Ascension (J2000) from SIMBAD (not part of the original data)</DESCRIPTION>
+    </FIELD>
+    <FIELD name="_DE" ucd="pos.eq.dec;meta.main" ref="J2000" datatype="double" width="9" precision="5" unit="deg"><!-- ucd="POS_EQ_DEC_MAIN" -->
+      <DESCRIPTION>Declination (J2000) from SIMBAD (not part of the original data)</DESCRIPTION>
+    </FIELD>
+<DATA><TABLEDATA>
+<TR><TD>1</TD><TD>V3903 Sgr</TD><TD></TD><TD>1389.0</TD><TD>73.0</TD><TD>0.440</TD><TD></TD><TD>230.0</TD><TD>23.0</TD><TD>170.0</TD><TD>17.0</TD><TD></TD><TD></TD><TD></TD><TD>6.3</TD><TD></TD><TD>1997A&amp;A...327.1094V</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V3903 Sgr</TD><TD>272.32375</TD><TD>-23.98840</TD></TR>
+<TR><TD>2</TD><TD>EM Car</TD><TD></TD><TD>2190.0</TD><TD>120.0</TD><TD>0.600</TD><TD></TD><TD>150.0</TD><TD>20.0</TD><TD>130.0</TD><TD>15.0</TD><TD></TD><TD></TD><TD></TD><TD>6.6</TD><TD></TD><TD>1989A&amp;A...213..183A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>EM Car</TD><TD>168.01878</TD><TD>-61.09526</TD></TR>
+<TR><TD>3</TD><TD>V1034 Sco</TD><TD></TD><TD>1711.0</TD><TD>89.0</TD><TD>0.459</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>6.5</TD><TD></TD><TD>2005A&amp;A...437..769B</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V1034 Sco</TD><TD>253.58271</TD><TD>-41.83594</TD></TR>
+<TR><TD>4</TD><TD>V478 Cyg</TD><TD></TD><TD>1354.0</TD><TD>69.0</TD><TD>0.850</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>6.7</TD><TD></TD><TD>1981AJ.....86..102P</TD><TD>1991AJ....101..600P</TD><TD>2006A&amp;A...456.1077W</TD><TD></TD><TD></TD><TD>V478 Cyg</TD><TD>304.91145</TD><TD>+38.33589</TD></TR>
+<TR><TD>5</TD><TD>AH Cep</TD><TD></TD><TD>687.0</TD><TD>82.0</TD><TD>0.580</TD><TD>0.080</TD><TD>185.0</TD><TD>30.0</TD><TD>185.0</TD><TD>30.0</TD><TD></TD><TD></TD><TD></TD><TD>6.7</TD><TD></TD><TD>1986MNRAS.223..513B</TD><TD>1990A&amp;A...236..409H</TD><TD></TD><TD></TD><TD></TD><TD>AH Cep</TD><TD>341.97059</TD><TD>+65.06217</TD></TR>
+<TR><TD>6</TD><TD>V578 Mon</TD><TD></TD><TD>1385.0</TD><TD>70.0</TD><TD>0.455</TD><TD>0.029</TD><TD>117.0</TD><TD>5.0</TD><TD>94.0</TD><TD>4.0</TD><TD>-0.30</TD><TD>0.13</TD><TD></TD><TD>6.6</TD><TD></TD><TD>2000A&amp;A...358..553H</TD><TD>2005A&amp;A...439..309P</TD><TD></TD><TD></TD><TD></TD><TD>V578 Mon</TD><TD>098.00254</TD><TD>+04.87803</TD></TR>
+<TR><TD>7</TD><TD>V453 Cyg</TD><TD></TD><TD>1775.0</TD><TD>89.0</TD><TD>0.460</TD><TD>0.030</TD><TD>109.0</TD><TD>3.0</TD><TD>98.0</TD><TD>5.0</TD><TD>-0.25</TD><TD>0.05</TD><TD></TD><TD>7.0</TD><TD></TD><TD>1991AJ....101..600P</TD><TD>2004MNRAS.351.1277S</TD><TD>2009MNRAS.394.1519P</TD><TD></TD><TD></TD><TD>V453 Cyg</TD><TD>301.64570</TD><TD>+35.74063</TD></TR>
+<TR><TD>8</TD><TD>CW Cep</TD><TD></TD><TD>721.0</TD><TD>39.0</TD><TD>0.690</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>6.6</TD><TD></TD><TD>1974ApJ...188..559P</TD><TD>1991A&amp;A...241...98C</TD><TD>1992Obs...112..277S</TD><TD></TD><TD></TD><TD>CW Cep</TD><TD>346.00926</TD><TD>+63.39688</TD></TR>
+<TR><TD>9</TD><TD>DW Car</TD><TD></TD><TD>2840.0</TD><TD>150.0</TD><TD>0.250</TD><TD>0.030</TD><TD>182.0</TD><TD>3.0</TD><TD>177.0</TD><TD>3.0</TD><TD></TD><TD></TD><TD></TD><TD>6.8</TD><TD></TD><TD>2007A&amp;A...461.1077S</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>DW Car</TD><TD>160.79195</TD><TD>-60.03659</TD></TR>
+<TR><TD>10</TD><TD>QX Car</TD><TD></TD><TD>767.0</TD><TD>40.0</TD><TD>0.049</TD><TD></TD><TD>120.0</TD><TD>10.0</TD><TD>110.0</TD><TD>10.0</TD><TD></TD><TD></TD><TD></TD><TD>6.8</TD><TD></TD><TD>1983A&amp;A...121..271A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>QX Car</TD><TD>148.64118</TD><TD>-58.42127</TD></TR>
+<TR><TD>11</TD><TD>V1388 Ori</TD><TD></TD><TD>928.0</TD><TD>32.0</TD><TD>0.150</TD><TD>0.010</TD><TD>125.0</TD><TD>10.0</TD><TD>75.0</TD><TD>15.0</TD><TD></TD><TD></TD><TD></TD><TD>7.5</TD><TD></TD><TD>2009AJ....137.3222W</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V1388 Ori</TD><TD>092.74652</TD><TD>+11.99486</TD></TR>
+<TR><TD>12</TD><TD>V539 Ara</TD><TD></TD><TD>358.0</TD><TD>20.0</TD><TD>0.071</TD><TD></TD><TD>75.0</TD><TD>8.0</TD><TD>48.0</TD><TD>5.0</TD><TD></TD><TD></TD><TD></TD><TD>7.6</TD><TD></TD><TD>1983A&amp;A...118..255A</TD><TD>1996A&amp;A...308..151C</TD><TD></TD><TD></TD><TD></TD><TD>V539 Ara</TD><TD>267.61830</TD><TD>-53.61241</TD></TR>
+<TR><TD>13</TD><TD>CV Vel</TD><TD></TD><TD>603.0</TD><TD>31.0</TD><TD>0.035</TD><TD></TD><TD>19.0</TD><TD>1.0</TD><TD>31.0</TD><TD>2.0</TD><TD>-0.14</TD><TD>0.15</TD><TD></TD><TD>7.6</TD><TD></TD><TD>1977A&amp;A....58..131C</TD><TD>2007A&amp;A...467..647Y</TD><TD></TD><TD></TD><TD></TD><TD>CV Vel</TD><TD>135.15829</TD><TD>-51.55557</TD></TR>
+<TR><TD>14</TD><TD>AG Per</TD><TD></TD><TD>339.0</TD><TD>20.0</TD><TD>0.190</TD><TD></TD><TD>94.0</TD><TD>23.0</TD><TD>70.0</TD><TD>9.0</TD><TD></TD><TD></TD><TD></TD><TD>6.6</TD><TD>:</TD><TD>1994A&amp;A...291..795G</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>AG Per</TD><TD>061.73262</TD><TD>+33.44637</TD></TR>
+<TR><TD>15</TD><TD>U Oph</TD><TD></TD><TD>231.8</TD><TD>6.2</TD><TD>0.226</TD><TD>0.007</TD><TD>125.0</TD><TD>5.0</TD><TD>115.0</TD><TD>5.0</TD><TD></TD><TD></TD><TD></TD><TD>7.7</TD><TD></TD><TD>1991A&amp;A...248..129H</TD><TD>2007A&amp;A...469..285V</TD><TD></TD><TD></TD><TD></TD><TD>U Oph</TD><TD>259.13215</TD><TD>+01.21055</TD></TR>
+<TR><TD>16</TD><TD>DI Her</TD><TD></TD><TD>630.0</TD><TD>37.0</TD><TD>0.180</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>6.0</TD><TD>:</TD><TD>1982ApJ...254..203P</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>DI Her</TD><TD>283.35933</TD><TD>+24.27800</TD></TR>
+<TR><TD>17</TD><TD>V760 Sco</TD><TD></TD><TD>297.0</TD><TD>16.0</TD><TD>0.330</TD><TD></TD><TD>95.0</TD><TD>10.0</TD><TD>85.0</TD><TD>10.0</TD><TD></TD><TD></TD><TD></TD><TD>7.2</TD><TD></TD><TD>1985A&amp;A...151..329A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V760 Sco</TD><TD>246.18216</TD><TD>-34.89376</TD></TR>
+<TR><TD>18</TD><TD>MU Cas</TD><TD></TD><TD>1745.0</TD><TD>75.0</TD><TD>0.478</TD><TD>0.007</TD><TD>21.0</TD><TD>2.0</TD><TD>22.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>7.9</TD><TD></TD><TD>2004AJ....128.1840L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>MU Cas</TD><TD>003.96483</TD><TD>+60.43157</TD></TR>
+<TR><TD>19</TD><TD>GG Lup</TD><TD></TD><TD>146.6</TD><TD>8.0</TD><TD>0.027</TD><TD></TD><TD>97.0</TD><TD>8.0</TD><TD>61.0</TD><TD>5.0</TD><TD></TD><TD></TD><TD></TD><TD>7.3</TD><TD></TD><TD>1993A&amp;A...277..439A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>GG Lup</TD><TD>229.73489</TD><TD>-40.78822</TD></TR>
+<TR><TD>20</TD><TD>zeta Phe</TD><TD></TD><TD>83.7</TD><TD>3.8</TD><TD>0.000</TD><TD></TD><TD>85.0</TD><TD>8.0</TD><TD>75.0</TD><TD>8.0</TD><TD></TD><TD></TD><TD></TD><TD>7.6</TD><TD></TD><TD>1983A&amp;A...118..255A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>zeta Phe</TD><TD>017.09617</TD><TD>-55.24576</TD></TR>
+<TR><TD>21</TD><TD>chi2 Hya</TD><TD></TD><TD>224.0</TD><TD>12.0</TD><TD>0.016</TD><TD></TD><TD>112.0</TD><TD>10.0</TD><TD>60.0</TD><TD>6.0</TD><TD></TD><TD></TD><TD></TD><TD>8.2</TD><TD></TD><TD>1978A&amp;A....67...15C</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>chi2 Hya</TD><TD>166.48987</TD><TD>-27.28785</TD></TR>
+<TR><TD>22</TD><TD>IQ Per</TD><TD></TD><TD>270.8</TD><TD>9.0</TD><TD>0.140</TD><TD>0.010</TD><TD>68.0</TD><TD>2.0</TD><TD>44.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>7.8</TD><TD></TD><TD>1985ApJ...295..569L</TD><TD>2006A&amp;A...456.1077W</TD><TD></TD><TD></TD><TD></TD><TD>IQ Per</TD><TD>059.93616</TD><TD>+48.15125</TD></TR>
+<TR><TD>23</TD><TD>V906 Sco</TD><TD></TD><TD>253.0</TD><TD>11.0</TD><TD>0.078</TD><TD>0.010</TD><TD>80.0</TD><TD>5.0</TD><TD>62.0</TD><TD>8.0</TD><TD>0.14</TD><TD>0.06</TD><TD>*</TD><TD>8.4</TD><TD></TD><TD>1997A&amp;A...326..709A</TD><TD>2003A&amp;A...407..289S</TD><TD></TD><TD></TD><TD></TD><TD>V906 Sco</TD><TD>268.47822</TD><TD>-34.75272</TD></TR>
+<TR><TD>24</TD><TD>OGLE 051019</TD><TD></TD><TD>51100.0</TD><TD>2200.0</TD><TD>0.146</TD><TD>0.002</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>-0.50</TD><TD>0.10</TD><TD>*</TD><TD>8.4</TD><TD>:</TD><TD>2009ApJ...697..862P</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>OGLE J051019.64-685812.2</TD><TD>077.58187</TD><TD>-68.97000</TD></TR>
+<TR><TD>25</TD><TD>PV Cas</TD><TD></TD><TD>641.0</TD><TD>33.0</TD><TD>0.217</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>8.3</TD><TD></TD><TD>1987AJ.....93..672P</TD><TD>1995AJ....109.2680B</TD><TD></TD><TD></TD><TD></TD><TD>PV Cas</TD><TD>347.51073</TD><TD>+59.20171</TD></TR>
+<TR><TD>26</TD><TD>V451 Oph</TD><TD></TD><TD>314.0</TD><TD>22.0</TD><TD>0.158</TD><TD></TD><TD>41.0</TD><TD>7.0</TD><TD>30.0</TD><TD>5.0</TD><TD></TD><TD></TD><TD></TD><TD>8.3</TD><TD></TD><TD>1986A&amp;A...167..287C</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V451 Oph</TD><TD>277.30851</TD><TD>+10.89207</TD></TR>
+<TR><TD>27</TD><TD>WX Cep</TD><TD></TD><TD>729.0</TD><TD>45.0</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>8.7</TD><TD></TD><TD>1987AJ.....93..672P</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>WX Cep</TD><TD>337.81576</TD><TD>+63.52265</TD></TR>
+<TR><TD>28</TD><TD>TZ Men</TD><TD></TD><TD>118.3</TD><TD>5.9</TD><TD>0.000</TD><TD></TD><TD>16.0</TD><TD>4.0</TD><TD>12.0</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>8.0</TD><TD></TD><TD>1987A&amp;A...175...60A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>TZ Men</TD><TD>082.55787</TD><TD>-84.78510</TD></TR>
+<TR><TD>29</TD><TD>V1031 Ori</TD><TD></TD><TD>177.0</TD><TD>17.0</TD><TD>0.034</TD><TD></TD><TD>43.0</TD><TD>4.0</TD><TD>22.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>8.8</TD><TD></TD><TD>1990A&amp;A...228..365A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V1031 Ori</TD><TD>086.86205</TD><TD>-10.53296</TD></TR>
+<TR><TD>30</TD><TD>V396 Cas</TD><TD></TD><TD>545.0</TD><TD>17.0</TD><TD>0.160</TD><TD>0.010</TD><TD>16.0</TD><TD>2.0</TD><TD>21.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>8.6</TD><TD></TD><TD>2004AJ....128.3005L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V396 Cas</TD><TD>348.39991</TD><TD>+56.73811</TD></TR>
+<TR><TD>31</TD><TD>beta Aur</TD><TD></TD><TD>25.0</TD><TD>0.7</TD><TD>0.000</TD><TD></TD><TD>34.0</TD><TD>3.0</TD><TD>33.0</TD><TD>3.0</TD><TD></TD><TD></TD><TD></TD><TD>8.6</TD><TD></TD><TD>1948ApJ...108..504S</TD><TD>1994A&amp;A...291..777N</TD><TD>1996ARep...40..802L</TD><TD>2007A&amp;A...467.1215S</TD><TD></TD><TD>beta Aur</TD><TD>089.88218</TD><TD>+44.94743</TD></TR>
+<TR><TD>32</TD><TD>GG Ori</TD><TD></TD><TD>425.0</TD><TD>18.0</TD><TD>0.547</TD><TD>0.022</TD><TD>24.0</TD><TD>2.0</TD><TD>23.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>7.8</TD><TD></TD><TD>2000AJ....120.3226T</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>GG Ori</TD><TD>085.79259</TD><TD>-00.68747</TD></TR>
+<TR><TD>33</TD><TD>V364 Lac</TD><TD></TD><TD>449.0</TD><TD>15.0</TD><TD>0.068</TD><TD>0.010</TD><TD>45.0</TD><TD>1.0</TD><TD>15.0</TD><TD>1.0</TD><TD></TD><TD></TD><TD></TD><TD>8.8</TD><TD></TD><TD>1999AJ....118.1831T</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V364 Lac</TD><TD>343.06170</TD><TD>+38.74573</TD></TR>
+<TR><TD>34</TD><TD>YZ Cas</TD><TD></TD><TD>99.5</TD><TD>5.8</TD><TD>0.070</TD><TD></TD><TD>27.0</TD><TD>1.0</TD><TD>16.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>8.4</TD><TD></TD><TD>1981ApJ...251..591L</TD><TD>1983A&amp;A...127..297D</TD><TD>1984ApJ...281..268L</TD><TD></TD><TD></TD><TD>YZ Cas</TD><TD>011.41282</TD><TD>+74.98807</TD></TR>
+<TR><TD>35</TD><TD>SZ Cen</TD><TD></TD><TD>607.0</TD><TD>41.0</TD><TD>0.065</TD><TD></TD><TD>60.0</TD><TD>5.0</TD><TD>44.0</TD><TD>4.0</TD><TD></TD><TD></TD><TD></TD><TD>8.7</TD><TD></TD><TD>1975A&amp;A....45..203A</TD><TD>1977A&amp;A....55..401G</TD><TD></TD><TD></TD><TD></TD><TD>SZ Cen</TD><TD>207.64621</TD><TD>-58.49920</TD></TR>
+<TR><TD>36</TD><TD>V624 Her</TD><TD></TD><TD>135.8</TD><TD>5.3</TD><TD>0.050</TD><TD>0.010</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>8.8</TD><TD></TD><TD>1984AJ.....89.1057P</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V624 Her</TD><TD>266.07186</TD><TD>+14.41007</TD></TR>
+<TR><TD>37</TD><TD>V885 Cyg</TD><TD></TD><TD>836.0</TD><TD>33.0</TD><TD>0.079</TD><TD>0.014</TD><TD>104.0</TD><TD>3.0</TD><TD>70.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>8.8</TD><TD></TD><TD>2004AJ....128.1324L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V885 Cyg</TD><TD>293.20773</TD><TD>+30.02140</TD></TR>
+<TR><TD>38</TD><TD>GZ CMa</TD><TD></TD><TD>296.0</TD><TD>20.0</TD><TD>0.070</TD><TD>0.030</TD><TD>24.0</TD><TD>2.0</TD><TD>18.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>8.7</TD><TD></TD><TD>1985AJ.....90.1324P</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>GZ CMa</TD><TD>109.08003</TD><TD>-16.71669</TD></TR>
+<TR><TD>39</TD><TD>V1647 Sgr</TD><TD></TD><TD>160.6</TD><TD>8.9</TD><TD>0.040</TD><TD></TD><TD>80.0</TD><TD>5.0</TD><TD>70.0</TD><TD>5.0</TD><TD></TD><TD></TD><TD></TD><TD>8.0</TD><TD></TD><TD>1985A&amp;A...145..206A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V1647 Sgr</TD><TD>269.80612</TD><TD>-36.93884</TD></TR>
+<TR><TD>40</TD><TD>EE Peg</TD><TD></TD><TD>139.3</TD><TD>6.0</TD><TD>0.000</TD><TD></TD><TD>40.0</TD><TD>1.0</TD><TD>26.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>8.6</TD><TD></TD><TD>1984ApJ...281..268L</TD><TD>1996ApJ...459..721L</TD><TD></TD><TD></TD><TD></TD><TD>EE Peg</TD><TD>325.00783</TD><TD>+09.18476</TD></TR>
+<TR><TD>41</TD><TD>AI Hya</TD><TD></TD><TD>573.0</TD><TD>15.0</TD><TD>0.000</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>9.0</TD><TD></TD><TD>1988AJ.....95..190P</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>AI Hya</TD><TD>124.69775</TD><TD>+00.28338</TD></TR>
+<TR><TD>42</TD><TD>VV Pyx</TD><TD></TD><TD>175.7</TD><TD>9.0</TD><TD>0.022</TD><TD></TD><TD>23.0</TD><TD>3.0</TD><TD>23.0</TD><TD>3.0</TD><TD></TD><TD></TD><TD></TD><TD>8.5</TD><TD></TD><TD>1984A&amp;A...134..147A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>VV Pyx</TD><TD>126.88864</TD><TD>-20.84396</TD></TR>
+<TR><TD>43</TD><TD>TZ For</TD><TD></TD><TD>186.0</TD><TD>11.0</TD><TD>0.034</TD><TD></TD><TD>4.0</TD><TD>1.0</TD><TD>42.0</TD><TD>2.0</TD><TD>0.10</TD><TD>0.15</TD><TD></TD><TD>9.2</TD><TD></TD><TD>1991A&amp;A...246...99A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>TZ For</TD><TD>048.66705</TD><TD>-35.55767</TD></TR>
+<TR><TD>44</TD><TD>V459 Cas</TD><TD></TD><TD>616.0</TD><TD>27.0</TD><TD>0.255</TD><TD>0.016</TD><TD>54.0</TD><TD>2.0</TD><TD>43.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>8.5</TD><TD></TD><TD>2004AJ....128.1340L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V459 Cas</TD><TD>017.87465</TD><TD>+61.14665</TD></TR>
+<TR><TD>45</TD><TD>EK Cep</TD><TD>*</TD><TD>164.0</TD><TD>9.5</TD><TD>0.010</TD><TD></TD><TD>23.0</TD><TD>2.0</TD><TD>10.5</TD><TD>2.0</TD><TD>0.07</TD><TD>0.05</TD><TD></TD><TD>7.4</TD><TD></TD><TD>1987ApJ...313L..81P</TD><TD>1993A&amp;A...274..274M</TD><TD></TD><TD></TD><TD></TD><TD>EK Cep</TD><TD>325.33961</TD><TD>+69.69281</TD></TR>
+<TR><TD>46</TD><TD>KW Hya</TD><TD></TD><TD>87.6</TD><TD>4.1</TD><TD>0.000</TD><TD></TD><TD>15.0</TD><TD>2.0</TD><TD>13.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>8.8</TD><TD></TD><TD>1984A&amp;A...130..102A</TD><TD>1987A&amp;A...175..355A</TD><TD></TD><TD></TD><TD></TD><TD>KW Hya</TD><TD>138.10852</TD><TD>-07.10983</TD></TR>
+<TR><TD>47</TD><TD>WW Aur</TD><TD></TD><TD>82.8</TD><TD>7.1</TD><TD></TD><TD></TD><TD>35.0</TD><TD>3.0</TD><TD>37.0</TD><TD>3.0</TD><TD></TD><TD></TD><TD></TD><TD>8.8</TD><TD></TD><TD>2005MNRAS.363..529S</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>WW Aur</TD><TD>098.11327</TD><TD>+32.45490</TD></TR>
+<TR><TD>48</TD><TD>WW Cam</TD><TD></TD><TD>378.0</TD><TD>14.0</TD><TD>0.397</TD><TD>0.014</TD><TD>42.8</TD><TD>0.5</TD><TD>41.9</TD><TD>0.9</TD><TD></TD><TD></TD><TD></TD><TD>8.7</TD><TD></TD><TD>2002AJ....123.1013L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>WW Cam</TD><TD>067.85534</TD><TD>+64.36264</TD></TR>
+<TR><TD>49</TD><TD>V392 Car</TD><TD></TD><TD>397.0</TD><TD>22.0</TD><TD>0.101</TD><TD></TD><TD>27.6</TD><TD>3.5</TD><TD>23.6</TD><TD>3.6</TD><TD></TD><TD></TD><TD></TD><TD>7.8</TD><TD></TD><TD>2001A&amp;A...374..204D</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V392 Car</TD><TD>119.54362</TD><TD>-60.86597</TD></TR>
+<TR><TD>50</TD><TD>AY Cam</TD><TD></TD><TD>502.0</TD><TD>26.0</TD><TD>0.060</TD><TD></TD><TD>52.0</TD><TD>3.0</TD><TD>40.0</TD><TD>3.0</TD><TD></TD><TD></TD><TD></TD><TD>9.0</TD><TD></TD><TD>2004AJ....128.1319W</TD><TD>1987AJ.....94.1670L</TD><TD></TD><TD></TD><TD></TD><TD>AY Cam</TD><TD>126.46578</TD><TD>+77.21857</TD></TR>
+<TR><TD>51</TD><TD>RS Cha</TD><TD>*</TD><TD>108.1</TD><TD>4.8</TD><TD>0.000</TD><TD></TD><TD>64.0</TD><TD>6.0</TD><TD>70.0</TD><TD>6.0</TD><TD>0.17</TD><TD>0.01</TD><TD></TD><TD>6.9</TD><TD></TD><TD>1980A&amp;A....83..339C</TD><TD>2005A&amp;A...442..993A</TD><TD></TD><TD></TD><TD></TD><TD>RS Cha</TD><TD>130.80089</TD><TD>-79.07008</TD></TR>
+<TR><TD>52</TD><TD>MY Cyg</TD><TD></TD><TD>228.0</TD><TD>15.0</TD><TD>0.048</TD><TD>0.030</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>9.1</TD><TD></TD><TD>1971ApJ...169..549P</TD><TD>1975AJ.....80..976W</TD><TD>1979CoSka...8..159T</TD><TD>1981AJ.....86..102P</TD><TD>2009AJ....137.2949T</TD><TD>MY Cyg</TD><TD>305.01412</TD><TD>+33.94306</TD></TR>
+<TR><TD>53</TD><TD>EI Cep</TD><TD></TD><TD>190.7</TD><TD>6.4</TD><TD>0.000</TD><TD></TD><TD>13.0</TD><TD>2.0</TD><TD>17.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>9.1</TD><TD></TD><TD>2000AJ....119.1942T</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>EI Cep</TD><TD>322.11753</TD><TD>+76.40350</TD></TR>
+<TR><TD>54</TD><TD>BP Vul</TD><TD></TD><TD>390.0</TD><TD>17.0</TD><TD>0.030</TD><TD>0.014</TD><TD>45.4</TD><TD>0.9</TD><TD>40.5</TD><TD>1.4</TD><TD></TD><TD></TD><TD></TD><TD>8.9</TD><TD></TD><TD>2003AJ....126.1905L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>BP Vul</TD><TD>306.38853</TD><TD>+21.03833</TD></TR>
+<TR><TD>55</TD><TD>FS Mon</TD><TD></TD><TD>319.0</TD><TD>11.0</TD><TD>0.023</TD><TD>0.008</TD><TD>52.0</TD><TD>2.0</TD><TD>43.0</TD><TD>3.0</TD><TD></TD><TD></TD><TD></TD><TD>9.2</TD><TD></TD><TD>2000AJ....119.1389L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>FS Mon</TD><TD>111.17626</TD><TD>-05.15405</TD></TR>
+<TR><TD>56</TD><TD>PV Pup</TD><TD></TD><TD>84.6</TD><TD>5.8</TD><TD>0.000</TD><TD></TD><TD>43.0</TD><TD>4.0</TD><TD>43.0</TD><TD>4.0</TD><TD></TD><TD></TD><TD></TD><TD>8.6</TD><TD></TD><TD>1984A&amp;A...132..219V</TD><TD>1984A&amp;A...135..413V</TD><TD></TD><TD></TD><TD></TD><TD>PV Pup</TD><TD>116.36972</TD><TD>-14.68617</TD></TR>
+<TR><TD>57</TD><TD>V442 Cyg</TD><TD></TD><TD>334.0</TD><TD>18.0</TD><TD>0.085</TD><TD></TD><TD>46.0</TD><TD>3.0</TD><TD>33.0</TD><TD>3.0</TD><TD></TD><TD></TD><TD></TD><TD>9.2</TD><TD></TD><TD>1987AJ.....94..712L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V442 Cyg</TD><TD>306.96793</TD><TD>+30.79119</TD></TR>
+<TR><TD>58</TD><TD>EY Cep</TD><TD></TD><TD>300.0</TD><TD>13.0</TD><TD>0.049</TD><TD>0.012</TD><TD>10.0</TD><TD>1.0</TD><TD>10.0</TD><TD>1.0</TD><TD></TD><TD></TD><TD></TD><TD>8.0</TD><TD></TD><TD>2006AJ....131.2664L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>EY Cep</TD><TD>055.01697</TD><TD>+81.01919</TD></TR>
+<TR><TD>59</TD><TD>HD 71636</TD><TD></TD><TD>118.5</TD><TD>7.1</TD><TD>0.020</TD><TD></TD><TD>12.5</TD><TD>1.0</TD><TD>12.4</TD><TD>1.0</TD><TD></TD><TD></TD><TD></TD><TD>9.0</TD><TD></TD><TD>2006AJ....132.2489H</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>HD 71636</TD><TD>127.48463</TD><TD>+37.07097</TD></TR>
+<TR><TD>60</TD><TD>RZ Cha</TD><TD></TD><TD>187.0</TD><TD>11.0</TD><TD>0.004</TD><TD></TD><TD>39.0</TD><TD>5.0</TD><TD>39.0</TD><TD>5.0</TD><TD></TD><TD></TD><TD></TD><TD>9.3</TD><TD></TD><TD>1975A&amp;A....44..343J</TD><TD>1975A&amp;A....44..349A</TD><TD></TD><TD></TD><TD></TD><TD>RZ Cha</TD><TD>160.60043</TD><TD>-82.03728</TD></TR>
+<TR><TD>61</TD><TD>GX Gem</TD><TD></TD><TD>669.0</TD><TD>25.0</TD><TD>0.092</TD><TD>0.011</TD><TD>29.5</TD><TD>1.5</TD><TD>29.0</TD><TD>1.5</TD><TD></TD><TD></TD><TD></TD><TD>9.4</TD><TD></TD><TD>2008AJ....135.1757S</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>GX Gem</TD><TD>101.53804</TD><TD>+34.41467</TD></TR>
+<TR><TD>62</TD><TD>BW Aqr</TD><TD></TD><TD>415.0</TD><TD>23.0</TD><TD>0.040</TD><TD></TD><TD>13.5</TD><TD>0.8</TD><TD>9.6</TD><TD>1.3</TD><TD></TD><TD></TD><TD></TD><TD>9.4</TD><TD></TD><TD>1991A&amp;A...246..397C</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>BW Aqr</TD><TD>335.81638</TD><TD>-15.33228</TD></TR>
+<TR><TD>63</TD><TD>DM Vir</TD><TD></TD><TD>193.0</TD><TD>14.0</TD><TD>0.023</TD><TD></TD><TD>20.0</TD><TD></TD><TD>20.0</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>9.3</TD><TD></TD><TD>1996A&amp;A...314..864L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>DM Vir</TD><TD>211.96845</TD><TD>-11.15208</TD></TR>
+<TR><TD>64</TD><TD>V570 Per</TD><TD></TD><TD>120.2</TD><TD>3.6</TD><TD>0.023</TD><TD>0.007</TD><TD>40.0</TD><TD>5.0</TD><TD>40.0</TD><TD>5.0</TD><TD>0.02</TD><TD>0.03</TD><TD></TD><TD>8.8</TD><TD></TD><TD>2008A&amp;A...483..263T</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V570 Per</TD><TD>047.39560</TD><TD>+48.62464</TD></TR>
+<TR><TD>65</TD><TD>CD Tau</TD><TD></TD><TD>68.9</TD><TD>1.8</TD><TD>0.000</TD><TD></TD><TD>28.0</TD><TD>3.0</TD><TD>26.0</TD><TD>3.0</TD><TD>0.08</TD><TD>0.15</TD><TD></TD><TD>9.5</TD><TD></TD><TD>1999MNRAS.309..199R</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>CD Tau</TD><TD>079.37980</TD><TD>+20.13184</TD></TR>
+<TR><TD>66</TD><TD>AD Boo</TD><TD></TD><TD>205.0</TD><TD>10.0</TD><TD>0.027</TD><TD>0.021</TD><TD>38.0</TD><TD>1.0</TD><TD>31.0</TD><TD>1.0</TD><TD>0.10</TD><TD>0.15</TD><TD></TD><TD>9.2</TD><TD></TD><TD>2008A&amp;A...487.1095C</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>AD Boo</TD><TD>218.80325</TD><TD>+24.63926</TD></TR>
+<TR><TD>67</TD><TD>V1143 Cyg</TD><TD></TD><TD>39.3</TD><TD>1.4</TD><TD>0.000</TD><TD></TD><TD>19.6</TD><TD>0.1</TD><TD>28.2</TD><TD>0.1</TD><TD></TD><TD></TD><TD></TD><TD>8.9</TD><TD></TD><TD>1987A&amp;A...174..107A</TD><TD>2007A&amp;A...474..565A</TD><TD></TD><TD></TD><TD></TD><TD>V1143 Cyg</TD><TD>294.67160</TD><TD>+54.97379</TD></TR>
+<TR><TD>68</TD><TD>IT Cas</TD><TD></TD><TD>493.0</TD><TD>27.0</TD><TD>0.062</TD><TD>0.031</TD><TD>19.0</TD><TD>2.0</TD><TD>17.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>9.3</TD><TD></TD><TD>1997AJ....114.1206L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>IT Cas</TD><TD>355.50581</TD><TD>+51.74356</TD></TR>
+<TR><TD>69</TD><TD>V1061 Cyg</TD><TD></TD><TD>157.5</TD><TD>6.7</TD><TD>0.000</TD><TD></TD><TD>36.0</TD><TD>2.0</TD><TD>20.0</TD><TD>3.0</TD><TD></TD><TD></TD><TD></TD><TD>9.5</TD><TD></TD><TD>2006ApJ...640.1018T</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V1061 Cyg</TD><TD>316.83550</TD><TD>+52.04956</TD></TR>
+<TR><TD>70</TD><TD>VZ Hya</TD><TD></TD><TD>146.9</TD><TD>8.5</TD><TD>0.027</TD><TD>0.027</TD><TD>21.0</TD><TD>2.0</TD><TD>20.0</TD><TD>3.0</TD><TD>-0.20</TD><TD>0.12</TD><TD></TD><TD>9.2</TD><TD></TD><TD>2008A&amp;A...487.1095C</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>VZ Hya</TD><TD>127.92255</TD><TD>-06.31877</TD></TR>
+<TR><TD>71</TD><TD>V505 Per</TD><TD></TD><TD>60.9</TD><TD>3.1</TD><TD>0.005</TD><TD></TD><TD>15.3</TD><TD>1.0</TD><TD>15.4</TD><TD>1.0</TD><TD>-0.12</TD><TD>0.03</TD><TD></TD><TD>9.2</TD><TD></TD><TD>2008A&amp;A...480..465T</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V505 Per</TD><TD>035.30401</TD><TD>+54.51008</TD></TR>
+<TR><TD>72</TD><TD>HS Hya</TD><TD></TD><TD>102.9</TD><TD>2.6</TD><TD>0.000</TD><TD></TD><TD>42.0</TD><TD>2.0</TD><TD>41.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>8.6</TD><TD></TD><TD>1997AJ....114.2764T</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>HS Hya</TD><TD>156.15320</TD><TD>-19.09249</TD></TR>
+<TR><TD>73</TD><TD>RT And</TD><TD></TD><TD>107.5</TD><TD>6.2</TD><TD>0.000</TD><TD></TD><TD>100.0</TD><TD></TD><TD>80.0</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>9.4</TD><TD></TD><TD>1994AJ....108.1091P</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>RT And</TD><TD>347.79208</TD><TD>+53.02584</TD></TR>
+<TR><TD>74</TD><TD>UX Men</TD><TD></TD><TD>100.6</TD><TD>5.2</TD><TD>0.027</TD><TD>0.027</TD><TD>16.4</TD><TD>1.0</TD><TD>15.1</TD><TD>1.0</TD><TD>0.04</TD><TD>0.10</TD><TD></TD><TD>9.4</TD><TD></TD><TD>1989A&amp;A...211..346A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>UX Men</TD><TD>082.51327</TD><TD>-76.24871</TD></TR>
+<TR><TD>75</TD><TD>AI Phe</TD><TD></TD><TD>173.0</TD><TD>11.0</TD><TD></TD><TD></TD><TD>6.0</TD><TD>1.0</TD><TD>4.0</TD><TD>1.0</TD><TD>-0.14</TD><TD>0.10</TD><TD></TD><TD>9.6</TD><TD></TD><TD>1988A&amp;A...196..128A</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>AI Phe</TD><TD>017.39247</TD><TD>-46.26558</TD></TR>
+<TR><TD>76</TD><TD>WZ Oph</TD><TD></TD><TD>156.0</TD><TD>6.5</TD><TD>0.045</TD><TD>0.016</TD><TD>18.0</TD><TD>1.0</TD><TD>17.0</TD><TD>1.0</TD><TD>-0.27</TD><TD>0.07</TD><TD></TD><TD>9.5</TD><TD>:</TD><TD>2008A&amp;A...487.1095C</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>WZ Oph</TD><TD>256.66267</TD><TD>+07.78272</TD></TR>
+<TR><TD>77</TD><TD>FL Lyr</TD><TD></TD><TD>133.0</TD><TD>5.9</TD><TD>0.007</TD><TD>0.005</TD><TD>30.0</TD><TD>2.0</TD><TD>25.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>9.4</TD><TD></TD><TD>1986AJ.....91..383P</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>FL Lyr</TD><TD>288.02026</TD><TD>+46.32413</TD></TR>
+<TR><TD>78</TD><TD>V432 Aur</TD><TD></TD><TD>145.3</TD><TD>5.0</TD><TD>0.000</TD><TD></TD><TD>50.0</TD><TD>5.0</TD><TD>20.0</TD><TD>5.0</TD><TD>-0.60</TD><TD>0.05</TD><TD></TD><TD>9.6</TD><TD></TD><TD>2004A&amp;A...417.1083S</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V432 Aur</TD><TD>084.38546</TD><TD>+37.08674</TD></TR>
+<TR><TD>79</TD><TD>EW Ori</TD><TD></TD><TD>170.3</TD><TD>6.9</TD><TD>0.014</TD><TD>0.012</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>9.6</TD><TD></TD><TD>1986AJ.....91..383P</TD><TD>2002A&amp;A...387..850I</TD><TD></TD><TD></TD><TD></TD><TD>EW Ori</TD><TD>080.03811</TD><TD>+02.04444</TD></TR>
+<TR><TD>80</TD><TD>BH Vir</TD><TD></TD><TD>155.0</TD><TD>10.0</TD><TD>0.036</TD><TD></TD><TD>79.7</TD><TD>4.5</TD><TD>68.3</TD><TD>4.5</TD><TD></TD><TD></TD><TD></TD><TD>9.9</TD><TD>:</TD><TD>1997AJ....114.1195P</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>BH Vir</TD><TD>209.60359</TD><TD>-01.66081</TD></TR>
+<TR><TD>81</TD><TD>ZZ UMa</TD><TD></TD><TD>188.8</TD><TD>6.7</TD><TD>0.008</TD><TD>0.004</TD><TD>32.0</TD><TD>2.0</TD><TD>26.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>9.8</TD><TD>:</TD><TD>1999IBVS.4755....1L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>ZZ UMa</TD><TD>157.51330</TD><TD>+61.81151</TD></TR>
+<TR><TD>82</TD><TD>alpha Cen</TD><TD></TD><TD>1.3</TD><TD>0.0</TD><TD>0.000</TD><TD></TD><TD>2.7</TD><TD>0.7</TD><TD>1.1</TD><TD>0.8</TD><TD>0.24</TD><TD>0.04</TD><TD></TD><TD>9.6</TD><TD></TD><TD>1999A&amp;A...341..121S</TD><TD>2002A&amp;A...386..280P</TD><TD>2003A&amp;A...404.1087K</TD><TD>2008A&amp;A...488..653P</TD><TD></TD><TD>alpha Cen</TD><TD>219.90085</TD><TD>-60.83562</TD></TR>
+<TR><TD>83</TD><TD>NGC188 KR V12</TD><TD></TD><TD>1910.0</TD><TD>110.0</TD><TD>0.034</TD><TD></TD><TD>15.0</TD><TD></TD><TD>17.0</TD><TD></TD><TD>-0.10</TD><TD>0.09</TD><TD>*</TD><TD>9.8</TD><TD></TD><TD>2009AJ....137.5086M</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>Cl* NGC188 KS V12</TD><TD>013.15717</TD><TD>+85.17628</TD></TR>
+<TR><TD>84</TD><TD>V568 Lyr</TD><TD></TD><TD>3970.0</TD><TD>220.0</TD><TD>0.150</TD><TD>0.020</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>0.40</TD><TD>0.10</TD><TD>*</TD><TD>9.9</TD><TD>:</TD><TD>2008A&amp;A...492..171G</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V568 Lyr</TD><TD>290.22625</TD><TD>+37.75964</TD></TR>
+<TR><TD>85</TD><TD>V636 Cen</TD><TD></TD><TD>71.9</TD><TD>3.0</TD><TD>0.007</TD><TD>0.011</TD><TD>13.0</TD><TD>0.2</TD><TD>11.2</TD><TD>0.5</TD><TD>-0.20</TD><TD>0.08</TD><TD></TD><TD>9.1</TD><TD></TD><TD>2009arXiv0905.3077C</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V636 Cen</TD><TD>214.24131</TD><TD>-49.94510</TD></TR>
+<TR><TD>86</TD><TD>CV Boo</TD><TD></TD><TD>259.0</TD><TD>14.0</TD><TD>0.000</TD><TD></TD><TD>71.0</TD><TD>10.0</TD><TD>67.0</TD><TD>10.0</TD><TD></TD><TD></TD><TD></TD><TD>10.0</TD><TD></TD><TD>2008AJ....136.2158T</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>CV Boo</TD><TD>231.58140</TD><TD>+36.98151</TD></TR>
+<TR><TD>87</TD><TD>V1174 Ori</TD><TD>*</TD><TD>378.0</TD><TD>39.0</TD><TD>0.100</TD><TD></TD><TD>26.2</TD><TD>0.6</TD><TD>20.5</TD><TD>1.6</TD><TD></TD><TD></TD><TD></TD><TD>6.9</TD><TD>:</TD><TD>2004ApJS..151..357S</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>V1174 Ori</TD><TD>083.61604</TD><TD>-05.69383</TD></TR>
+<TR><TD>88</TD><TD>UV Psc</TD><TD></TD><TD>84.4</TD><TD>5.4</TD><TD></TD><TD></TD><TD>68.3</TD><TD>1.4</TD><TD>53.3</TD><TD>1.5</TD><TD></TD><TD></TD><TD></TD><TD>9.9</TD><TD></TD><TD>1997AJ....114.1195P</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>UV Psc</TD><TD>019.22966</TD><TD>+06.81170</TD></TR>
+<TR><TD>89</TD><TD>CG Cyg</TD><TD></TD><TD>81.4</TD><TD>6.7</TD><TD>0.110</TD><TD></TD><TD>80.0</TD><TD>5.0</TD><TD>66.0</TD><TD>5.0</TD><TD></TD><TD></TD><TD></TD><TD>10.0</TD><TD>:</TD><TD>1987A&amp;A...182..264B</TD><TD>1994AJ....108.1091P</TD><TD></TD><TD></TD><TD></TD><TD>CG Cyg</TD><TD>314.55605</TD><TD>+35.17490</TD></TR>
+<TR><TD>90</TD><TD>RW Lac</TD><TD></TD><TD>194.0</TD><TD>9.0</TD><TD>0.068</TD><TD>0.012</TD><TD>2.0</TD><TD>2.0</TD><TD>0.0</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>10.0</TD><TD></TD><TD>2005AJ....130.2838L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>RW Lac</TD><TD>341.23790</TD><TD>+49.65766</TD></TR>
+<TR><TD>91</TD><TD>HS Aur</TD><TD></TD><TD>121.3</TD><TD>5.1</TD><TD>0.015</TD><TD>0.010</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>10.0</TD><TD>:</TD><TD>1986AJ.....91..383P</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>HS Aur</TD><TD>102.82697</TD><TD>+47.67338</TD></TR>
+<TR><TD>92</TD><TD>GU Boo</TD><TD></TD><TD>133.0</TD><TD>18.0</TD><TD></TD><TD></TD><TD>65.0</TD><TD></TD><TD>58.0</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>9.0</TD><TD>:</TD><TD>2005ApJ...631.1120L</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>GU Boo</TD><TD>230.47846</TD><TD>+33.93578</TD></TR>
+<TR><TD>93</TD><TD>YY Gem</TD><TD></TD><TD>13.6</TD><TD>1.4</TD><TD>0.000</TD><TD></TD><TD>36.4</TD><TD>2.0</TD><TD>37.8</TD><TD>2.0</TD><TD></TD><TD></TD><TD></TD><TD>8.6</TD><TD></TD><TD>2002ApJ...567.1140T</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>YY Gem</TD><TD>113.65586</TD><TD>+31.86939</TD></TR>
+<TR><TD>94</TD><TD>CU Cnc</TD><TD></TD><TD>7.4</TD><TD>3.0</TD><TD>0.000</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>8.5</TD><TD></TD><TD>2003A&amp;A...398..239R</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>CU Cnc</TD><TD>127.90658</TD><TD>+19.39430</TD></TR>
+<TR><TD>95</TD><TD>CM Dra</TD><TD></TD><TD>6.6</TD><TD>1.2</TD><TD>0.000</TD><TD></TD><TD>9.5</TD><TD>1.0</TD><TD>10.0</TD><TD>1.0</TD><TD></TD><TD></TD><TD></TD><TD>9.6</TD><TD></TD><TD>2009ApJ...691.1400M</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>CM Dra</TD><TD>248.58504</TD><TD>+57.16221</TD></TR>
+</TABLEDATA></DATA>
+</TABLE>
+
+<INFO name="Warning" value="No center provided++++"/>
+<INFO name="Warning" value="skip recno in all column selection"/>
+</RESOURCE>
+</VOTABLE>

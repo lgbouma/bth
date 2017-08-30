@@ -1,0 +1,24 @@
+Thu 24 Aug 2017 11:49:58 AM EDT
+
+For Kepler downloads:
+
+Can get DR25 stellar parameter posteriors alluded to by KM from
+https://exoplanetarchive.ipac.caltech.edu/bulk_data_download/, the "Stellar
+Replicated Posteriors".
+
+Started this wget download, but it's 800Gb and more info than I care for.
+
+Better, from http://archive.stsci.edu/kepler/kic.html can download an ASCII
+version of the KIC. Done
+
+From http://archive.stsci.edu/pub/kepler/catalogs/README, we are looking at 
+
+kic.txt.gz:
+A 13.1 million row "|"-delimited gzipped ASCII file containing the complete
+Kepler Input Catalog (version 10).  
+
+From this, follow Sharma+ 2016 ApJ 822:15 approach to comparing the catalogs.
+Compare distributions for <7.5deg from center of Kepler field, and magnitude
+<14.
+
+(b/c KIC is complete to magnitudes fainter than 14 mag in r).

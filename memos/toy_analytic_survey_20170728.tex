@@ -1,0 +1,686 @@
+%\documentclass[12pt,preprint]{aastex}
+%\documentclass[preprint2,12pt]{aastex}
+\documentclass{emulateapj}
+%\usepackage{apjfonts}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\shortauthors{Name et al.}
+\shorttitle{Best transiting planets}
+
+\begin{document}
+
+% ------------------------------------------------------------------------
+% New commands
+%
+\def\ltsima{$\; \buildrel < \over \sim \;$}
+\def\lsim{\lower.5ex\hbox{\ltsima}}
+\def\gtsima{$\; \buildrel > \over \sim \;$}
+\def\gsim{\lower.5ex\hbox{\gtsima}}
+\def\tess{{\it TESS} }
+\def \teff {T_{\rm eff}}
+\def \phir {\Phi_{\rm R}}
+\def \fov {24$^{\circ}$}
+\def \pixsz {21.1''}
+\def \aeff {69.1 cm$^2$ }    
+\def \epd {105 mm}                          
+                                                                                          
+% -------------------------------------------------------------------------
+%
+
+\bibliographystyle{apj}
+
+\title{ A Toy Analytic Transit Survey }
+
+\author{
+  LGB, KM, JNW
+}
+
+% \journalinfo{Draft version}
+\slugcomment{Memo for internal use}
+
+%\altaffiltext{1}{Princeton University}
+
+\begin{abstract}
+
+We derive the signal to noise distribution of detected planets in a toy transit 
+survey. We give corresponding expressions for the number of detected planets. 
+We then discuss the effect of various errors that one makes by ignoring 
+binarity when deriving occurrence rates.
+
+\end{abstract}
+
+\keywords{planets and satellites:\ detection}
+
+\section*{Statement of problem}
+
+Ah, transiting planets! We learn so much by studying them. But how much can we 
+actually learn, and how much is messed up by binarity?
+
+Imagine the following transit survey:
+\begin{itemize}
+\item Take a magnitude-limited sample of ``stars'' of a single spectral class. 
+For instance, G2V dwarfs.  In other words, choose all ``points'' on-sky with 
+$m_\lambda < m_{\lambda,{\rm lim}}$, or equivalently with $F_\lambda > 
+F_{\lambda,{\rm lim}}$, and also with colors that make you think they are this 
+spectral class.
+\item The true population of ``points'' (hereafter, systems) contains both 
+single and double star systems. Single star systems have luminosity in the 
+observed bandpass $L_1$, radii $R_1$, and effective temperature $T_{\rm eff,1}$.
+Double star systems have luminosity in the observed bandpass $L_d = 
+(1+\gamma_R)L_1$, for $\gamma_R = L_2/L_1$ the ratio of the luminosity of the 
+secondary to the primary. The ratio of the two number densities in a 
+volume-limited sample is the binary fraction\footnote{The binary fraction is 
+equivalent to the multiplicity fraction if there are no triple, quadruple, 
+$\ldots$ systems.}.
+\item The true population of planets around these stars is as follows:
+	\subitem A fraction $\Gamma_{t,s}$ of stars in single star systems 
+	have a planet of radius $R_p$, with orbital period $P$.
+	\subitem A fraction $\Gamma_{t,d}$ of each star in a double star 
+	system has a planet of radius $R_p$, with orbital period $P$. For instance, 
+	if $\Gamma_{t,s} = \Gamma_{t,d} = 0.1$, on average each double 
+	system contributes 0.2 planets, and each single system 0.1 planets.
+    Any astrophysical difference in planet formation between singles and 
+    binaries is captured by these two terms.
+\end{itemize}
+
+A signal to noise limited transit survey is then conducted. All planets with 
+${\rm S/N} > {\rm (S/N)_{min}}$ are detected. The rest are not.
+Note that while the S/N threshold does imply a minimum stellar flux about which 
+planets of a given radius and period can be detected, this minimum flux is 
+generally different from the minimum used to define the original magnitude cut 
+for a sample [see Batalha et al, 2010].
+
+Consider the following set of questions:
+\begin{enumerate}
+\item How many single and double star systems, respectively, are in the sample?
+Correspondingly, how many stars are in the sample?
+
+\item How many planets are in the sample? (Orbiting single stars, and orbiting 
+double stars respectively).
+
+\item What is the true occurrence rate?
+
+\item How many planets are detected?
+
+\item What occurrence rate does astronomer A, who has never heard of binary 
+star systems, derive for planets of radius $R_p$ and period $P$?
+
+\item What occurrence rate does astronomer B, who accounts for the ``2 for 1'' 
+effect of binarity (\textit{i.e.} that the sample actually has more stars than 
+astronomer A thought) derive?
+
+\item What about astronomer C, who accounts for ``2 for 1'' \textit{and} 
+misclassification due to diluted radii? In other words, astronomer C has lots 
+of Keck time, and did high resolution imaging followup on every candidate, and 
+correctly classifies the planetary radii.
+
+\item What about astronomer D, who additionally notes the importance of 
+completeness?
+\end{enumerate}
+
+
+\section{How many stars are in the sample?}
+
+Let $N_s$ be the number of single star systems, and $N_d$ the number of double 
+star systems. Then the total number of stars in the sample can be written
+\begin{equation}
+N_{\rm stars} = N_s + 2N_d.
+\end{equation}
+
+In a magnitude-limited sample in which stars are uniformly distributed in 
+volume, the number of stars will be the number density times the volume.
+If the volume is taken to be a sphere over which the number density is uniform,
+\begin{equation}
+N_i = n_{i} \frac{4\pi}{3} d_{{\rm max},i}^3,
+\label{eq:number_systems}
+\end{equation}
+for $i\in{\rm \{single,double\} } \equiv { \{s,d\} }$, and
+\begin{equation}
+\frac{n_{d}}{n_{s}} = {\rm binary\ fraction} \equiv {\rm BF}
+\end{equation}
+by definition. The absolute normalization of the number density is a measured 
+quantity, as is the binary fraction. For G2V dwarfs, the latter is $\approx 
+0.45$ [Duchene \& Kraus, 2013]. The former is given by [Bovy 2017].
+
+$d_{{\rm max},i}$ in Eq.~\ref{eq:number_systems} is the maximum distance 
+corresponding to the given magnitude limit:
+\begin{equation}
+d_{{\rm max},i} = \left(\frac{L_{i}}{4 \pi F_{{\rm lim}}}\right)^{1/2},
+\label{eq:d_max}
+\end{equation}
+where the limiting flux in the bandpass $F_{{\rm lim}}$ can also be 
+stated in terms of the limiting magnitude $m_{{\rm lim}}$,
+\begin{equation}
+m_{{\rm lim}} = m_{0} - \frac{5}{2} \log_{10} \left(\frac{F_{{\rm 
+lim}}}{F_{0}}\right),
+\end{equation}
+for $m_{0}$ a zero-point magnitude and $F_{0}$ its corresponding flux (as 
+always, everything is implicitly written in a defined bandpass).
+
+In Eq.~\ref{eq:d_max}, again $i\in{\rm \{single,double\} }$, and as a 
+consequence the maximum distance to which binary stars will be selected is 
+greater than that of single stars, simply as a consequence of imposing a 
+magnitude cut.
+The ratio of double to single systems is
+\begin{align}
+\frac{N_d}{N_s} &= 
+	\frac{n_d}{n_s} \left(\frac{d_{{\rm max}, d} }{d_{{\rm max}, s}}\right)^3 \\
+&= {\rm BF} \times (1+\gamma_R)^{3/2}.
+\end{align}
+In the nominal case of twin binaries ($\gamma_R = 1$), with a binary fraction 
+${\rm BF} = 0.5$, there are 
+$\sqrt{2}$ more binary systems than single systems in the sample.
+Correspondingly, there are $2\sqrt{2}$ more stars in binary systems than stars 
+in single systems.
+
+As a comment on Eq.~\ref{eq:number_systems}, if 
+we wished to write a stellar number density profile that accounted for the 
+vertical structure of the Milky Way, we might choose a profile either 
+$\propto \exp(-z/H)$, or $\propto {\rm sech}^2(z/H)$ for $z$ the distance from 
+the galactic midplane and $H$ a scale-height. Both density profiles would lead 
+closed form analytic solutions.
+
+
+
+\section{How many planets are in the sample?}
+
+The number of planets in the sample is
+\begin{align}
+N_{\rm planets} =& N_{\rm planets\ in\ single\ star\ systems}  +  \\
+				  &\quad\quad N_{\rm planets\ in\ double\ star\ systems} 
+				  \nonumber \\
+			   =& \Gamma_{t,s} N_s + 2 \Gamma_{t,d} N_d.
+\end{align}
+
+The factor of 2 accounts for the fact that there are twice as many stars in 
+double star systems.
+
+
+
+\section{What is the true occurrence rate?}
+\label{sec:true_rate}
+
+The ``true occurrence rate'' is the average number of planets per star. Thus
+
+\begin{align}
+\Gamma_t &= \frac{N_{\rm planets}}{N_{\rm stars}} \\
+\Gamma_t &= \frac{\Gamma_{t,s} N_s + 2 \Gamma_{t,d} N_d}{N_s + 2N_d}.
+\label{eq:true_occ}
+\end{align}
+
+
+
+\section{How many planets are detected?}
+The total number of planet detections is the sum of the number of planets 
+detected in single star systems $N_{{\rm det},s}$ and the number of planets 
+detected in double star systems $N_{{\rm det},d}$.
+These can be expressed individually. 
+The former is
+\begin{equation}
+N_{{\rm det},s} = N_s \Gamma_{t,s} f_{s,{\rm S/N} > {\rm (S/N)_{min}}},
+\label{eq:N_det_s}
+\end{equation}
+where the product $N_s \Gamma_{t,s}$ is the number of planets in the single 
+star systems of the sample, and $f_{s,({\rm S/N} > {\rm (S/N)_{min}})}$ is the 
+fraction of these planets that have signal to noise greater than the minimum 
+detection threshold.
+\begin{equation}
+N_{{\rm det},d} = 2 N_d \Gamma_{t,d} f_{d,{\rm S/N} > {\rm (S/N)_{min}}},
+\label{eq:N_det_d}
+\end{equation}
+where now $2 N_d \Gamma_{t,d}$ is the number of planets in the double star 
+systems of the sample, and the completeness term must account for any 
+differences in the signal to noise distribution that come from stellar 
+binarity.
+
+As a note of warning, Eqs.~\ref{eq:N_det_s} and~\ref{eq:N_det_d} ignore the 
+geometric transit probability, $\approx R_\star / a$. This means we are 
+assuming that every existing planet in this universe transits. This assumption 
+can easily be rectified, if desired.
+
+\subsection{Analytic completeness}
+The only terms we have yet to compute are the completeness terms, $f_{i,{\rm 
+S/N} > {\rm (S/N)_{min}}}$ for $i\in{\rm \{single,double\} }$. 
+We proceed as follows.
+
+The signal ${\rm S}$ for a box-car train transiting planet is
+\begin{align}
+{\rm S} &= \delta \mathcal{D} \\
+&= \left(\frac{R_p}{R_\star}\right)^2 \mathcal{D},
+\end{align}
+for $R_p$ the planet's radius, $R_\star$ that of its host star, and 
+$\mathcal{D}$ the dilution parameter defined as
+\begin{equation}
+  \mathcal{D} = 
+  \Bigg\{\begin{array}{lr}
+  L_1 / L_d, & {\rm\ if\ binary\ and\ target\ primary}\\
+  \gamma_R L_1 / L_d, & {\rm\ if\ binary\ and\ target\ 
+  secondary}\\
+  1, & {\rm\ if\ single},
+  \end{array}
+  \label{eq:dilution}
+\end{equation}
+where $L_1, L_d,$ and $\gamma_R$ were defined in the opening monograph.
+
+Assuming the only source of noise is Poissonian counting noise, the noise ${\rm 
+N}$ can be written
+\begin{equation}
+{\rm N} = \frac{1}{\sqrt{N_\gamma}},
+\end{equation}
+for $N_\gamma$ the number of photons received by the detector. This noise model 
+is a useful simplification -- see [Howell 2006, pg 75] for the full 
+CCD equation.
+The number of received photons can be written
+\begin{equation}
+N_\gamma = F^{\rm N}_\gamma A N_{\rm tra} T_{\rm dur},
+\end{equation}
+for $F^{\rm N}_\gamma$ the photon number flux from the system [${\rm 
+ph\,cm^{-2}\,s^{-1}}$], 
+$A$ the detector area, $T_{\rm dur}$ the transit duration, and $N_{\rm tra} $ 
+the number of transits observed, which is multiplied in assuming the transits 
+are ``phase-folded''.
+	
+Thus the signal to noise ratio can be written
+\begin{equation}
+{\rm S/N} = \delta \mathcal{D} \sqrt{F^{\rm N}_\gamma A N_{\rm tra} T_{\rm 
+dur}}.
+\label{eq:snr_ivory_tower}
+\end{equation}
+
+In passing, given the parameters that define a survey and planet type, 
+Eq.~\ref{eq:snr_ivory_tower} would need to be re-expressed with 
+$N_{\rm tra}$ roughly the ratio of the observing baseline to the planet period, 
+and $T_{\rm dur}$ a function of $R_\star, P, a$, and impact parameter $b$, and 
+then perhaps averaged over $b$. We leave them as-is for subsequent 
+development.
+
+The interesting term in Eq.~\ref{eq:snr_ivory_tower} that changes between stars 
+of the same binarity class in our idealized sample is the square root of 
+$F^{\rm N}_\gamma$.
+This is the term that leads to a distribution of signal to noises for different 
+stars.
+The completenesses $f_{i,{\rm S/N} > {\rm (S/N)_{min}}}$ can be directly 
+expressed in terms of those probability density functions:
+\begin{equation}
+f_{i,{\rm S/N} > {\rm (S/N)_{min}}} = 
+	\int_{{\rm (S/N)_{min}}}^{\infty} 
+		{\rm d}\left(\frac{{\rm S}}{{\rm N}}\right)_i \ 
+		{\rm prob}\left(\frac{{\rm S}}{{\rm N}}\right)_i.
+\label{eq:completeness_long}
+\end{equation}
+We keep the subscript $i$ because the signal to noise distributions are 
+different for the cases of single star systems ($i=s$) and double star systems 
+($i=d$).
+Notably:
+\begin{itemize}
+	\item The dilution differs (Eq.~\ref{eq:dilution}).
+	\item The photon number flux from the system differs.
+\end{itemize}
+
+To simplify notation, we let $x_i \equiv {\rm (S/N)}_i$, and rewrite 
+Eq.~\ref{eq:completeness_long} as
+\begin{equation}
+f_{i,x > x_{\rm min}} = 
+\int_{{\rm x_{\rm min}}}^{\infty} 
+{\rm d}x_i \ 
+{\rm prob}(x_i).
+\label{eq:completeness_short}
+\end{equation}
+
+
+\subsection{Deriving ${\rm prob}(x_i)$}
+We want expressions for the probability density function of the observed signal 
+to noise ratio, ${\rm prob}(x_i)$, for both the single and binary 
+system case.
+
+First, note that a star placed uniformly in the volume of the search space will 
+have a probability density function for its distance $r$ from the origin of
+\begin{equation}
+{\rm prob} (r) = \frac{3 r^2}{d_{\rm max}^3},
+\end{equation}
+where the appropriate maximum distances should be substituted per 
+Eq.~\ref{eq:d_max}.
+Noting the transformation rule for probability density functions, we can 
+evaluate the probability of a star having a observed number flux $F^{\rm 
+N}_{i,\gamma}$ in the bandpass,
+\begin{align}
+{\rm prob} (F^{\rm N}_{i,\gamma}) 
+&= {\rm prob}(r(F^{\rm N}_{i,\gamma}))
+	\left| \frac{{\rm d} r}{{\rm d} F^{\rm N}_{i,\gamma}} \right| \\
+&= \frac{3}{2 d_{\rm max}^3} c_i^{3/2} (F^{\rm N}_{i,\gamma})^{-5/2},
+\label{eq:pdf_observed_flux}
+\end{align}
+where in the latter equality we have written a ``number luminosity'' $c_i$ 
+(units of inverse time) defined for $i\in{\rm \{single,double\} }$ as
+\begin{equation}
+c_i = 
+\Bigg\{\begin{array}{lr}
+R_1^2 F^{\rm N}_{s1,\gamma}, & {\rm\ if\ single}\\
+R_1^2 F^{\rm N}_{s1,\gamma} + R_2^2 F^{\rm N}_{s2,\gamma} & {\rm\ if\ double}.
+\end{array}
+\label{eq:c_i}
+\end{equation}
+In Eq.~\ref{eq:c_i}, $F^{\rm N}_{s1,\gamma}$ and $F^{\rm N}_{s2,\gamma}$ are 
+the photon number fluxes at the surfaces of the stars. To derive 
+Eq.~\ref{eq:pdf_observed_flux}, we simply scaled these by the distance:
+\begin{equation}
+F^{\rm N}_{i,\gamma} = \frac{c_i}{r^2}.
+\label{eq:flux_at_detector}
+\end{equation}
+
+The surface photon number fluxes $F^{\rm N}_{si,\gamma}$ in Eq.~\ref{eq:c_i} 
+are usually evaluated numerically, by convolving the wavelength-specific photon 
+flux density of a star with the dimensionless spectral response function of the 
+instrument. In other words,
+\begin{equation}
+F^{\rm N}_{s,\gamma} = \int F_\lambda T_\lambda \, {\rm d}\lambda.
+\label{eq:pfd}
+\end{equation}
+The wavelength-specific photon flux density $F_\lambda$ [${\rm 
+ph\,cm^{-2}\,s^{-1}\,\AA^{-1}}$] could be from Pickles' library, or could be 
+a blackbody function. The transmission function is, up to factor of order 
+unity, a step function between two wavelengths $\lambda_{\rm min}$ and 
+$\lambda_{\rm max}$.
+If we assume a blackbody source, Eq.~\ref{eq:pfd} becomes
+\begin{equation}
+F^{\rm N}_{s,\gamma} = 8\pi c \left(\frac{k T}{h c}\right)^3 
+\int_{hc/(\lambda_{\rm max} kT)}^{hc/(\lambda_{\rm min} kT)}
+\frac{u^2}{e^u - 1} \,{\rm d} u,
+\end{equation}
+which can be evaluated numerically\footnote{It may help in the numerics to note 
+that infinite series representations of this type of dimensionless integral 
+exist and converge quickly. For instance, one can show that
+\begin{equation}
+\int_{0}^{a} \frac{u^3}{e^u -1} \,{\rm d}u = \sum_{n=1}^{\infty} \frac{6}{n^4} 
+- \frac{e^{-an}}{n^4} (6 + 6an + 3(an)^2 + (an)^3).
+\nonumber
+\end{equation}
+A similar expression exists for the similar integral in the text. 
+[Michels 1968] explains an analogous derivation.
+}.
+
+The importance of the functional form of $F^{\rm N}_{s,\gamma}$ is that it is 
+to first order only a function of the blackbody temperature and the bandpass 
+wavelength bounds.
+Thus in the most general case $c_i(R_1, R_2, T_1, T_2, \lambda_{\rm min}, 
+\lambda_{\rm max})$ and nothing else.
+The only random variable involved in the flux being received at the detector is 
+$r$, so we can indeed write the flux received at the detector as in 
+Eq.~\ref{eq:flux_at_detector}.
+
+We can finally write out the probability density functions for the signal to 
+noise ratios in the single and double-star cases by using the transformation 
+rule for pdfs, and applying Eq.~\ref{eq:snr_ivory_tower}.
+For single stars,
+\begin{equation}
+{\rm prob}(x_s) = \frac{3}{d_{\rm max, s}^3} c_s^{3/2} \delta^3 \left( A T_{\rm 
+dur} N_{\rm tra}\right)^{3/2} x_s^{-4}.
+\label{eq:prob_xs}
+\end{equation}
+Analogously for double stars,
+\begin{equation}
+{\rm prob}(x_d) = \frac{3}{d_{\rm max, d}^3} c_d^{3/2} (\mathcal{D}\delta)^3 
+\left( A T_{\rm dur} N_{\rm tra}\right)^{3/2} x_d^{-4}.
+\label{eq:prob_xd}
+\end{equation}
+
+
+\subsection{Number of detected planets}
+
+Performing the integrals of Eq.~\ref{eq:completeness_short}, we get:
+
+\begin{align}
+N_{{\rm det},s} &= N_s \Gamma_{t,s} f_{s,{\rm S/N} > {\rm (S/N)_{min}}} \\
+&= N_s \Gamma_{t,s} \frac{1}{d_{\rm max,s}^3} c_s^{3/2} \delta^3 \left(A 
+T_{\rm dur} N_{\rm tra}\right)^{3/2} x_{\rm min}^{-3},
+\end{align}
+and
+\begin{align}
+N_{{\rm det},d} &= 2 N_d \Gamma_{t,d} f_{d,{\rm S/N} > {\rm (S/N)_{min}}} \\
+&= 2 N_d \Gamma_{t,d} 
+\frac{1}{d_{\rm max,d}^3} c_d^{3/2} (\mathcal{D}\delta)^3 \left(A T_{\rm dur} 
+N_{\rm tra}\right)^{3/2} x_{\rm min}^{-3}.
+\end{align}
+
+Formally, the $f_{s,{\rm S/N} > {\rm (S/N)_{min}}}$ term should really be 
+written as ${\rm min}(1, \ldots)$, where $(\ldots)$ is the given expression. 
+This ensures that the fraction of planets above the signal to noise threshold 
+is less than 1.
+
+The number of detected planets $N_{\rm det}$ is the sum of the two previously 
+written equations, and can be written
+\begin{align}
+N_{\rm det} = 
+&\left( \frac{\delta}{x_{\rm min}} \right)^3 (A T_{\rm dur} N_{\rm tra})^{3/2} 
+\nonumber\\
+&\quad \times
+\left[ N_s \Gamma_{t,s} \frac{c_s^{3/2}}{d_{\rm max,s}^3}  +
+	   2 N_d \Gamma_{t,d} \frac{c_d^{3/2}}{d_{\rm max,d}^3}  \right].
+\label{eq:N_det}
+\end{align}
+All terms can be input to a computer, and checked against a Monte Carlo 
+simulation if desired.
+
+
+\section{Astronomer A ignores binarity}
+Astronomer A has never heard of binary star systems. What occurrence rate does 
+he derive for planets of radius $R_p$ and period $P$?
+
+The {\it total} occurrence rate (number of detections divided number of 
+``stars'') for Astronomer A would be $N_{\rm det}/(N_s + N_d)$. However, even 
+though Astronomer A does not know about binaries, the radii he derives for any 
+planets in binary systems are too small, by a factor $\sqrt{\mathcal{D}}$.
+The question is what occurrence rate is derived for planets of radius $R_p$ and 
+period $P$.
+The answer is thus
+\begin{equation}
+\Gamma_{\rm A,\ planets\ of\ R_p} = \frac{N_{\rm det,s}}{N_s + N_d}.
+\end{equation}
+
+This astronomer will also think there is a second population of planets, with 
+radius $R_p \sqrt{\mathcal{D}}$, and will thus rush to Nature claiming to also
+have derived a second occurrence rate,
+\begin{equation}
+\Gamma_{\rm A,\ planets\ of\ R_p \sqrt{\mathcal{D}}} = \frac{N_{\rm det,d}}{N_s 
++ N_d}.
+\end{equation}
+
+
+\section{Astronomer B counts host stars correctly}
+Astronomer B can somehow account correctly for the ``2 for 1'' 
+effect of binarity, \textit{i.e.} that the sample actually has more stars than 
+astronomer A thought.
+
+By the same token as above,
+\begin{equation}
+\Gamma_{\rm B,\ planets\ of\ R_p} = \frac{N_{\rm det,s}}{N_s + 2N_d},
+\end{equation}
+and
+\begin{equation}
+\Gamma_{\rm B,\ planets\ of\ R_p \sqrt{\mathcal{D}}} = \frac{N_{\rm det,d}}{N_s 
+	+ 2N_d}.
+\end{equation}
+
+
+
+\section{Astronomer C counts host stars correctly and figures out diluted radii}
+Astronomer C did high resolution imaging followup on every candidate, and 
+correctly classifies the planetary radii.
+Thus, she also knows which planets are in binary systems, and which are in 
+single star systems.
+
+She knows that the purported population of planets with radii $R_p 
+\sqrt{\mathcal{D}}$ does not exist. All detected planets from this survey have 
+radii $R_p$. She computes an occurrence rate
+\begin{align}
+\Gamma_{\rm C,\ planets\ of\ R_p} &= 
+\frac{N_{\rm det,s} + N_{\rm det,d}}{N_s + 2N_d} \\
+&= \frac{N_{\rm det}}{N_s + 2N_d},
+\end{align}
+
+the closest yet to the true rate (Sec.~\ref{sec:true_rate}).
+
+
+\section{Astronomer D counts host stars correctly, figures out diluted radii, 
+and accounts for completeness}
+
+Astronomer D, just like Astronomer C, knows which detections were around 
+binaries and the associated radius correction.
+
+Astronomer D notes that the number of detected planets is not equal to the 
+actual number of planets in the sample.
+They must account for completeness.
+They do injection recovery, and derive independent estimates for their 
+completeness functions about single stars, $f_{s,x>x_{\rm min}} \equiv f_s$ and 
+about double star systems, $f_{d,x>x_{\rm min}} \equiv f_d$.
+With this knowledge in hand, they compute the respective single and binary 
+occurrence rates
+\begin{equation}
+\Gamma_{t,s} = \frac{N_{\rm det,s}}{N_s f_s},
+\end{equation}
+\begin{equation}
+\Gamma_{t,d} = \frac{N_{\rm det,d}}{2 N_d f_d}.
+\end{equation}
+
+With these in hand, they derive the overall occurrence rate
+\begin{align}
+\Gamma_{\rm D,\ planets\ of\ R_p} 
+&= \frac{N_{\rm det,s}/f_s + N_{\rm det,d}/f_d  }{N_s + 2 N_d} \\
+&= \frac{\Gamma_{t,s} N_s + 2\Gamma_{t,d} N_d}{N_s + 2 N_d}.
+\end{align}
+
+Although we admit it's been a bit of a slog, it happens that Astronomer D's 
+occurrence rate is the true occurrence rate (cf. Eq.~\ref{eq:true_occ}).
+
+All it takes is $\approx$ a full semester at Keck, a system-by-system analysis, 
+and perfect understanding of the completeness of the detection efficiency for 
+single and double star systems.
+
+
+\section{Numerical verification}
+
+As a check on the preceding analytic development, we implemented a Monte Carlo 
+simulation of this idealized transit survey.
+To run the survey, we defined the instrument specifications (detector area and 
+transmission function), the stellar population (binary fraction, total number 
+density of a given stellar class, binary light ratio, fixed stellar 
+properties), the planet population (fixed planet radius, period, and occurrence 
+rate about single and binary stars), and finally the survey parameters 
+(observing baseline, minimum SNR for ``detection'').
+We then randomly drew star positions, randomly assigned planets to stars in 
+single and binary systems, and computed the resulting signal to noise 
+(Eq.~\ref{eq:snr_ivory_tower}) with which 
+the transits would be observed.
+As in the preceding analytics\footnote{TODO could be to generalize away from 
+this}, we assumed ``twin'' binaries (same stellar radii, same effective 
+temperature, and dilution does not depend on which stellar binary is the 
+``target'').
+
+The results are shown in Fig.~\ref{fig:snr_dist_analytic_v_numeric}, and 
+indicate that the analytic probability distribution functions 
+Eqs.~\ref{eq:prob_xs},~\ref{eq:prob_xd}, and the number of 
+detections (Eq.~\ref{eq:N_det}) are correct.
+
+A point evident in Fig.~\ref{fig:snr_dist_analytic_v_numeric} is that, for 
+fixed planet parameters, and fixed stellar parameters ($R_\star, L_\star$, and 
+distance $r$) the SNR distribution for planets in binaries is poorer than that 
+of planets in single star systems.
+We can see analytically that this can be written only as function of the 
+binary light ratio:
+\begin{equation}
+\frac{{\rm prob}(x_d)}{{\rm prob}(x_s)} =(1 + \gamma_R)^{-1}.
+\end{equation}
+Deriving this simple form requires noting that the ratios of the 
+bandpass-specific number luminosities (Eq.~\ref{eq:c_i}) is equal to the ratio 
+of the bandpass-specific energy luminosities (otherwise a term with $c_s/c_d$ 
+must be included).
+
+\begin{figure}[!t]
+	\begin{center}
+		\includegraphics[scale=0.4]{figures/snr_distribution.pdf}
+	\end{center}
+	\caption{Comparison of analytic and numeric probability 
+	density functions of the SNR in an idealized transit survey.
+	The analytic lines are Eqs.~\ref{eq:prob_xs} and~\ref{eq:prob_xd} for the 
+	planet populations orbiting single and binary stars. The underlying stepped 
+	histogram is output from Monte Carlo simulations. Poisson noise leads to 
+	a small deviation at the faint and bright limits, but the numerics and 
+	analytics otherwise agree.
+		 }
+	\label{fig:snr_dist_analytic_v_numeric}
+\end{figure}
+
+
+\section{Representative numbers for a few cases}
+
+\subsection{Twin binaries: if we ignore binarity, for what fraction of 
+detections do we misclassify the radii?}
+ 
+Ignoring binarity, we will detect $N_{\rm det,s}$ planets around single stars, 
+and $N_{\rm det,d}$ planets around double stars. The latter set will be assumed 
+to have radii $R_p \sqrt{\mathcal{D}}$.
+The fraction of detections with misclassified radii can then be written
+\begin{equation}
+\frac{N_{\rm det,d}}{N_{\rm det,s} + N_{\rm det,d}} = \frac{1}{1+\alpha},
+\end{equation}
+for
+\begin{equation}
+\alpha \equiv \frac{1}{2({\rm BF})} (1+\gamma_R)^{3/2} 
+\frac{\Gamma_{t,s}}{\Gamma_{t,d}}.
+\end{equation}
+
+For the nominal G2V dwarf case of ${\rm BF}=0.45$, twin binaries with equal 
+occurrence rates this produces a misclassification rate of $24\%$, in agreement 
+with Fig.~\ref{fig:snr_dist_analytic_v_numeric}.
+
+\subsection{Twin binaries: if we ignore binarity, how wrong is our occurrence 
+rate for planets of radius $R_p$?}
+
+This is almost simply asking ``what is the relative difference between the 
+occurrence rates derived by Astronomers D and A for planets of radius $R_p$?''
+However, in the more realistic case, Astronomer A also has derived a 
+completeness, which we assume is the same as for Astronomer D in the single 
+star case.
+So Astronomer A now misclassifies planetary radii, and miscounts the total 
+number of stars, but knows his completeness for single stars.
+Astronomer D corrects all these errors.
+
+For brevity, write $\Gamma_{\rm A,\ planets\ of\ R_p} = \Gamma_{\rm A,R_p}$, 
+and similarly for ${\rm D}$.
+Then the relative difference between the two occurrence rates is
+
+\begin{align}
+\left|\frac{\Gamma_{\rm A,R_p} - \Gamma_{\rm D,R_p}}
+		   {\Gamma_{\rm A,R_p}} \right| &=
+\left| 1 - \frac{\Gamma_{\rm D,R_p}}{\Gamma_{\rm A,R_p}}\right| \\
+&=
+\left| 1 - \left(\frac{\Gamma_{t,s}N_s + 2\Gamma_{t,d}N_d}{N_s + 2N_d}  \cdot 
+\frac{N_s + N_d}{\Gamma_{t,s} N_s }\right)\right| \\
+&= 
+\left|
+1 - \frac{(1 + 2 \beta \Gamma_{t,d}/\Gamma_{t,s})(1 + \beta)}{(1+2\beta)}
+\right|,
+\end{align}
+for
+\begin{equation}
+\beta \equiv N_d/N_s = {\rm BF} \times (1+\gamma_R)^{3/2}.
+\end{equation}
+
+For the nominal G2V dwarf case of ${\rm BF}=0.45$ with twin binaries ($\gamma_R 
+= 1$) and $\Gamma_{t,d} = \Gamma_{t,s}$ this gives a relative error of $127\%$.
+For instance, in the numerical simulation corresponding to 
+Fig.~\ref{fig:snr_dist_analytic_v_numeric}, Astronomer A finds $\Gamma_{\rm 
+A,R_p} = 0.22$, while Astronomer 
+D derives the true (input) occurrence rate of $\Gamma_{\rm D,R_p} = 0.5$.
+
+
+\newpage
+
+%\begin{thebibliography}{}
+
+
+%\end{thebibliography}
+
+\end{document}

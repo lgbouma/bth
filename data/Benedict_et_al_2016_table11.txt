@@ -1,0 +1,33 @@
+Table 11
+Other Mass Determinations
+
+ID	SpT	pi_abs [mas]	ref^a
+	M_V	M_K	ref^a
+	
+
+${{ \mathcal M }}_{\odot }$
+
+
+
+	ref^a
+	
+GJ 166 C	M4.0V	200.7 +or- 0.2	H12	12.68 +or- 0.03	7.45 +or- 0.03	H12	0.177 +or- 0.029	H99	
+GJ 278 C	M1  V	66.9 0.6	T02	9.01 0.33	5.32 0.01	T10	0.599 0.005	T02	
+GJ 278 D	cdots	cdots	cdots	9.01 0.33	5.32 0.01	cdots	0.599 0.005	cdots	
+GJ 570 B	M1.5V	169.8 0.9	F99	9.45 0.05	5.40 0.03	D00	0.586 0.007	F99	
+GJ 570 C	cdots	cdots	cdots	11.09 0.17	6.58 0.04	F99	0.390 0.005	cdots	
+GJ 630.1 A	M5  V	69.2 2.5	YPC	12.72 0.02	7.64 0.03	M09	0.231 0.001	M09	
+GJ 630.1 B	cdots	cdots	cdots	12.86 0.03	7.78 0.03	cdots	0.214 0.001	cdots	
+GJ 747 A	M3  V	120.2 0.2	S00	12.30 0.06	7.53 0.04	D00	0.214 0.001	S00	
+GJ 747 B	cdots	cdots	cdots	12.52 0.06	7.63 0.04	cdots	0.200 0.001	cdots	
+GJ 860 A	M3.0V	249.5 3.0	H99	11.78 0.01	7.03 0.04	H99	0.268 0.020	T06	
+GJ 860 B	M4.0V	cdots	cdots	13.39 0.01	8.40 0.07	cdots	0.172 0.008	H99	
+GJ 2005 B	M8.5V	128.49 1.50	C05, *	19.24 0.07	10.48 0.05	L00	0.079 0.020	cdots	
+GJ 2005 C	M9.0V	cdots	cdots	19.63 0.08	10.83 0.05	cdots	0.079 0.020	cdots	
+GJ 2069 A	M3.5V	64.80 1.43	*	11.49 0.02	6.29 0.03	R03	0.433 0.002	R03	
+GJ 2069 C	cdots	cdots	cdots	11.76 0.03	6.55 0.03	cdots	0.398 0.001	cdots	
+GU Boo A	M0  V	7.5 1.0	L05	8.60 0.17	5.29 0.15	L05	0.616 0.006	L05	
+GU Boo B	M1.5V	cdots	cdots	8.89 0.18	5.42 0.15	cdots	0.600 0.006	cdots	
+
+Note.
+a Sources: * - this paper, C05 - Costa et al. (2005), D00 - Delfosse et al. (2000), D15 - S. Dieterich (2015, in preparation), F99 - Forveille et al. (1999), H12 - Holberg et al. (2012), H99 - Henry et al. (1999), L00 - Leinert et al. (2000), L05 - Lopez-Morales & Ribas (2005), M09 - Morales et al. (2009), P97 - Perryman et al. (1997), R03 - Ribas (2003), S00 - Segransan et al. (2000), S08 - Seifahrt et al. (2008), T02 - Torres & Ribas (2002), T06 - Tamazian et al. (2006), YPC - van Altena et al. (1995).
