@@ -3,3 +3,5 @@ doc/jnw_memos
 src/*pdf
 src/*csv
 jnw_overview_paper*
+*synctex.gz
+*.log

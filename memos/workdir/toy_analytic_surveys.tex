@@ -108,8 +108,8 @@ of \kepler, assuming host stars to always be single will on
 average underestimate radii by a multiplicative factor of $\approx 1.5$.
 
 Finally, binarity may affect transit surveys through actual astrophysics.
-For the relatively rare case [Duquennoy \& Mayor 1991] of close 
-binaries, dynamical stability imposes a limited range of periods in which 
+For the relatively rare case [Duquennoy \& Mayor 1991, Raghavan et al 2010] of 
+close binaries, dynamical stability imposes a limited range of periods in which 
 planets may orbit [e.g., Holman \& Weigert 
 1999, Li et al 2017], the effects of which have been observed [Kraus et al 
 2016].
@@ -816,21 +816,22 @@ number of stars, but knows his completeness for single stars.
 Astronomer D corrects all these errors.
 Then
 \begin{equation}
-\Gamma_{{\rm A}, R_p} = \frac{N_{\rm det,s}/(f_{s,g} f_{s,c})}{N_s + N_d},
+\Gamma_{{\rm A}, R_p} = \frac{N_{\rm det,s}/(f_{s,g} f_{s,c})}{N_s + N_d}.
 \end{equation}
-and the relative difference between the two occurrence rates is
 
+To express ``how wrong'' our occurrence rate is, we define a correction factor 
+$X_\Gamma$ such that the true occurrence rate is the product of the correction 
+factor with the measured occurrence rate: $\Gamma_D \equiv \Gamma_A X_\Gamma$.
+
+The correction factor is then
 \begin{align}
-\left|\frac{\Gamma_{{\rm A},R_p} - \Gamma_{{\rm D},R_p}}
-		   {\Gamma_{{\rm A},R_p}} \right| &=
-\left| 1 - \frac{\Gamma_{{\rm D},R_p}}{\Gamma_{{\rm A},R_p}}\right| \\
+X_\Gamma &=
+\frac{\Gamma_{{\rm D},R_p}}{\Gamma_{{\rm A},R_p}} \\
 &=
-\left| 1 - \left(\frac{\Gamma_{t,s}N_s + 2\Gamma_{t,d}N_d}{N_s + 2N_d}  \cdot 
-\frac{N_s + N_d}{\Gamma_{t,s} N_s }\right)\right| \\
+\frac{\Gamma_{t,s}N_s + 2\Gamma_{t,d}N_d}{N_s + 2N_d}  \cdot 
+\frac{N_s + N_d}{\Gamma_{t,s} N_s } \\
 &= 
-\left|
-1 - \frac{(1 + 2 \beta \Gamma_{t,d}/\Gamma_{t,s})(1 + \beta)}{(1+2\beta)}
-\right|,
+\frac{(1 + \beta)(1 + 2 \beta \Gamma_{t,d}/\Gamma_{t,s})}{(1+2\beta)},
 \end{align}
 for
 \begin{equation}
@@ -838,12 +839,13 @@ for
 \end{equation}
 
 For the nominal G2V dwarf case of ${\rm BF}=0.45$ with twin binaries ($\gamma_R 
-= 1$) and $\Gamma_{t,d} = \Gamma_{t,s}$ this gives a relative error of $127\%$.
+= 1$) and $\Gamma_{t,d} = \Gamma_{t,s}$ this gives $X_\Gamma = 2.27$.
 For instance, in the numerical simulation corresponding to 
-Fig.~\ref{fig:snr_dist_analytic_v_numeric}, Astronomer A finds $\Gamma_{\rm 
-A,R_p} = 0.22$, while Astronomer 
-D derives the true (input) occurrence rate of $\Gamma_{\rm D,R_p} = 0.5$.
-
+Fig.~\ref{fig:snr_dist_analytic_v_numeric}, Astronomer A finds 
+$\Gamma_{{\rm A},R_p} = 0.22$, while Astronomer 
+D derives the true (input) occurrence rate of $\Gamma_{{\rm D},R_p} = 0.5$.
+This gives a relative percentage error of $\delta\Gamma_{{\rm D},R_p} \equiv 
+(\Gamma_{\rm A,R_p} - \Gamma_{\rm D,R_p}) / \Gamma_{\rm D,R_p} = -56\%$.
 
 
 
@@ -1368,36 +1370,33 @@ is simpler when we assume that Astronomer A has also derived a
 completeness, which we assume is the same as for Astronomer D in the single 
 star case.
 So Astronomer A now misclassifies planetary radii, and miscounts the total 
-number of stars, but knows his completeness for single stars.
-Astronomer D corrects all these errors.
+number of stars, but somehow knows his completeness for single 
+stars. This is possible, because Astronomer A can correctly derive a 
+completeness estimate and geometric transit probability for single stars only. 
+For Astronomer $A'$ below, including the planets in binary star systems in the 
+numerator actually introduces confusion that precludes nice math.
 Then
 \begin{equation}
 	\Gamma_{{\rm A}, R_p} = \frac{N_{\rm det,s}/(f_{s,g} f_{s,c})}{N_s + N_d}.
 \end{equation}
 
-The relative difference between the two occurrence rates, $\Delta \equiv 
-\left|(\Gamma_{{\rm A},R_p} - \Gamma_{{\rm D},R_p})/\Gamma_{{\rm A},R_p} 
-\right|$, is
+The correction factor $X_\Gamma$ is
 \begin{align}
-	\Delta &=
-	\left| 1 - \frac{\Gamma_{{\rm D},R_p}}{\Gamma_{{\rm A},R_p}}\right| \\
-	&=
-	\left| 1 - \left(\frac{\Gamma_{t,s}N_s + (\Gamma_{t,d1} + 
+X_\Gamma &=
+\frac{\Gamma_{{\rm D},R_p}}{\Gamma_{{\rm A},R_p}} \\
+&=
+\frac{\Gamma_{t,s}N_s + (\Gamma_{t,d1} + 
 	\Gamma_{t,d2})N_d}{N_s + 2N_d}  
-	\cdot 
-	\frac{N_s + N_d}{\Gamma_{t,s} N_s }\right)\right| \\
-	&= 
-	\left|
-	1 - \frac{(1 + \beta (\Gamma_{t,d1}+\Gamma_{t,d2})/\Gamma_{t,s})(1 + 
-	\beta)}{(1+2\beta)}
-	\right| \\
-	&=
-	\left| 1 - \left(
-	\left[ 1 + \chi \beta \right]
-	\cdot 
-	\frac{1 + \beta}{1 + 2\beta }
-	\right) \right|
-\end{align}
+\cdot 
+\frac{N_s + N_d}{\Gamma_{t,s} N_s } \\
+&= 
+\frac{(1 + \beta (\Gamma_{t,d1}+\Gamma_{t,d2})/\Gamma_{t,s})(1 + 
+	\beta)}{(1+2\beta)} 	\\
+&=
+(1 + \chi \beta )
+\cdot 
+\frac{1 + \beta}{1 + 2\beta }
+\end{align} 
 for
 \begin{equation}
 \beta \equiv N_d/N_s, \quad \chi \equiv 
@@ -1405,10 +1404,11 @@ for
 \end{equation}
 
 In the limit where the $R_p$ planet has the same occurrence rate about every 
-host type regardless of its mass, $\chi=2$, and this simplifies to $\Delta = 
-\beta$, for a relative error of $59\%$.
-This is less than for Model \#1 because of the smaller volume of searchable 
-binary stars in Model \#2.
+host type regardless of its mass, $\chi=2$, and this simplifies to $X_\Gamma = 
+1+\beta$.
+Although this is same expression as what we found for Model \#1, the value of 
+$\beta$ will be smaller in this model because of the 
+smaller volume of searchable binary stars.
 
 If we consider the opposite limit of the $R_p$ planet \textit{only} 
 existing around single stars and the primaries of double star systems with 
