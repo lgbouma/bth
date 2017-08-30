@@ -272,6 +272,33 @@ if __name__ == '__main__':
     print('N detected numerically: {:d}\n N detected analytically: {:d}\n'.
           format(N_det_n, N_det_a))
 
+    # numerical completeness correction fraction for singles
+    f_s_c_n = len( x_s_n[x_s_n > x_min] ) / len(x_s_n)
+    Γ_A_Rp_n = ( N_det_s_n / f_s_c_n ) / (N_s + N_d)
+    print('Γ_A_Rp: {:.3f} (numerical)'.format(Γ_A_Rp_n))
+
+    # analytic completeness correction fraction for singles
+    f_s_c_a = len( x_s_a[x_s_a > x_min] ) / len(x_s_a)
+    Γ_A_Rp_a = ( N_det_s_a / f_s_c_a ) / (N_s + N_d)
+    print('Γ_A_Rp: {:.3f} (analytic)'.format(Γ_A_Rp_a.cgs))
+
+    Γ_D_Rp = Γ_ts
+    print('Γ_D_Rp: {:.3f}'.format(Γ_D_Rp))
+
+    X_Γ_n = Γ_D_Rp / Γ_A_Rp_n
+    β = BF * (1 + γ_R)**(3/2)
+    X_Γ_math = 1 + β
+    print('\nX_Γ_n: {:.3f}'.format(X_Γ_n))
+    print('X_Γ_a: {:.3f} (analytic from math)'.format(X_Γ_math))
+    print('X_Γ_a: {:.3f} (analytic from implementation)'.format(
+            (Γ_D_Rp / Γ_A_Rp_a).cgs))
+
+    Γ_A_math = Γ_D_Rp / X_Γ_math
+    print('\nAnalytic from math, Γ_A_Rp: {:.3f}'.format(Γ_A_math))
+
+    print('\nRelative percentage error: {:.3f}%'.format(
+           100*(Γ_A_math - Γ_D_Rp)/Γ_D_Rp ))
+
     ####################################################
     # COMPARE ANALYTIC AND NUMERICAL SNR DISTRIBUTIONS #
     ####################################################
