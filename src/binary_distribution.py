@@ -381,6 +381,10 @@ if __name__ == '__main__':
     print( ((1/N_d) * np.sum(doubles['f_d']) / f_s).cgs )
     print('\n')
 
+    print('''\nYou never ran full numerics for this.
+    But the above is actually all you need for the Rp rate.
+    For the Rp-prime rate, you might want numerics''')
+
 
 
 
