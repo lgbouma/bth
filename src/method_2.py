@@ -103,22 +103,6 @@ def draw_star_positions(d_max, N_sys, sys_type=None):
     assert sys_type == 'single' or sys_type == 'binary'
     assert type(N_sys) == int
 
-    ## Inefficient, non-vectorized draw:
-    #x_l,y_l,z_l,r_l = [], [], [], []
-    #while len(r_l) < N_sys:
-    #    if len(r_l) % 10 == 0:
-    #        print('{:d}/{:d}'.format(len(r_l), N_sys))
-
-    #    x = d_max * np.random.rand()
-    #    y = d_max * np.random.rand()
-    #    z = d_max * np.random.rand()
-
-    #    if x**2 + y**2 + z**2 <= d_max**2:
-    #        x_l.append(x.value)
-    #        y_l.append(y.value)
-    #        z_l.append(z.value)
-    #        r_l.append( ((x**2 + y**2 + z**2)**(1/2)).value )
-
     # Vectorized draw:
     # vol sphere / vol cube = π/6 ~= half. Draw 10* the number of systems you
     # really need. Then cut.
