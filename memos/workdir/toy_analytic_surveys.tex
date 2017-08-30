@@ -1518,31 +1518,22 @@ His occurrence rate for planets of radius \textit{near} $R_p$, \textit{i.e.}
 the set of planets with $\{ (1-x)R_p < R_p^{\rm obs} < R_p \}$, is
 \begin{equation}
 \Gamma_{{\rm A}, R_p'} = \frac{ (N_{\rm det,s} + N_{\rm det,d}(R_p')) 
-/ f_s(R_p')   }{ N_s + N_d}.
+/ f(R_p')   }{ N_s + N_d}.
 \end{equation}
 
 For him,
 \begin{equation}
-f(R_p') = f_{g}(R_p') f_{c}(R_p').
+f(R_p') = f_g(R_p') f_c(R_p').
 \end{equation}
 
-Astronomer D, who had everything right, doesn't change anything.
+Astronomer D, who had everything right, changes nothing.
 
-%TODO: LEFT OFF HERE!
-
-The new difference between the two rates is
+The new correction factor is
 \begin{align}
-\Delta' &\equiv \left|
-\frac{\Gamma_{{\rm A},R_p'} - \Gamma_{{\rm D},R_p}}{\Gamma_{{\rm A},R_p'} }
-\right| \\
-&= \left|
-1 - \frac{\Gamma_{{\rm D},R_p}}{\Gamma_{{\rm A},R_p'} } 
-\right| \\
+X_\Gamma &= \frac{\Gamma_{{\rm D},R_p}}{\Gamma_{{\rm A},R_p'} } \\
 &=
-\left| 1 -
-\left( \frac{1+\chi \beta}{1 + \xi}  \cdot 
-\frac{1 + \beta}{1 + 2\beta} \right)
-\right|,
+\frac{1+\chi \beta}{1 + \xi}  \cdot 
+\frac{1 + \beta}{1 + 2\beta},
 \end{align}
 for
 \begin{equation}
@@ -1551,48 +1542,86 @@ for
 \end{equation}
 and
 \begin{equation}
-\xi \equiv \frac{N_{\rm det,d}(R_p')}{f_s(R_p')} \cdot \frac{1}{N_s 
+\xi \equiv \frac{N_{\rm det,d}(R_p')}{f(R_p')} \cdot \frac{1}{N_s 
 \Gamma_{t,s}}.
 \end{equation}
 If we let $x < 1 - 2^{-1/2}$, for instance $x=0.1$, then $N_{d2}(R_p') = 0$. 
-The expression for $\xi$ simplifies to
-\begin{equation}
-\chi = \frac{N_{d1}(R_p')}{N_s} \cdot \frac{\Gamma_{t,d1}}{\Gamma_{t,s}} \cdot 
-\frac{f_{d1}(R_p')}{f_s(R_p')},\quad ({\rm if\ }x < 1-2^{-1/2}).
-\label{eq:chi_simplfied}
-\end{equation}
+The expression for $\xi$ in this case becomes
+\begin{align}
+\xi &= \frac{N_{d1}(R_p')}{N_s} \cdot \frac{\Gamma_{t,d1}}{\Gamma_{t,s}} \cdot 
+\frac{f_{d1}(R_p')}{f(R_p')} \\
+&= \frac{N_{d1}(R_p')}{N_s} \cdot \frac{\Gamma_{t,d1}}{\Gamma_{t,s}} \cdot 
+\frac{f_{g,d1}(R_p')}{f_g(R_p')}\cdot \frac{f_{c,d1}(R_p')}{f_c(R_p')},
+\label{eq:chi_simplified}
+\end{align}
+provided that $x < 1-2^{-1/2}$.
 
+We have now parametrized our ignorance.
+The values that the latter two ratios of Eq.~\ref{eq:chi_simplified} take 
+depend on what we assume Astronomer A' does to derive the stellar parameters 
+for the systems that he thinks are singles but are in fact doubles.
+For instance, assume he somehow observed the bolometric flux from every point 
+on the sky, and used it with a distance to obtain single-star luminosities, and 
+thus radii and masses.
+His binary systems (thought to be singles) would be bluer than either component 
+star is in reality.
+On the main sequence, $\rho_\star$ decreases with increasing stellar radius, 
+so $\rho_\star$ would be underestimated for all binaries.
+Since $f_g \propto \rho_\star^{1/3}$, this means that $f_{g,d1}(R_p')/f_g(R_p') 
+> 1$.
+However, by the same token we can place an \textit{upper} bound on this ratio. 
+In the worst case scenario a given star's luminosity is twice the individual 
+star's luminosity. If $L\propto M^3 \propto R^3$, then the radius is 
+over-estimated by at most a factor of $2^{1/3}$. Thus the density is 
+underestimated by at most a factor of $2^{1/2}$, and $f_g(R_p')$ is 
+underestimated by at most a factor of $2^{1/6}=1.12$. 
+
+This begins to take us somewhere. The left-most term of 
+Eq.~\ref{eq:chi_simplified} is bounded above by $\beta$. This is because 
+$N_{d1}(R_p') \leq N_{d1} = N_d$.
 If we assume $\Gamma_{t,d1} = \Gamma_{t,s}$, as we were doing 
-anyway, Eq.~\ref{eq:chi_simplfied} is bounded above by
-$\beta$. This is because $N_{d1}(R_p') \leq N_{d1} = N_d$, and $f_{d1}(R_p') / 
-f_s(R_p') \leq 1$, since over a fixed radius interval dilution will always 
-yield a lower completeness fraction for double star systems than singles.
-Recall for the fixed $\gamma_R$ population we showed that $f_{d1}/f_s = 
-(1+\gamma_R)^{-3}$.
+anyway, then the product of the three left-most fractions must be less than 
+$1.12\beta$.
+The only thing standing in our way of an analytic upper bound to $\xi$ is the 
+completeness fraction $f_{c,d1}(R_p')/f_c(R_p')$.
+Note that over a fixed radius interval dilution will always 
+yield a lower completeness fraction for double star systems than singles, so 
+$f_{c,d1}(R_p') / f_{c,s}(R_p') \leq 1$.
 
-Regardless, the cheap way of making the estimate without deriving the actual 
+For the completeness term, an argument that I don't wholly believe
+is that
+\begin{equation}
+\frac{f_{c,d1}(R_p')}{f_c(R_p')} = \frac{f_{c,d1}(R_p')}{f_{c,s}(R_p')} \cdot
+	\frac{f_{c,s}(R_p')}{f_{c}(R_p')} \lessapprox 1 \cdot (1+\langle \gamma_R 
+	\rangle)^3,
+\end{equation}
+where the first part of the inequality is obvious, but the second is by 
+assuming it's $\lessapprox f_{s,c}/f_{d,c}$, which might be wrong because of 
+the radius dependence.
+
+A way of making the estimate without deriving the actual 
 completeness fractions, or even running numerics, is just to plot the error as 
-a function of $\xi$. We do this in Fig.~\ref{fig:deltaprime_vs_xi}, which 
-shows that the
-relative error varies between $\approx 5\% - 35\%$, depending on what 
+a function of $\xi$. We do this in Fig.~\ref{fig:XGamma_vs_xi}, which 
+shows that the correction factor varies from 0.6 to 1.6, depending on what 
 fraction of secondaries you assume host planets.
+\todo[inline]{I could run numerics for this to make the result more 
+interesting.}
 
 \begin{figure}[!t]
 	\begin{center}
-		\includegraphics[scale=.8]{figures/deltaprime_vs_xi.pdf}
+		\includegraphics[scale=.8]{figures/XGamma_vs_xi.pdf}
 	\end{center}
-	\caption{\textit{Y axis}: relative error between the Astronomer who ignores 
-	binarity 
-	but counts planetary radii that are ``close enough'' (A') and the Astronomer 
-	who knows everything (D).
-	\textit{X axis}: $\chi$ as defined in Eq.~\ref{eq:chi_simplfied}. Taking a 
+	\caption{\textit{Y axis}: correction factor for the astronomer who 
+	ignores binarity but counts planetary radii that are ``close enough'' (A') 
+	and the astronomer who knows everything (D).
+	\textit{X axis}: $\chi$ as defined in Eq.~\ref{eq:chi_simplified}. Taking a 
 	guess at the true value, if $N_{d1}(R_p') = N_d/2$, and the occurrence rates 
 	between `d1' and `s' are the same, and we put $\gamma_R = 0.1$ into the 
 	completeness ratio, then $\xi = (\beta/2) \times (1+0.1)^{-3} = 0.22$. The 
 	relative error then varies between $\approx 5\% - 35\%$, depending on what 
 	fraction of secondaries you assume host planets.
 		}
-	\label{fig:deltaprime_vs_xi}
+	\label{fig:XGamma_vs_xi}
 \end{figure}
 
 
@@ -1607,7 +1636,7 @@ We can attempt an answer with Monte Carlo simulations of something like the
 \kepler\ field. I say ``something like'' because the binarity properties of the 
 \kepler\ field (or more specifically the stars selected in the KIC) are not 
 known.
-\todo[inline]{but it might be worth doing something directly on the KIC's 
+\todo[inline]{but it might be better to do something directly on the KIC's 
 selected target stars, like what Ciardi did! The following is a good example, 
 but at most it can ``suggest'' that a similar level of error has been made from 
 the \kepler\ survey.}
@@ -2022,7 +2051,7 @@ A note in passing: the more information-rich parameters for Astronomer D to
 report would be $(\Gamma_{t,s}, \Gamma_{t,d1}, \Gamma_{t,d2})$, rather than 
 $\Gamma_{{\rm D}, R_p}$. But I digress.
 
-Similar to Fig.~\ref{fig:deltaprime_vs_xi}, Fig.~\ref{fig:error_vs_occrate} 
+Similar to Fig.~\ref{fig:XGamma_vs_xi}, Fig.~\ref{fig:error_vs_occrate} 
 shows that the magnitude of the relative error 
 made by the $\Gamma_{{\rm A},R_p'}$ and $\Gamma_{{\rm A},R_p}$ estimates 
 depends strongly 
