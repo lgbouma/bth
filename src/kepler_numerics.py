@@ -1202,10 +1202,9 @@ def evaluate_occurrence_rate_errors(true_occ_rates):
     chi = (Γ_t_d1 + Γ_t_d2)/Γ_t_s
     #print('chi: {:.3f}'.format(chi))
 
-    Δprime = 1 - Γ_D_Rp / Γ_A_Rpprime
-    #print('Δprime: {:.3f}'.format(Δprime))
+    X_Γ = Γ_D_Rp / Γ_A_Rpprime
 
-    return Δprime
+    return X_Γ
 
 
 def do_kic_complete_survey():
@@ -1276,11 +1275,11 @@ def do_kepler_analog():
         prioritize_target_stars()
 
     Γ_t_d2_arr = np.arange(0, 0.80, 0.05)
-    avg_Δprimes, std_Δprimes = [], []
+    avg_X_Γs, std_X_Γs = [], []
 
     for Γ_t_d2 in Γ_t_d2_arr:
 
-        Δprimes = []
+        X_Γs = []
 
         for i in range(N_trials):
 
@@ -1292,18 +1291,18 @@ def do_kepler_analog():
 
             add_planets_and_do_survey(true_occ_rates, is_kepler_analog=True)
 
-            Δprime = evaluate_occurrence_rate_errors(true_occ_rates)
+            X_Γ = evaluate_occurrence_rate_errors(true_occ_rates)
 
-            Δprimes.append(Δprime)
+            X_Γs.append(X_Γ)
 
-        avg_Δprimes.append(np.mean(Δprimes))
-        std_Δprimes.append(np.std(Δprimes))
+        avg_X_Γs.append(np.mean(X_Γs))
+        std_X_Γs.append(np.std(X_Γs))
 
-    out = np.array(avg_Δprimes)
-    out_err = np.array(std_Δprimes)
+    out = np.array(avg_X_Γs)
+    out_err = np.array(std_X_Γs)
 
-    out = pd.DataFrame({'Δprimes': out,
-                        'Δprimes_err': out_err,
+    out = pd.DataFrame({'X_Γ': out,
+                        'X_Γ_err': out_err,
                         'Γ_t_d2': Γ_t_d2_arr})
 
     out.to_csv('../results/error_v_occrate_data.csv', index=False)
@@ -1314,25 +1313,27 @@ def plot_error_v_occrate(Γ_t_d2_best_guess):
     import matplotlib.pyplot as plt
     import numpy as np
 
+    Γ_t = 0.75
+
     df = pd.read_csv('../results/error_v_occrate_data.csv')
-    Δprimes = df['Δprimes']
-    yerr = df['Δprimes_err']
+    X_Γs = df['X_Γ']
+    yerr = df['X_Γ_err']
     Γ_t_d2 = df['Γ_t_d2']
 
     f, ax = plt.subplots(figsize=(4,4))
 
-    ax.errorbar(Γ_t_d2/0.75, Δprimes, yerr=yerr/0.75, color='black',
-            label='relative error')
+    ax.errorbar(Γ_t_d2/Γ_t, X_Γs, yerr=yerr, color='black',
+            label='occ rate correction factor')
 
     ymin, ymax = min(ax.get_ylim()), max(ax.get_ylim())
-    ax.vlines(Γ_t_d2_best_guess/0.75, ymin, ymax, colors='k',
+    ax.vlines(Γ_t_d2_best_guess/Γ_t, ymin, ymax, colors='k',
             linestyles='solid', alpha=0.4,
             label='most reasonable $\Gamma_{t,d2}$ value')
 
     ax.set(
         xlabel='$\Gamma_{t,d2} / \Gamma_t$, for '+\
                '$\Gamma_t = \Gamma_{t,s} = \Gamma_{t,d1} $',
-        ylabel='$\Delta\' = 1 - \Gamma_D / \Gamma_A\'$',
+        ylabel='$X_\Gamma = \Gamma_{\mathrm{D},R_p}/\Gamma_{\mathrm{A},R_p\'}$',
         ylim=(ymin, ymax)
         )
     ax.legend(
@@ -1342,7 +1343,7 @@ def plot_error_v_occrate(Γ_t_d2_best_guess):
 
     # Get estimate of the intercept value
     from scipy.interpolate import interp1d
-    func = interp1d(Γ_t_d2/0.75, Δprimes)
+    func = interp1d(Γ_t_d2/Γ_t, X_Γs)
     x_new = np.arange(0,1,1e-4)
     y_new = func(x_new)
 
@@ -1350,7 +1351,7 @@ def plot_error_v_occrate(Γ_t_d2_best_guess):
         idx = (np.abs(array-value)).argmin()
         return idx
 
-    idx = find_nearest_idx(x_new, Γ_t_d2_best_guess/0.75)
+    idx = find_nearest_idx(x_new, Γ_t_d2_best_guess/Γ_t)
     best_err_estimate = y_new[idx]
     print('at estimated Γ_t_d2/Γ_t of {:.3f}, err is {:.3f}'.format(
         x_new[idx], best_err_estimate))
@@ -1404,7 +1405,7 @@ if __name__ == '__main__':
     #do_kic_complete_survey()
 
     # Thing #2: see how the occ rate error scales vs Γ_t_d2.
-    #do_kepler_analog()
+    do_kepler_analog()
 
     Γ_t_d2_best_guess = find_best_guess_secondary_occ_rate()
 
