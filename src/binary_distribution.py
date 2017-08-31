@@ -65,7 +65,18 @@ def _make_distribution_plots(vl, doubles):
     f,ax = plt.subplots(figsize=(4,4))
     hist, bin_edges = np.histogram(doubles['q'],
             bins=np.append(np.linspace(0,1,101),42), normed=True)
-    ax.step(bin_edges[:-1], hist, 'k-', where='post')
+    ax.step(bin_edges[:-1], hist, where='post',
+            label='numerical, empirical $L(M)$')
+    # Analytic distribution from 17/08/31.2 result
+    _q = np.arange(0,1+1e-3,1e-3)
+    I_1 = 0.4645286925158471
+    I_2 = 1.323588493214896
+    norm = 9/(I_1*I_2)
+    pdf_q_analytic = norm*I_1/9*(1+_q**3)**(3/2)
+    pdf_q_analytic[_q<0.1] = 0
+    ax.plot(_q, pdf_q_analytic, label='analytic, $L=M^3$')
+    ax.legend(loc='upper left', fontsize='small')
+
     ax.set(xlabel='$q = M_2/M_1$', ylabel='prob')
     ax.set_title(txt_ml, fontsize='small')
     f.tight_layout()
