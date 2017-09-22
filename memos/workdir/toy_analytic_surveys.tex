@@ -8,7 +8,7 @@
 \usepackage{todonotes}
 
 \shortauthors{LGB, KM, JNW}
-\shorttitle{Toy transit surveys}
+\shorttitle{Binary Biases}
 
 \begin{document}
 
@@ -34,7 +34,7 @@
 
 \bibliographystyle{apj}
 
-\title{ Toy Transit Surveys }
+\title{ Binary Biases \& Toy Transit Surveys }
 
 \author{
   LGB, KM, JNW
@@ -66,9 +66,9 @@ Finally, we perform a synthetic transit survey analogous to {\it Kepler}. We
 show that if we assume every star in this {\it Kepler} survey analog is single, 
 we underestimate occurrence rates for a given planet radius and period by 
 a factor of $\approx 1.4$, or a percentage error relative to the true 
-occurrence rate $\Gamma$ of $\delta\Gamma=-28\%$.
-This is relevant for measuring accurate values of the rate at which Earth-like 
-planets exist around Sun-like stars.
+occurrence rate $\Gamma_{\rm true}$ of $\delta\Gamma_{\rm 
+true}=-28\%$. This is relevant for measuring accurate values of the rate at 
+which Earth-like planets exist around Sun-like stars.
 
 
 \end{abstract}
@@ -76,9 +76,6 @@ planets exist around Sun-like stars.
 \keywords{planets and satellites:\ detection}
 
 \section{Introduction}
-
-Ah, transiting planets! We learn so much by studying them. But how much can we 
-actually learn, and how much is messed up by binarity?
 
 Binary companions to single stars introduce a surprising number of biases into 
 transit surveys.
@@ -99,20 +96,33 @@ by dilution: the observed transit depths in such systems are reduced by
 contaminating flux from the binary companion. This dilution is especially 
 drastic if the planet orbits the secondary, in which case dilution impacts 
 detectability the most.
+Note that dilution can come from visually associated companions as well as 
+gravitationally bound companions.
 
-A related effect to dilution is misinterpretation of transit depths. If the 
+A consequence of dilution is misinterpretation of transit depths. If the 
 planet to star radius ratio is directly taken as the square-root of 
 the observed transit depth, derived planetary radii in binary systems will 
 systematically too small.
-Ciardi et al [2015] explored this issue in depth. They showed that for the case 
-of \kepler, assuming host stars to always be single will on 
-average underestimate radii by a multiplicative factor of $\approx 1.5$.
+Ciardi et al [2015] explored this issue in depth. They claimed that for the 
+case of \kepler, if ones assumes host stars are always single, one will
+underestimate radii by an average multiplicative factor of $\approx 1.5$ 
+(presumably, compared to the case of even weights for whether the 
+primary/secondary gets a given planet).
 
-Finally, binarity may affect transit surveys through actual astrophysics.
-For the relatively rare case [Duquennoy \& Mayor 1991, Raghavan et al 2010] of 
-close binaries, dynamical stability imposes a limited range of periods in which 
-planets may orbit [e.g., Holman \& Weigert 
-1999, Li et al 2017], the effects of which have been observed [Kraus et al 
+Finally, binarity may affect transit surveys through actual astrophysical 
+processes.
+Duquennoy \& Mayor [1991], and alter Raghavan et al [2010] showed that over 
+half of solar-like are separated by less than 100\,AU.
+One immediate consequence on circumprimary and circumsecondary architectures is 
+that dynamical stability limits begin to carve away in realms of planet space 
+where planets might otherwise be detectable [e.g., Holman \& Weigert 1999, Li 
+et al 2017].
+The formation efficiency of various types of planetary systems may also 
+be different in binary systems compared to single-star systems.
+For instance, the properties of the circumstellar and circumbinary disks 
+influence the dynamics of planetesimals [Rafikov, Silsbee]; 
+
+ the effects of which have been observed [Kraus et al 
 2016].
 Also, the formation rates of planets, and thus their intrinsic occurrence 
 rates, may be influenced by properties of circumprimary and/or circumbinary 
@@ -1679,7 +1689,20 @@ known.
 \todo[inline]{but it might be better to do something directly on the KIC's 
 selected target stars, like what Ciardi did! The following is a good example, 
 but at most it can ``suggest'' that a similar level of error has been made from 
-the \kepler\ survey.}
+the \kepler\ survey.
+
+But it has MAJOR benefits compared to the GIC method.
+It eliminates the need to simulate the biases of the KIC (since they're already 
+baked in). The process of ``adding'' binaries to the KIC is the closest thing 
+to REALITY, since in reality the KIC is missing binary companion information.
+It BAKES IN all the real biases that come with mis-estimating stellar 
+radii/masses when they are actually binaries (because it's already been done).
+It also has literature precedent in Ciardi's work, so you don't need to cook up 
+a crazy new procedure -- can just take his with the flaws baked in.
+
+So this method is best if we care about what errors were made in Kepler/the KIC.
+It's not as nice if we want something ``general''.
+}
 
 The plan is as follows:
 \begin{itemize}

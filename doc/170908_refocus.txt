@@ -1,0 +1,245 @@
+A naive astronomer, who has never heard of binaries, wants to measure the
+occurrence of planets of a certain type around single stars of a certain type.
+He performs a S/N-limited transit survey and detects M transit signals that
+appear to be from planets of the desired type.  He calculates the number of
+stars N that appear to be searchable for the desired type of planet.  He
+concludes:
+
+eta(apparent) = M/N
+
+There are many potential pitfalls.  Some genuine transit signals can be missed
+by the detection pipeline.  Some apparent transit signals are spurious, from
+noise fluctuations, failures of 'detrending', or instrumental effects.  Stars
+and planets can be misclassified due to statistical and systematic errors in
+the measurements of their properties.  Poor angular resolution causes false
+positives due to blends with background eclipsing binaries.  etc., etc.
+
+Here we focus on the problems arising from the fact that stars of the desired
+type often exist in binaries (visual or gravitationally bound).
+
+  LB: grav bound vs visual distinction
+
+1. Some of the apparently-searchable stars are really two searchable stars of
+the desired type.
+
+2. Some of the apparently-searchable stars are binaries in which one or both
+stars are of the desired type but
+
+   (a) The signal of a planet of the desired type would be undetectable because
+of the constant light from the other star.
+
+   (b) The signal of a planet of the desired type would be detectable but would
+be misclassified because of a combination of the constant light from the other
+star, as well as the misestimated host star radius.
+
+  LB: the misestimated stellar radius matters too (e.g., Furlan+ 2017).
+
+3. Some of the detected signals are from planets that are larger than the
+desired type, due to the reduction in signal amplitude from the light of a
+second star.
+
+  LB: right. We can only deal w/ this w/ numerical integration (TBD). 
+
+4. Planets of the desired type have a different occurrence rate in the presence
+of a secondary star (due to dynamical stability or some aspect of planet
+formation).
+
+5. Some of the apparently-searchable stars are binaries in which neither star
+is of the desired type.  Their combined light somehow made them resemble a
+single star of the desired type.  We will not consider errors of this type.  We
+will assume that all the apparently-searchable stars are either single stars of
+the desired type, or binaries in which the primary is of the desired type.
+
+Our approach is step-by-step starting from a very simple scenario.
+
+- We consider a universe consisting of only the desired types of stars and
+  planets.  We give analytic expressions for eta(apparent)/eta(true) taking
+  into account errors of type 1 and 2.
+
+- We allow for a power-law distribution in the luminosity ratio, dn/dL \propto
+  L^\beta.  We assume the secondary is not of the desired stellar type.  We
+  give analytic expressions for eta(apparent)/eta(true) taking into account
+  errors of type 2.
+
+  LB: this keeps things tractable for the analytics. Do you think empirical
+  L(M) is worth holding on to though?
+
+- We allow for a nonzero tolerance dr in the planet radius, and tolerance dL in
+  stellar luminosity, to qualify as "desirable".  We recalculate
+  eta(apparent)/eta(true) for errors of type 1 and 2.
+
+  LB: I think this has to become numerical to actually evaluate the occurrence
+  rate correction factor, X_Gamma.
+
+- We assume the planets have a power-law radius distribution, d\eta/dr \propto
+  r^\alpha.  We calculate the apparent d\eta/dr taking into account errors of
+  type 1-3.  We do so for stars of the desired type within some tolerance dL.
+
+  LB: this one needs numerics to evaluate the integrals if you assume it's a
+  _truncated_ power law. TBD.
+
+- We could try to compute the apparent d\eta/dr for planets regardless of host
+  star, but this might be more complicated than it is worth, because of the
+  differences in transit probabilities.
+
+- Everything up to now is more-or-less analytic, perhaps supported by numerical
+  checking or numerical integration. ((At the end we focus specifically on
+  eta-Earth and Kepler)).  We simulate a sample of 20,000
+  apparently-searchable-stars (or however many "stars" appear to be searchable
+  for Earthlike planets in the Kepler field).  Basically this means a magnitude
+  limited survey of 20,000 "stars" that are either single or are binaries with
+  the primary of the desired type.  The sample has a realistic distribution of
+  binaries (occurrence and luminosity ratio).  We calculate
+  eta(apparent)/eta(true).  We can also play with errors of type 4 in this
+  numerical model.  (It is probably not worth doing so for the analytic work.)
+
+LB:
+* You're probably correct about type 4 errors (intrinsic astrophysical
+  differences). The way to play with this is just present both limits, and then
+  also present a few weight factors (Furlan+17 do a good job).
+* I am not convinced that eta-Earth is worth focusing on.
+  It is the most complicated case, because the completeness of the pipelines is
+  a HIGHLY uncertain factor.
+  I think we can mention it (e.g. as Furlan+ 2017 do, in passing, at the end).
+  But I think a more general approach is clearer.
+  "accounting only for dilution & its numerator effect, big radius planets have
+  underestimated inferred rates, the smallest radius planets have overestimated
+  inferred rates, and the in-between radius planets are in-between"
+  We could then dig in a bit to what happens with different assumed
+  completeness vs Rp functions...
+* I think more notable could be the claimed HJ occ rate discrepency btwn RV &
+  transit surveys.
+  This is b/c the more believable occ rate papers do not heavily rely on their
+  completeness calibration -- they know they're complete.
+  This is also a much more understandable regime.
+* Maybe more notable would also be "how do we interpret Fulton+ 2017?"
+  That paper did (or claims to have done) a good job at weeding out numerator
+  errors. If true, means Γ(Rp) has the right shape, and just the wrong
+  normalization. Important if we ever manage to convince ourselves "brightest
+  transit hosts" could work.
+
+UNSOLVED PROBLEMS W/ THE NUMERICAL MODEL-
+* currently have not implemented self-consistent (L,M,R) relation between
+  primaries and secondaries.
+  Wang et al (2015) avoided that problem by doing a similar empirical thing to
+  what I currently have implemented. But I do not think that was a good paper.
+  Ciardi et al (2015) have an approach that was Kepler-specific -- they used
+  the same Dartmouth isochrones used for KIC stellar parameters.
+  But they did not conserve dn/dm_x, for m_x apparent mag in band x.
+  I think the latter choice might be better for Kepler-specific discussion.
+  But it's less-nice if we want this to be general enough for e.g., occ HJ
+  rates w/ TESS.
+
+  My main gripe w/ taking the 150k KIC stars & adding binaries is that less
+  is known about those parameters and biases. Using e.g., Galaxia has the major
+  benefit of you understand what's been cooked in much better (it's minimal).
+  
+  I think if we want to talk about Kepler, it's the best possible approach
+  though.
+
+  If we want to talk about Fulton+17 we can go further, and apply the CKS cuts.
+
+  
+Some questions based on the current draft:
+
+- Why should we ever consider F_lim < F_min?
+
+LB: in practice, surveys look at many stars for which they could not detect
+Rp=Re planets, but could detect Rp=10Re planets.  One possible error is
+miscounting which stars are which (i.e. getting completeness corrections
+wrong). So this was more for plausbility than b/c it's immediately needed in
+the analytics. I can cut it.
+
+- Why do we need to consider the distribution of S/N, as opposed to simply the
+  limiting distance for detection?
+
+LB: for "model 1" (fixed stars, fixed planets, fixed light ratio binaries)
+you're correct, it's not immediately necessary. 
+
+For this model, I did it as a way to think through the completeness effects
+systematically -- i.e. how for the twin-binary case, you get a completeness
+fraction of 1/8, though your limiting distance is sqrt(2) times bigger. (Even
+when your completeness for the singles is 100%).
+
+If we go the path of completing "model 2"'s analytics (vary light ratio, fixed
+primary luminosity, fixed planet), I think this formulation would become
+necessary in order to actually evaluate the completeness fractions.
+
+(I never completed these analytics b/c of the L(M) mess + confusion about
+assumed stellar masses+radii. Power law L(M) helps this... I think there needs
+to be an extra assumption about the stellar mass+radius change though that we
+have not spelled out)
+
+- I don't think the bandpass, effective area, photon count rate, etc.  are
+  needed, either. All that matters is the limiting distance.
+
+Are needed for what? 
+In Model 1, for analytic expressions of the occurrence rate, I agree.
+For analytic expressions of the number of detected planets, I disagree.
+
+For Model 2, I'm not sure because I got bogged down. I suspect that for
+occurrence rate errors, you are correct. 
+
+The analytic expression I gave for the occurrence rate depends on this "xi"
+factor, which needs to incorporate an assumption about how Astronomer A
+misestimates the completeness (relatedly, how he misestimates Rstar).  I never
+specified that assumption.
+
+
+- In Eq. 4, is this a traditional definition of BF?  I would have defined it as
+  nd/(ns+nd) or perhaps 2*nd/(ns+ 2*nd).  Let's make sure we are using
+  traditional terminology, and also interpreting the literature correctly, i.e.,
+  is the right number really 0.45?
+
+Oops. nd/(ns+nd) = BF = MF (if assuming all multiple systems are binaries).
+This minor change propagates.
+
+Touching up on correct terminology, from Duchene & Kraus 2013, Sec 2.1:
+
+"Frequency of multiple systems" (MF)
+vs
+"Companion frequency" (CF; average # of companions per target, can exceed 100%)
+
+my understanding of the terms:
+
+survey 1: {*, **, *, ***, *, *}
+
+6 systems.
+2 are multiple.
+MF = 2/6 = 1/3
+CF = (0+1+0+2+0+0)/6 = 3/6 = 1/2
+
+survey 2: {**, **, ***, ****, *}
+
+5 systems
+4 are multiple
+MF = 4/5
+CF = (1+1+2+3+0)/5 = 6/5
+
+DK2013 Sec 3.1.1 give (citing Raghavan+ 2010)
+MF^{MS}_{1-1.3Msun} = 50 \pm 4%
+MF^{MS}_{0.7-1Msun} = 41 \pm 3%
+
+They also give
+CF^{MS}_{1-1.3Msun} = 75 \pm 5%
+CF^{MS}_{0.7-1Msun} = 56 \pm 4%
+
+I understand the first pair of numbers to mean:
+
+In a volume-limited survey (of the stellar neighborhood), if you select systems
+for which the primary is from 1-1.3Msun, 50% of them will be multiple.
+
+I take the second pair of numbers to mean:
+
+In a volume-limited survey (of the stellar neighborhood), if you select systems
+for which the primary is from 1-1.3Msun, each system will on average have 0.75
+companions.
+
+
+
+
+Have a think, & edit my outline if you wish.  Did I miss any interesting types
+of errors?  Are the proposed calculations logical and well-posed or are there
+subtleties that will make things murky?  And then feel free to drop by to
+discuss further….
+

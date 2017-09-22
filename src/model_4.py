@@ -1,20 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
->  Can we ignore binarity when mapping KIC stars onto synthetic local stars?
+varying Rp, stellar luminosities, light ratios -- varying everything!
 
-Or better yet
+How dos this affect the inferred radius distributions?
 
-> If we assume every KIC star is single, what OOM of error do we make in
-> occurrence rates estimated for planets of different sizes (& periods)?
-
-Answer the latter question with Monte Carlo simulations of the Kepler field.
-
-with TRILEGAL/Galaxia:
-    * construct the Kepler field (w/ known binarity properties, how?)
-    * introduce various planet populations
-    * numerically assess the error.
-    * Compare w/ analytic results.
+Answer the question with Monte Carlo simulations (the GIC).
 '''
 
 from __future__ import print_function, division
@@ -40,48 +31,6 @@ def T_dur(P, ρ_star, b):
     return 13*u.hr * (P/(1*u.year))**(1/3) * \
                      (ρ_star/ρ_sun)**(-1/3) * \
                      np.sqrt(1-b*b)
-
-
-def are_synthetic_stars_on_silicon():
-    '''
-    Galaxia model was run with 200 sq deg FoV, centered at the true Kepler
-    field center. Select synthetic Kepler field stars by comparing coordinates
-    to viable KIC stars.
-    '''
-    import K2fov
-    # CITE: http://adsabs.harvard.edu/abs/2016ascl.soft01009M, Mullaly,
-    # Barclay, Barentsen 2017.
-
-    gal = pickle.load(
-            open(DATADIR+'keplersynthesis.p', 'rb'), encoding='latin1')
-
-    c = SkyCoord(frame='galactic', l=gal['glon']*u.deg, b=gal['glat']*u.deg)
-
-    df = pd.DataFrame(np.transpose([np.array(c.fk5.ra), np.array(c.fk5.dec)]),
-                      columns=['ra','dec'])
-
-    df['mags'] = np.ones_like(gal['glon'])
-
-    df.to_csv(DATADIR+'raw_galaxia_coords.csv', index=False, header=False)
-
-    # skimming source of K2fov, they *do* tabulate the original Kepler field,
-    # as "preliminary" (for a single season). Access with "campaign number"
-    # 1000.
-    K2fov.K2onSilicon(
-            DATADIR+'raw_galaxia_coords.csv',
-            1000,
-            do_nearSiliconCheck=True)
-
-
-def select_synthetic_stars():
-
-    df = pd.read_csv('target_siliconFlag.csv',
-                     header=None,
-                     names=['ra','dec','kepmag','on_silicon']
-                     )
-    # Take any targets "on" or "near" silicon. "Near" is whatever is defined by
-    # k2fov as "near".
-    sel = df[(df['on_silicon'] == 2) | (df['on_silicon'] == 1)]
 
 
 def select_kic_stars():
@@ -1390,8 +1339,74 @@ def find_best_guess_secondary_occ_rate():
     Γ_t_d2_best_guess = Γ_t * frac_of_secondaries_sunlike
     print(frac_of_secondaries_sunlike)
 
-    return Γ_t_d2_best_guess
+    return Γ_t_d2_best_guess, frac_of_secondaries_sunlike
 
+
+def do_vary_Rp():
+    '''
+    Take all Galaxia stars within 7.5 degrees of the center of Kepler's
+    field, and only take stars with r<17.
+
+    This is beyond where the KIC is complete, so comparisons between the two
+    will be confused.  Then apply analogs of the Batalha+ 2010 Table 1
+    prioritization.
+
+    This gives the "GIC", and it's Teff distribution is OK (but its binary
+    radius distribution is currently a bit wonky).
+
+    If you give the GIC a planet population from various obvious options
+    (uniform in Rp, uniform in logRp, normal in logRp) you can study what the
+    binarity does to the inferred radius distribution ()
+    '''
+
+    N_trials = 5
+    Γ_t_s = 0.75
+    Γ_t_d1 = 0.75
+
+    if not os.path.exists('/home/luke/local/selected_galaxia_stars_kepler_analog.csv'):
+        print('selecting galaxia stars (kepler analog)')
+        select_galaxia_stars(is_kepler_analog=True)
+
+    if not os.path.exists('/home/luke/local/selected_galaxia_systems_kepler_analog.p'):
+        print('adding binaries to galaxia systems (kepler analog)')
+        add_binaries_to_galaxia(is_kepler_analog=True)
+
+    if not os.path.exists('/home/luke/local/selected_GIC_systems_kepler_analog.p'):
+        print('prioritizing selected stars (constructing "KIC")')
+        prioritize_target_stars()
+
+    Γ_t_d2_arr = np.arange(0, 0.80, 0.05)
+    avg_X_Γs, std_X_Γs = [], []
+
+    for Γ_t_d2 in Γ_t_d2_arr:
+
+        X_Γs = []
+
+        for i in range(N_trials):
+
+            print(i, Γ_t_d2)
+
+            np.random.seed(i)
+
+            true_occ_rates = [Γ_t_s, Γ_t_d1, Γ_t_d2]
+
+            add_planets_and_do_survey(true_occ_rates, is_kepler_analog=True)
+
+            X_Γ = evaluate_occurrence_rate_errors(true_occ_rates)
+
+            X_Γs.append(X_Γ)
+
+        avg_X_Γs.append(np.mean(X_Γs))
+        std_X_Γs.append(np.std(X_Γs))
+
+    out = np.array(avg_X_Γs)
+    out_err = np.array(std_X_Γs)
+
+    out = pd.DataFrame({'X_Γ': out,
+                        'X_Γ_err': out_err,
+                        'Γ_t_d2': Γ_t_d2_arr})
+
+    out.to_csv('../results/error_v_occrate_data.csv', index=False)
 
 
 
@@ -1405,11 +1420,16 @@ if __name__ == '__main__':
     #do_kic_complete_survey()
 
     # Thing #2: see how the occ rate error scales vs Γ_t_d2.
-    do_kepler_analog()
 
-    Γ_t_d2_best_guess = find_best_guess_secondary_occ_rate()
+    #do_kepler_analog()
+    #Γ_t_d2_best_guess, f_d2_sunlike = find_best_guess_secondary_occ_rate()
+    #plot_error_v_occrate(Γ_t_d2_best_guess)
 
-    plot_error_v_occrate(Γ_t_d2_best_guess)
+    # Thing #3: vary Rp, look at distribution changes.
+
+    Γ_t_d2_best_guess, f_d2_sunlike = find_best_guess_secondary_occ_rate()
+
+    do_vary_Rp()
 
 
 

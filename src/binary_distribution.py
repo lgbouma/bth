@@ -97,6 +97,30 @@ def _make_distribution_plots(vl, doubles):
     plt.close('all')
     f,ax = plt.subplots(figsize=(4,4))
     hist, bin_edges = np.histogram(doubles['γ_R'],
+            bins=np.append(np.logspace(-4,1,11),42), normed=True)
+    ax.step(bin_edges[:-1], hist, 'k-', where='post')
+    ymax = 1.25
+    ax.vlines(1/40, 0, ymax,
+          label='Furlan+17 fig 21,'
+          r'$\theta<1$arcsec: '
+          '{:.1f}% of doubles'.format(
+              len(doubles['γ_R'][doubles['γ_R']<(1/40)])\
+              /len(doubles['γ_R'])*100)+\
+          ' have $\Delta m > 4$'
+          )
+    ax.set(xlabel='$\gamma_R = L_2/L_1$',
+           ylabel='prob',
+           xlim=[5e-4,1.05],
+           xscale='log')
+    ax.legend(loc='upper left', fontsize=5)
+    ax.set_title(txt_ml, fontsize='small')
+    f.tight_layout()
+    f.savefig(savedir+'gammaR_distribn_mag_limited_logx.pdf', dpi=250, bbox_inches='tight')
+
+
+    plt.close('all')
+    f,ax = plt.subplots(figsize=(4,4))
+    hist, bin_edges = np.histogram(doubles['γ_R'],
             bins=np.append(np.linspace(0,1,501),42), normed=True)
     ax.plot(np.append(0, bin_edges[:-1]),
             np.append(0, np.cumsum(hist)/np.max(np.cumsum(hist))),

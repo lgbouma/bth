@@ -1,6 +1,8 @@
 '''
-numerical verification of "method 2" as described in
-memos/toy_analytic_surveys_170804.pdf
+numerical verification of "model 2" as described in
+memos/toy_analytic_surveys_170804.pdf.
+
+fixed Rp. fixed primary L1. varying light ratio (L2/L1).
 '''
 from __future__ import division, print_function
 
