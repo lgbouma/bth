@@ -3,6 +3,8 @@ compute and plot the joint 2d probability distribution function of a binary
 star's position and mass ratio in a magnitude-limited sample.
 '''
 import numpy as np
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 from scipy.integrate import trapz
 
@@ -12,13 +14,13 @@ q = np.linspace(0,1,3e3)[::-1]
 L_1_N = 1
 F_lim_N = 1
 
-d_max_of_q = ( L_1_N / (4*np.pi*F_lim_N) * (1+q**3) )**(1/2)
+d_max_of_q = ( L_1_N / (4*np.pi*F_lim_N) * (1+q**3.5) )**(1/2)
 
 d_max_s = (L_1_N / (4*np.pi*F_lim_N))**(1/2)
-# integral of (1+q^3)^(-9/2)dq from q=0.1 to 1 evaluates to
-I_1 = 0.4645286925158471
+# integral of (1+q^3.5)^(-9/2)dq from q=0.1 to 1 evaluates to
+I_1 = 0.5060577377392849
 # integral of (1+q^3)^(3/2)dq from q=0.1 to 1 evaluates to
-I_2 = 1.323588493214896
+I_2 = 1.275894325140383
 # normalization constant brings integrals to 1
 norm = 9/(I_1*I_2)
 
@@ -93,13 +95,13 @@ im = ax.imshow(prob.T,
         aspect=0.5,
         cmap='Blues')
 
-cbar = plt.colorbar(im, fraction=0.046, pad=0.04)
-cbar.set_label(r'$\mathrm{prob}(r,q) \propto r^2$ if '+\
-        '$r<d_{\mathrm{max}}(q)$ and $q>0.1$', rotation=270, labelpad=12,
-        fontsize='small')
-
+ax.set_xlim([0,0.4])
 ax.set_xlabel('distance from origin, $r$ [arbitrary units]')
 ax.set_ylabel('$q = M_2/M_1$')
+
+cbar = plt.colorbar(im, fraction=0.052, pad=0.04)
+cbar.set_label(r'$\mathrm{prob}(r,q),\ \mathrm{magnitude\ limited}$', rotation=270,
+        labelpad=12, fontsize='small')
 
 f.tight_layout()
 f.savefig('joint_prob_r_q.pdf', dpi=250, bbox_inches='tight')
@@ -112,7 +114,7 @@ print('num: int(q_marg dq) = {:.3f}'.format(trapz(q_marg, q[::-1])))
 ax.plot(q, q_marg, label='numeric', lw=1, zorder=0)
 
 _q = np.arange(0,1+1e-3,1e-3)
-pdf_q_analytic = norm*I_1/9*(1+_q**3)**(3/2)
+pdf_q_analytic = norm*I_1/9*(1+_q**3.5)**(3/2)
 pdf_q_analytic[_q<0.1] = 0
 ax.plot(_q, pdf_q_analytic, label='analytic', lw=2, zorder=-1)
 print('analytic: int(q_marg dq) = {:.3f}'.format(trapz(pdf_q_analytic, _q)))
@@ -130,4 +132,3 @@ ax.plot(r, r_marg, 'k-')
 ax.set(xlabel='r [arbitrary units]', ylabel='prob')
 f.tight_layout()
 f.savefig('r_marg.pdf', dpi=250, bbox_inches='tight')
-
