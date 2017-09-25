@@ -848,7 +848,7 @@ ${\rm prob}(N_d)$, can be written
 
 \begin{figure}[!t]
 	\begin{center}
-		\includegraphics[scale=.8]{figures/q_distribn_mag_limited.pdf}
+		\includegraphics[width=0.5\textwidth]{figures/q_distribn_mag_limited.pdf}
 	\end{center}
 	\caption{The distribution of the mass ratio for a magnitude limited 
 		sample of binary stars. The underlying mass ratios are drawn from 
@@ -864,7 +864,7 @@ ${\rm prob}(N_d)$, can be written
 
 \begin{figure}[!t]
 	\begin{center}
-		\includegraphics[scale=.8]{figures/gammaR_distribn_mag_limited.pdf}
+		\includegraphics[width=.5\textwidth]{figures/gammaR_distribn_mag_limited.pdf}
 	\end{center}
 	\caption{The distribution of the luminosity ratio for a magnitude limited 
 		sample of binary stars. Despite the preference in the sample towards 
@@ -910,7 +910,7 @@ M^{3.5}$,
 \begin{align}
 {\rm prob}_{\rm ml}(q) &= 
 \int_{0}^{d_{\rm max}(q)} {\rm prob}_{\rm ml}(r,q) \,{\rm d}r \\
-&= \mathcal{Z}\cdot (1+q^{3.5})^{3/2}\quad {\rm if\ }0.1<q\leq 1,
+&= \mathcal{Z}\cdot (1+q^{7/2})^{3/2}\quad {\rm if\ }0.1<q\leq 1,
 \label{eq:pdf_q_mag_limited}
 \end{align}
 and otherwise 0, for $\mathcal{Z}$ the appropriate normalization constant.
@@ -928,8 +928,8 @@ More correctly then, we must write
 
 Doing some algebra, and assuming $\gamma_R = q^\alpha$, this can be shown to be
 \begin{align}
-{\rm prob}(N_d) = \frac{2\mathcal{Z}}{3\alpha}& N_d^{1/3} \left(\frac{3}{4\pi 
-	n_d}\right)^{4/3} d_{\rm max,s}^{-4} \ \nonumber\\
+{\rm prob}(N_d) \propto N_d^{2/3} &\left(\frac{3}{4\pi 
+	n_d}\right)^{5/3} d_{\rm max,s}^{-4} \ \nonumber\\
 &\times \left[ 
 	\left(\frac{3 N_d}{4\pi n_d}\right)^{2/3}  d_{\rm max,s}^{-2} - 1
  \right]^{\frac{1-\alpha}{\alpha} }
@@ -946,14 +946,14 @@ and outside the stated interval ${\rm prob}(N_d) = 0$.
 An interesting intermediate result is the magnitude-limited luminosity ratio 
 distribution,
 \begin{equation}
-{\rm prob_{ml}}(\gamma_R) = \frac{\mathcal{Z}}{\alpha} (1+\gamma_R) 
+{\rm prob_{ml}}(\gamma_R) \propto (1+\gamma_R)^{3/2} 
 \gamma_R^{\frac{1-\alpha}{\alpha}},
 \end{equation}
 for $(0.1)^{\alpha}<\gamma_R<1$, and otherwise zero.
 For $\alpha=3.5$, ${\rm prob_{ml}}(\gamma_R) \propto 
-(1+\gamma_R)\gamma_R^{-5/7}$, which tells us the distribution will be highly 
-biased towards low-light ratio binaries.
-The distribution is plotted in Fig.~\ref{fig:gammaR_distribn_mag_limited}.
+(1+\gamma_R)^{3/2}\gamma_R^{-5/7}$, which tells us the distribution will be 
+highly biased towards low-light ratio binaries, as shown in 
+Fig.~\ref{fig:gammaR_distribn_mag_limited}.
 
 The reason we derived all this is that we wanted to know the number of 
 searchable binary stars.
@@ -961,91 +961,166 @@ The expected value for the number of double star systems in the sample is
 \begin{equation}
 \langle N_d \rangle = \int_{0}^{\infty} N_d\, {\rm prob}(N_d) \,{\rm d}N_d.
 \end{equation}
-With some algebra, and letting $\alpha=3.5$, this can be expressed as
+Letting $\alpha=3.5$, this can be expressed as
 \begin{equation}
-\langle N_d \rangle = \frac{2 \mathcal{Z}}{7 R^{1/2}}
-\int_{(0.1^\alpha + 1)^{1/3}}^{\sqrt{2}} u^{3/2} (u-1)^{5/7} \,{\rm d}u ,
+\langle N_d \rangle \propto \mathcal{R}^{-3/2}
+\int_{0.1^{7/2} + 1}^{2} u^{3/2} (u-1)^{5/7} \,{\rm d}u ,
 \label{eq:integral_Nd}
 \end{equation}
-for
+where non-dimensional constants are not shown, and $\mathcal{R}$ is defined as
 \begin{equation}
-R \equiv \left(\frac{3}{4\pi n_d}\right)^{2/3} d_{\rm max,s}^{-2}.
+\mathcal{R} \equiv \left(\frac{3}{4\pi n_d}\right)^{2/3} d_{\rm max,s}^{-2}.
 \end{equation}
 The integral in Eq.~\ref{eq:integral_Nd} has a closed-form solution in terms 
-of Gauss hypergeometric functions, $_2F_1$. Once evaluated, the integral takes 
-a numerical value of $0.1829$.
-The normalization of 
-
-%TODO GIVE THE EXPLICIT FORM, SEMI-ANALYTICALLY.
- 
-
-While a closed analytic expression for $\langle N_d \rangle$ does exist, it is 
-messy, and it does not yield much intuition. Instead, summarizing the important 
-points and supporting them numerically:
-\begin{itemize}
-	\item In a volume-limited sample of binary star systems in which the 
-	primary mass is fixed, and the mass ratio is drawn from a bounded uniform 
-	distribution, the distribution of $\gamma_R$ will be biased towards low 
-	values ($\gamma_R \approx 0.1$). This is shown in 
-	Fig.~\ref{fig:gammaR_distribn_vol_limited}.
-	\item In a magnitude-limited sample of binary star systems in which the 
-	primary mass is fixed, and the mass ratio of the \textit{population} is 
-	drawn from a bounded uniform distribution, the observed distribution of 
-	mass ratios will be biased towards high values. You will see more twins,
-	because they are detectable out to a greater distance\footnote{This is a 
-	scary systematic w.r.t. the claimed intrinsic excess of twin binaries.}. 
-	This is shown in Fig.~\ref{fig:q_distribn_mag_limited}, and explained 
-	analytically below.
-	\item In a magnitude-limited sample of binary star systems in which the 
-	primary mass is fixed, the distribution of $\gamma_R$ will be biased 
-	towards low values ($\approx 0.1$), but less so than in a 
-	volume-limited sample. This is shown in 
-	Fig.~\ref{fig:gammaR_distribn_mag_limited}.
-\end{itemize}
-
-In passing, the bias in ${\rm prob}(\gamma_R)$ towards low luminosity ratios 
-can be seen analytically. If we assume $\gamma_R = q^\alpha$, then
+of the Gauss hypergeometric function, $_2F_1$. Once evaluated, and after 
+normalizing ${\rm prob}(N_d)$, to 4 significant digits it gives
 \begin{equation}
-{\rm prob}(\gamma_R) = \frac{1}{9 \alpha} \ \gamma_R^{\frac{1-\alpha}{\alpha}}
-\quad {\rm for\ } (0.1)^\alpha < \gamma_R < 1,
+\langle N_d \rangle = 1.601 \left(\frac{4\pi n_d}{3}\right) d_{\rm max,s}^3.
 \end{equation}
-and otherwise zero. For instance if $\alpha = 3$, ${\rm prob}(\gamma_R) 
-\propto \gamma_R^{-2/3}$ and the domain extends from $1$ to 
-$10^{-3}$, where the probability distribution peaks.
+This gives the useful expression
+\begin{align}
+\frac{\langle N_d \rangle}{N_s} &= 1.601\, \frac{n_d}{n_s} \\
+&= 1.601 \left(\frac{{\rm BF}}{1-{\rm BF}}\right).
+\end{align}
+Taking the sun-like star binary fraction of ${\rm BF} = 0.44$, this gives
+$\langle N_d \rangle / N_s = 1.258$.
+Compared to the binary-twin thought experiment of Sec.~\ref{sec:model_1}, in 
+which the SNR-limited sample had $\approx 2.8$ times more binary systems than 
+single systems, there are now $\approx 1.3$ times as many.
+This is sensible, because the mean light ratio has decreased; it was 
+previously 1, it is now $\langle \gamma_R \rangle \approx 0.27$.
 
+\paragraph{What is the true occurrence rate?}
 
-
-
-
-
-
-\paragraph{How many stars are in the sample?}
-
-We return to the original question: how many stars?
+Returning to the original question, the total number of stars in the sample is
 \begin{equation}
-\langle N_{\rm stars} \rangle = N_s + 2 \langle N_d \rangle,
+\langle N_{\rm stars,tot} \rangle = N_s + 2 \langle N_d \rangle.
 \end{equation}
-as before.
-Since we are not giving analytic expressions for either of the $\langle \ldots 
-\rangle$ terms, we just note that in the case of a population with a single 
-$\gamma_R$ value, $N_d/N_s = {\rm BF} \times (1 + \gamma_R)^{3/2}$. A lower
-bound for this ratio will always be the binary fraction.
-For a single run of a Monte Carlo code, where ${\rm mean}(\gamma_R) = 0.28$, 
-${\rm median}(\gamma_R) = 0.13$, and the distribution was that given in 
-Fig.~\ref{fig:gammaR_distribn_mag_limited}, the observed ratio was $N_d/N_s = 
-0.59$.
-This corresponds to a single-valued population with $\gamma_R \sim 0.20$, a
-number between the mean and median of the true distribution.
-It means $\sim 1.2$ stars in binary star systems for every star in a single 
-star system from this sample.
+For stars in binary systems, only a fraction of them are of the desired type.
+Defining the ``desired type'' to be $0.7<M_\star/M_\odot<1.3$, this can be 
+evaluated by integrating Eq.~\ref{eq:pdf_q_mag_limited} from $0.7M_\odot$ to 
+$M_\odot$.
+The result is that $47.5\%$ of secondaries are of the desired type.
+Thus the expected number of stars of the desired type in the sample is
+\begin{equation}
+\langle N_{\rm stars} \rangle = N_s + 1.475 \langle N_d \rangle.
+\end{equation}
 
-We also note in passing that $N_d/N_s = 0.59$ is a smaller ratio than for the 
-case of a fixed $\gamma_R$ population with $\gamma_R = 1$, which gave $N_d/N_s 
-= 1.27$. The difference is that in the latter population, the volume of 
-searchable stars is greater. Based on the fixed-$\gamma_R$ population scaling 
-law $N_d / N_s \propto (1+\gamma_R)^{3/2}$, we 
-would expect the ratio of single stars to be $\sim (2/1.1)^{3/2} = 2.4$ 
-times smaller, which is roughly (though not exactly) what we observe.
+The number of planets of the desired type is then
+\begin{equation}
+\langle N_{\rm planets} \rangle = 
+\Gamma_{t,s}N_s + \Gamma_{t,d}\langle N_d\rangle + 
+0.475\Gamma_{t,d}w_{d2} \langle N_d\rangle,
+\end{equation}
+and the true occurrence rate is
+\begin{align}
+\Gamma_t &= \frac{\langle N_{\rm planets} \rangle }{\langle N_{\rm stars} 
+\rangle} \\
+\Gamma_t &= 
+\frac{
+	\Gamma_{t,s}N_s + (1+0.475w_{d2})\Gamma_{t,d}\langle N_d\rangle
+	}{
+	N_s + 1.475 \langle N_d \rangle
+	}.
+\end{align}
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\subsection{What is the measured occurrence rate?}
+
+The observer who has never heard of binary star systems wants to find the 
+occurrence rate of planets with radius $R_p$ and period $P$, orbiting stars 
+with mass $0.7<M_\star/M_\odot < 1.3$ (with corresponding stellar radii and 
+luminosities).
+They detected $N_{\rm det}$ transit signals that appear to be from planets of 
+this desired type.
+The occurrence rate they then find, {\it i.e.} the number of planets divided 
+by number of ``stars'' (really, stellar systems) is
+\begin{equation}
+\Gamma_{\rm a } = \frac{N_{\rm det}}{N_s + N_d} \times \frac{1}{f_g}.
+\end{equation}
+
+Unlike in Sec.~\ref{sec:model_1}, where the observer saw signals of only two 
+apparent radii (undiluted and diluted), they will now find signals with a 
+spectrum of apparent radii.
+The dilutions $\mathcal{D}$ in binary systems, given by Eq.~\ref{eq:dilution}, 
+vary depending on which star the planet orbits, and depending on the system's 
+luminosity ratio $\gamma_R$.
+Moreover, the apparent planetary radii will be affected by the assumptions the 
+observer makes about the apparently-single star's radius, $R_{\star,{\rm a}}$.
+We posit that the observer assumes $R_{\star,{\rm a}} = R_1$; in other words 
+they assume that the primary star hosts any signal they observe.
+The apparent planetary radii, $R_{\rm p, a}$, are then
+\begin{equation}
+R_{p,{\rm a}} = R_p 
+\frac{R_1}
+{R_{\star,{\rm t}}}
+\,\mathcal{D}^{1/2}.
+\end{equation}
+
+The total number of planet detections of the desired type is 
+\begin{equation}
+\langle N_{\rm det}\rangle = 
+N_{{\rm det},s} 
++ 
+\langle N_{{\rm det},d}\rangle.
+\end{equation}
+As in Sec.~\ref{sec:model_1},
+\begin{equation}
+N_{{\rm det},s} = N_s \Gamma_{t,s} f_{s,g} f_{s,c},
+\label{eq:N_det_s_model2}
+\end{equation}
+where the product $N_s \Gamma_{t,s}$ is the number of planets in the single 
+star systems of the sample, $f_{s,g}$ is the geometric transit probability, 
+and $f_{s,c}$ is the fraction of these transiting planets that are observed 
+with signal to noise greater than the minimum detection threshold (the 
+completeness). 
+For our SNR-limited, varying-$\gamma_R$ survey, $f_{s,g} = R_1/a\equiv f_g$, 
+and $f_{s,c}=1$.
+
+For planets detected in binary systems, only a fraction will be ``of the 
+desired type'', since only a fraction of the stars are of the desired type.
+This is the same factor $f_{\rm desired}$ that we have shown is 0.475. Thus
+\begin{equation}
+\langle N_{{\rm det},d} \rangle
+= 
+(1+0.475w_{d2}) \langle N_d\rangle \Gamma_{t,d} f_{d,g} f_{d,c}.
+\label{eq:N_det_d_model2}
+\end{equation}
+Now $(1+0.475w_{d2}) \langle N_d\rangle \Gamma_{t,d}$ is the number of 
+planets of the desired type in the double star systems of the sample.
+The geometric transit probability $f_{d,g}$ and completeness $f_{d,c}$ require 
+more careful evaluation.
+First, separate them into their sub-components about primaries ``d1'' and 
+secondaries ``d2'':
+\begin{align}
+\langle N_{{\rm det},d} \rangle
+= 
+\langle N_d\rangle \Gamma_{t,d} ( f_{d1,g} f_{d1,c} 
++
+0.475w_{d2}  f_{d2,g} f_{d2,c}
+)
+\end{align}
+
+
+The geometric transit probability $f_{d,g}=R_1/a$ 
+for our twin-binary survey, and $f_{d,c}=1/8$ by the geometric argument 
+presented in the initial discussion of limiting distances.
+
+The occurrence rate this astronomer derives for planets of assumed 
+radius $R_p$ orbiting stars thought to be of the desired type is then
+\begin{equation}
+\Gamma_{\rm a} = \frac{\Gamma_{t,s}N_s}{N_s + N_d}.
+\end{equation}
+
+
+\subsection{Errors on derived occurrence rates for Model \#2}
+
+
+
+
 
 
 
@@ -1739,7 +1814,7 @@ However, from Fig.~\ref{fig:rmag_distribn}, we've seen that its number counts
 as a function of apparent magnitude are good.
 So we assign binarity to the Galaxia stars as follows.
 \begin{itemize}
-	\item Assume a binary fraction ${\rm BF} = 0.45$ [Raghavan et al 2010].
+	\item Assume a binary fraction ${\rm BF} = 0.44$ [Raghavan et al 2010].
 	\item Ignore higher order multiples.
 	\item If a star is drawn to be a binary:
 	\subitem Its reported magnitude becomes a system magnitude.
