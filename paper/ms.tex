@@ -475,7 +475,7 @@ detection distances for a population of single stars and twin binaries:
   This is different from $d_{{\rm max},d}^{\rm p}$, the maximum
   distance out to which planets are detectable around double stars. For a 
   population with fixed  $\gamma_R$, since ${\rm S/N} \propto \mathcal{D} 
-  L^{-1/2} d$,
+  L^{1/2} d^{-1}$,
   \begin{equation}
     d_{{\rm max},d}^{\rm p} = (1 + \gamma_R)^{-1/2} d_{{\rm max},s} = 
     (1 + \gamma_R)^{-1} d_{{\rm max},d}.
@@ -810,13 +810,12 @@ stars hosts.
 Counting the number of desired stars, $N_s$ is the same as in 
 Sec.~\ref{sec:model_1}. However
 \begin{equation}
-N_d(\gamma_R) = n_d \frac{4\pi}{3} d_{\rm max,d}^3(L_1, \gamma_R, F_{\rm 
-	min})
+N_d(\gamma_R) = n_d \frac{4\pi}{3} d_{\rm max,d}^3(\gamma_R)
 \end{equation}
 for
 \begin{equation}
-d_{\rm max,d}(L_1, \gamma_R, F_{\rm min}) =
-d_{\rm max,s}(L_1, F_{\rm min})\times (1+\gamma_R)^{1/2},
+d_{\rm max,d}(\gamma_R) =
+d_{\rm max,s}\times (1+\gamma_R)^{1/2},
 \end{equation}
 where $d_{\rm max,s}$ is given by Eq.~\ref{eq:d_max}.
 
@@ -852,12 +851,13 @@ ${\rm prob}(N_d)$, can be written
 		\includegraphics[scale=.8]{figures/q_distribn_mag_limited.pdf}
 	\end{center}
 	\caption{The distribution of the mass ratio for a magnitude limited 
-		sample of binary stars. The empirical mass-luminosity relation is shown
-		in Fig.~\ref{fig:mass_luminosity}.
-		The underlying mass ratios are drawn from Eq.~\ref{eq:mass_ratio} -- a 
-		\textit{uniform} distribution in a volume-limited sample!
+		sample of binary stars. The underlying mass ratios are drawn from 
+		Eq.~\ref{eq:mass_ratio} -- a \textit{uniform} distribution in a 
+		volume-limited sample.
 		The entire bias can be understood analytically 
-		(Eq.~\ref{eq:pdf_q_mag_limited}) to reasonable precision. 
+		(Eq.~\ref{eq:pdf_q_mag_limited}) to good precision. 
+        The numerical comparison uses the empirical mass-luminosity relation 
+        shown in Fig.~\ref{fig:mass_luminosity}.
 	}
 	\label{fig:q_distribn_mag_limited}
 \end{figure}
@@ -867,11 +867,14 @@ ${\rm prob}(N_d)$, can be written
 		\includegraphics[scale=.8]{figures/gammaR_distribn_mag_limited.pdf}
 	\end{center}
 	\caption{The distribution of the luminosity ratio for a magnitude limited 
-		sample of binary stars. ${\rm BF} = 0.45$ [Duchene and Kraus 2013]; 
-		total 
-		number density from Bovy 2017; $M(L)$ relation from 
-		Fig.~\ref{fig:mass_luminosity}; mass ratios are drawn from 
-		Eq.~\ref{eq:mass_ratio}.}
+		sample of binary stars. Despite the preference in the sample towards 
+		large $q$ binaries (Fig.~\protect\ref{fig:q_distribn_mag_limited}), 
+		the bias is towards small $\gamma_R$ binaries because of the steepness 
+		of the mass-luminosity relation.
+        The underlying mass ratios are uniform in volume.
+        The numerical comparison uses the empirical mass-luminosity relation 
+        shown in Fig.~\ref{fig:mass_luminosity}.       
+    }
 	\label{fig:gammaR_distribn_mag_limited}
 \end{figure}
 
@@ -881,8 +884,8 @@ distribution to find the expected number of double systems, we must
 emphasize that Eq.~\ref{eq:mass_ratio}'s distribution applies only for 
 volume-limited samples.
 If one is interested in a SNR-limited transit survey (or really any
-magnitude-limited survey), the Malmquist-like bias associated with binarity, 
-and affecting the distribution of binary mass ratios, must be included.
+magnitude-limited survey), the Malmquist-like bias associated with binarity
+must be included.
 
 The distribution function for the mass ratio of binaries in a magnitude 
 limited sample can be found by marginalizing over the joint 

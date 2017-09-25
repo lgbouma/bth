@@ -62,7 +62,7 @@ def _make_distribution_plots(vl, doubles):
     f.tight_layout()
     f.savefig(savedir+'gammaR_distribn_vol_limited.pdf', dpi=250, bbox_inches='tight')
 
-    # Now do magnitude limited case.
+    # Now do magnitude limited case. Maglimited mass ratio.
     plt.close('all')
     f,ax = plt.subplots(figsize=(4,4))
     hist, bin_edges = np.histogram(doubles['q'],
@@ -84,14 +84,25 @@ def _make_distribution_plots(vl, doubles):
     f.tight_layout()
     f.savefig(savedir+'q_distribn_mag_limited.pdf', dpi=250, bbox_inches='tight')
 
+    # Maglimited light ratio
     plt.close('all')
     f,ax = plt.subplots(figsize=(4,4))
     hist, bin_edges = np.histogram(doubles['γ_R'],
-            bins=np.append(np.linspace(0,1.01,501),42), normed=True)
-    ax.step(bin_edges[:-1], hist, 'k-', where='post')
+            bins=np.append(np.linspace(0,1.01,101),42), normed=True)
+    ax.step(bin_edges[:-1], hist, where='post',
+            label='numerical, empirical $L(M)$')
+    # Analytic distribution from 17/09/24 result
+    _gammaR = np.arange(0,1+1e-4,1e-4)
+    curly_Z = 1/I_2
+    pdf_gammaR_analytic = (curly_Z / 3.5) * (1+_gammaR)*_gammaR**(-5/7)
+    pdf_gammaR_analytic[_gammaR<(0.1**(3.5))] = 0
+    ax.plot(_gammaR, pdf_gammaR_analytic, label='analytic, $L=M^{3.5}$')
+    ax.legend(loc='upper right', fontsize='small')
     ax.set(xlabel='$\gamma_R = L_2/L_1$',
            ylabel='prob',
-           xlim=[0,1.05])
+           xlim=[0,1.05],
+           ylim=[0.1,90],
+           yscale='log')
     ax.set_title(txt_ml, fontsize='small')
     f.tight_layout()
     f.savefig(savedir+'gammaR_distribn_mag_limited.pdf', dpi=250, bbox_inches='tight')
