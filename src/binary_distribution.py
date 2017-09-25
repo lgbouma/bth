@@ -92,10 +92,12 @@ def _make_distribution_plots(vl, doubles):
     ax.step(bin_edges[:-1], hist, where='post',
             label='numerical, empirical $L(M)$')
     # Analytic distribution from 17/09/24 result
-    _gammaR = np.arange(0,1+1e-4,1e-4)
-    curly_Z = 1/I_2
-    pdf_gammaR_analytic = (curly_Z / 3.5) * (1+_gammaR)*_gammaR**(-5/7)
+    from scipy.integrate import trapz
+    _gammaR = np.arange(0,1+2e-5,2e-5)
+    pdf_gammaR_analytic = (1+_gammaR)**(3/2)*_gammaR**(-5/7)
     pdf_gammaR_analytic[_gammaR<(0.1**(3.5))] = 0
+    norm = trapz(pdf_gammaR_analytic, _gammaR)
+    pdf_gammaR_analytic = pdf_gammaR_analytic/norm
     ax.plot(_gammaR, pdf_gammaR_analytic, label='analytic, $L=M^{3.5}$')
     ax.legend(loc='upper right', fontsize='small')
     ax.set(xlabel='$\gamma_R = L_2/L_1$',
