@@ -1,87 +1,32 @@
 '''
-numerical verification of "model 2" as described in
-memos/toy_analytic_surveys_170804.pdf.
+what is the light ratio distriubtion for binaries in a magnitude limited
+sample, vs a volume limited sample?
 
 fixed Rp. fixed primary L1. varying light ratio (L2/L1).
+
+This code is the Monte Carlo simulation needed to produce summary statistics
+for X_Γ.
 '''
 from __future__ import division, print_function
 
-import numpy as np, pandas as pd, matplotlib.pyplot as plt
+import numpy as np, pandas as pd
 from astropy import units as u, constants as c
 from math import pi as π
+import os
 
+#####################
+# UTILITY FUNCTIONS #
+#####################
 def get_L(M):
+    '''
+    assume input mass, M, a float or vector, is in solar units.
+    '''
 
-    m_lo = 1.8818719873988132
-    c_lo = -0.9799647314108376
-    m_hi = 5.1540712426599882
-    c_hi = 0.0127626185389781
-    M_merge = 0.4972991257826812
-    L_merge = 0.0281260412126928
+    α = 3.5
 
-    L = np.ones_like(M)
-
-    # Method 1: totally fine.
-    #lo_mask = M < M_merge
-    #L[lo_mask] = 10**(np.log10(M[lo_mask])*m_lo + c_lo)
-
-    #hi_mask = M >= M_merge
-    #L[hi_mask] = 10**(np.log10(M[hi_mask])*m_hi + c_hi)
-
-    # Method 2: cuter.
-    L_lo = 10**(np.log10(M)*m_lo + c_lo)
-    L_hi = 10**(np.log10(M)*m_hi + c_hi)
-
-    L = np.maximum(L_lo, L_hi)
+    L = M**α
 
     return L
-
-
-def _make_distribution_plots(vl, doubles):
-
-    # Plot distribution of doubles. First do volume limited case. 
-    plt.close('all')
-    f,ax = plt.subplots(figsize=(4,4))
-    hist, bin_edges = np.histogram(vl['q'], bins=np.append(np.linspace(0,1,51),42),
-            normed=True)
-    ax.step(bin_edges[:-1], hist, where='post')
-    ax.set(xlabel='q', ylabel='prob')
-    ax.set_title(txt_vl, fontsize='small')
-    f.tight_layout()
-    f.savefig('q_distribn_vol_limited.pdf', dpi=250, bbox_inches='tight')
-
-    plt.close('all')
-    f,ax = plt.subplots(figsize=(4,4))
-    hist, bin_edges = np.histogram(vl['γ_R'],
-            bins=np.append(np.linspace(0,1,100),42), normed=True)
-    ax.step(bin_edges[:-1], hist, where='post')
-    ax.set(xlabel='L2/L1 ($\gamma_R$)',
-           ylabel='prob')
-    ax.set_title(txt_vl, fontsize='small')
-    f.tight_layout()
-    f.savefig('gammaR_distribn_vol_limited.pdf', dpi=250, bbox_inches='tight')
-
-    # Now do magnitude limited case.
-    plt.close('all')
-    f,ax = plt.subplots(figsize=(4,4))
-    hist, bin_edges = np.histogram(doubles['q'],
-            bins=np.append(np.linspace(0,1,51),42), normed=True)
-    ax.step(bin_edges[:-1], hist, where='post')
-    ax.set(xlabel='q', ylabel='prob')
-    ax.set_title(txt_ml, fontsize='small')
-    f.tight_layout()
-    f.savefig('q_distribn_mag_limited.pdf', dpi=250, bbox_inches='tight')
-
-    plt.close('all')
-    f,ax = plt.subplots(figsize=(4,4))
-    hist, bin_edges = np.histogram(doubles['γ_R'],
-            bins=np.append(np.linspace(0,1,100),42), normed=True)
-    ax.step(bin_edges[:-1], hist, where='post')
-    ax.set(xlabel='L2/L1 ($\gamma_R$)',
-           ylabel='prob')
-    ax.set_title(txt_ml, fontsize='small')
-    f.tight_layout()
-    f.savefig('gammaR_distribn_mag_limited.pdf', dpi=250, bbox_inches='tight')
 
 
 def draw_star_positions(d_max, N_sys, sys_type=None):
@@ -113,6 +58,7 @@ def draw_star_positions(d_max, N_sys, sys_type=None):
     _z = d_max * np.random.rand( (10*N_sys) )
     _r = np.sqrt(_x**2 + _y**2 + _z**2)
 
+    # This assertion ensures you initially drew enough.
     assert len(_x[_r < d_max]) > N_sys
 
     x = _x[_r < d_max][:N_sys]*u.pc
@@ -145,15 +91,11 @@ def draw_vol_limited_light_ratios(df, M_1, L_1):
     L_2 = get_L(M_2)
 
     γ_R = L_2/L_1
-
-    ## OUTDATED METHOD
-    ## Salaris & Cassisi 2005, Fig 5.11 & text. α is the mass-luminosity power
-    ## exponent.
-    #α = np.ones_like(q)
-    #α[q < 0.5] *= 2.6
-    #α[q >= 0.5] *= 4.5
-
-    #γ_R = q**α
+    try:
+        assert np.max(γ_R) < 1
+    except:
+        print('draw of volume limited light ratios failed.')
+        import IPython; IPython.embed()
 
     df['q'] = q
     df['γ_R'] = γ_R
@@ -163,441 +105,231 @@ def draw_vol_limited_light_ratios(df, M_1, L_1):
 
 if __name__ == '__main__':
 
-    np.random.seed(42)
+    #############################
+    # !!! BEGIN MONTE CARLO !!! #
+    #############################
+    for seed in np.arange(int(4e2),int(5e2),1):
 
-    ##############
-    # INSTRUMENT #
-    ##############
-    A = 50*u.cm**2
-    λ_min = 500*u.nm
-    λ_max = 1000*u.nm
+        ################################################################
+        # BEGIN OBNOXIOUS PARAMETERS NEEDED FOR MONTE CARLO SIMULATION #
+        ################################################################
+        ##############
+        # INSTRUMENT #
+        ##############
+        A = 50*u.cm**2      # effective observing area
+        λ_min = 500*u.nm    #
+        λ_max = 1000*u.nm
 
-    #################
-    # SURVEY PARAMS #
-    #################
-    T_obs = 4*u.year
-    x_min = 25 # minimum SNR for detection.
+        #################
+        # SURVEY PARAMS #
+        #################
+        T_obs = 4*u.year
+        x_min = 25 # minimum SNR for detection.
 
-    # Zombeck 2007, p.103: Vega, V=0.03 has a wavelength-specific photon flux of
-    # 1e3 ph/s/cm^2/angstrom. So for our instrument's bandpass, we
-    # expect 5e5 ph/s/cm^2. For the magnitude limit, we want this in
-    # erg/s/cm^2.
+        # Zombeck 2007, p.103: Vega, V=0.03 has a wavelength-specific photon flux of
+        # 1e3 ph/s/cm^2/angstrom. So for our instrument's bandpass, we
+        # expect 5e5 ph/s/cm^2. For the magnitude limit, we want this in
+        # erg/s/cm^2.
 
-    # Zero points, and magnitude limit. m_lim of 5 or 6 runs fast, but has
-    # Poisson noise. ~7 is needed for negligible Poisson noise.
-    λ_nominal = 750*u.nm #FIXME for a "realistic" survey, might want to modify.
-    energy_per_ph = c.h * c.c / λ_nominal
-    m_0 = 0
-    F_0 = 5e5 * energy_per_ph * (u.s)**(-1) * (u.cm)**(-2)
-    m_lim = 11
-    F_lim = F_0 * 10**(-2/5 * (m_lim - m_0))
+        # Zero points, and magnitude limit.
+        λ_nominal = 750*u.nm
+        energy_per_ph = c.h * c.c / λ_nominal
+        m_0 = 0
+        F_0 = 5e5 * energy_per_ph * (u.s)**(-1) * (u.cm)**(-2)
+        m_lim = 10 + 2*np.random.rand()
+        F_lim = F_0 * 10**(-2/5 * (m_lim - m_0)) # limiting flux, in erg/s/cm^2
 
-    ######################
-    # STELLAR POPULATION #
-    ######################
-    # Binary fraction. BF = n_d / n_s.
-    BF = 0.45
-    # Bovy (2017) gives n_tot = n_s + n_d. We want the number density of single
-    # star systems, n_s, and the number density of double star systems, n_d.
-    #n_tot = 4.76e-4 / (u.pc**3)
-    n_tot = 5e-4 / (u.pc**3)
-    n_s = n_tot / (1+BF)
-    n_d = BF * n_s
+        ##############################################################
+        # END OBNOXIOUS PARAMETERS NEEDED FOR MONTE CARLO SIMULATION #
+        ##############################################################
 
-    ################
-    # SINGLE STARS #
-    ################
-    L_1 = 1*u.Lsun
-    R_1 = 1*u.Rsun
-    T_eff1 = (1/c.sigma_sb * L_1 / (4*π*R_1**2))**(1/4)
-    M_1 = 1*u.Msun
+        ######################
+        # STELLAR POPULATION #
+        ######################
+        # Binary fraction. BF = n_d / (n_s+n_d). Raghavan+ 2010 solar.
+        BF = 0.44
+        # Bovy (2017) gives n_tot = n_s + n_d. We want the number density of single
+        # star systems, n_s, and the number density of double star systems, n_d.
+        #n_tot = 4.76e-4 / (u.pc**3)
+        n_tot = 5e-4 / (u.pc**3)
+        n_d = BF * n_tot
+        n_s = (1-BF)*n_d/BF
 
-    # Distance limit for single star systems.
-    d_max_s = (L_1 / (4*π*F_lim) )**(1/2)
-    # Number of single star systems in sample. It is an integer.
-    N_s = int(np.floor( (n_s * 4*π/3 * d_max_s**3).cgs.value ))
-    # Get positions for the single star systems. Compute their fluxes.
-    singles = draw_star_positions(d_max_s.to(u.pc), N_s, 'single')
-    singles['F'] = (1*u.Lsun / \
-                (4*π* (np.array(singles['r'])*u.pc)**2 )).cgs
+        ################
+        # SINGLE STARS #
+        ################
+        M_1 = 1*u.Msun
+        L_1 = get_L(M_1.value)*u.Lsun
+        R_1 = 1*u.Rsun
 
-    # Make a volume-limited sample of binary star systems out to
-    # sqrt(2)d_max_s. Then perform the magnitude cut to get the SNR-limited
-    # sample.
+        # Distance limit for selecting single star systems.
+        d_max_s = (L_1 / (4*π*F_lim) )**(1/2)
+        # Number of single star systems in sample. It is an integer.
+        N_s = int(np.floor( (n_s * 4*π/3 * d_max_s**3).cgs.value ))
+        # Get positions for the single star systems. Compute their fluxes.
+        singles = draw_star_positions(d_max_s.to(u.pc), N_s, 'single')
+        singles['F'] = (L_1 / \
+                    (4*π* (np.array(singles['r'])*u.pc)**2 )).cgs
 
-    # Maximum binary light ratio.
-    γ_R_max = 1
-    # Maximum double star system luminosity
-    L_d_max = (1+γ_R_max)*L_1
-    # Maximum distance out to which the maximum luminosity double star system
-    # could be detected. (...)
-    d_max_d_max = (L_d_max / (4*π*F_lim) )**(1/2)
-    # Number of double star systems in a volume limited sample out to
-    # d_max_d_max.
-    N_d_max = int(np.floor( (n_d * 4*π/3 * d_max_d_max**3).cgs.value ))
+        # Make a volume-limited sample of binary star systems out to
+        # sqrt(2)d_max_s. Then perform the magnitude cut to get the SNR-limited
+        # sample.
 
-    vl = draw_star_positions(d_max_d_max.to(u.pc), N_d_max, 'binary')
+        # Maximum binary light ratio.
+        γ_R_max = 1
+        # Corresponding maximum double star system luminosity
+        L_d_max = (1+γ_R_max)*L_1
+        # Maximum distance out to which the maximum luminosity double star system
+        # could be detected. (...stupid notation)
+        d_max_d_max = (L_d_max / (4*π*F_lim) )**(1/2)
+        # Number of double star systems in a volume limited sample out to
+        # d_max_d_max.
+        N_d_max = int(np.floor( (n_d * 4*π/3 * d_max_d_max**3).cgs.value ))
 
-    vl = draw_vol_limited_light_ratios(vl, M_1.value, L_1.value)
+        # NOTE: ACTUAL RANDOM PART OF THE SIMULATION BEGINS HERE
+        vl = draw_star_positions(d_max_d_max.to(u.pc), N_d_max, 'binary')
+        vl = draw_vol_limited_light_ratios(vl, M_1.value, L_1.value)
 
-    vl['L_d'] = L_1 * (1 + vl['γ_R'])
+        vl['L_d'] = L_1 * (1 + vl['γ_R'])
 
-    vl['F'] = ((np.array(vl['L_d'])*u.Lsun) / \
-                (4*π* (np.array(vl['r'])*u.pc)**2 )).cgs
+        vl['F'] = ((np.array(vl['L_d'])*u.Lsun) / \
+                    (4*π* (np.array(vl['r'])*u.pc)**2 )).cgs
 
-    doubles = vl[vl['F'] > F_lim.cgs.value]
-    N_d = int(len(doubles))
-    print('\n')
-    print(len(singles))
-    print(len(doubles))
-    print('\n')
+        # impose magnitude cut.
+        doubles = vl[vl['F'] > F_lim.cgs.value]
 
-    txt_vl = 'Vol limited binary star sample: {:d} systems'.format(
-            len(vl))
-    print(txt_vl)
-    print(vl[['q','γ_R']].describe())
+        N_d = int(len(doubles))
 
-    txt_ml = 'Mag limited binary star sample: {:d} systems'.format(
-            len(doubles))
-    print(txt_ml)
-    print(doubles[['q','γ_R']].describe())
+        ################################################
+        # YOU HAVE SINGLES AND DOUBLES. ASSIGN PLANETS #
+        ################################################
+        # Fraction of stars in single star systems with planet of (R_p, P). NB this
+        # is the same as the average number of planets per star in the single
+        # planet system limit. (...)
+        Γ_ts = 0.2
+        # Fraction per primary of double star systems with planet of (R_p, P).
+        Γ_td = 0.2
+        # Weight of secondaries of desired type with planets of desired type
+        w_d2 = 1
 
-    #### _make_distribution_plots(vl, doubles)
+        # First, randomly select which stars of desired type get single planet systems. 
+        single_has_planet = (np.random.rand( N_s ) < Γ_ts)
+        primary_has_planet = (np.random.rand( N_d ) < Γ_td)
 
-    ###################################################
-    # YOU HAVE SINGLES AND DOUBLES. GIVE THEM PLANETS #
-    ###################################################
-    # Fraction of stars in single star systems with planet of (R_p, P).
-    Γ_ts = 0.1
-    # Fraction per primary of double star systems with planet of (R_p, P).
-    Γ_td1 = 0.1
-    # Fraction per secondary of  double star systems with planet of (R_p, P).
-    Γ_td2 = 0.02
+        # Note only some fraction of secondaries are of the desired type... (and
+        # only "has planet" if planet is of desired type and star is of desired
+        # type)
+        M_secondary_min = 0.7
+        M_secondary_max = 1
+        f_d = len(doubles[(doubles['q']>M_secondary_min) &\
+                          (doubles['q']<M_secondary_max)])\
+              /N_d
 
-    import IPython; IPython.embed()
+        secondary_has_planet = (np.random.rand( N_d ) < Γ_td*w_d2) \
+                & (doubles['q']>M_secondary_min) \
+                & (doubles['q']<M_secondary_max)
 
-    # Pick singles that get a planet.
-    s_mask = np.array(np.random.rand((len(singles))) < Γ_ts)
-    d1_mask = np.array(np.random.rand((len(doubles))) < Γ_td1)
-    d2_mask = np.array(np.random.rand((len(doubles))) < Γ_td2)
+        singles['single_has_planet'] = single_has_planet
+        doubles['primary_has_planet'] = primary_has_planet
+        doubles['secondary_has_planet'] = secondary_has_planet
 
-    singles['s_has_planet'] = s_mask
-    doubles['d1_has_planet'] = d1_mask
-    doubles['d2_has_planet'] = d2_mask
+        N_stars = N_s + (1+f_d)*N_d
+        N_planets = np.sum(single_has_planet) + \
+                    np.sum(primary_has_planet) + \
+                    np.sum(secondary_has_planet)
 
-    # Draw impact parameters.
-    R_p = 1*u.Rearth
-    P = 1*u.year
-    a_1 = (P**2 * c.G * M_1 / (4*π*π))**(1/3)
+        #################################
+        # COMPUTE TRANSIT PROBABILITIES #
+        #################################
+        P = 0.1*u.year
+        a_1 = (P**2 * c.G * M_1 / (4*π*π))**(1/3)
+        ones = np.ones_like(np.array(singles['r']))
+        f_sg = (R_1/a_1).cgs.value * ones
 
-    R_d1 = R_1
-    a_d1 = a_1
-    M_d2 = np.array(doubles['q'])*M_1
-    # Demircan & Kahraman 1991 mass-radius relation.
-    R_d2 = np.array(1.06 * M_d2**(0.945))*u.Rsun
-    a_d2 = (P**2 * c.G * M_1 / (4*π*π))**(1/3)
+        s_has_transiting_planet = (np.random.rand(N_s) < f_sg) & single_has_planet
+        singles['single_has_transiting_planet'] = s_has_transiting_planet
 
-    b_s =  (a_1/R_1).cgs.value * \
-            np.random.uniform(low=0., high=1., size=len(singles))
-    b_d1 = (a_d1/R_d1).cgs.value * \
-            np.random.uniform(low=0., high=1., size=len(doubles))
-    b_d2 = (a_d2/R_d2).cgs.value * \
-            np.random.uniform(low=0., high=1., size=len(doubles))
+        # Transiting planets in binary systems.
+        R_d1 = R_1
+        a_d1 = a_1
+        M_d2 = np.array(doubles['q'])*M_1
+        R_d2 = (M_d2.value)*u.Rsun
+        a_d2 = (P**2 * c.G * M_d2 / (4*π*π))**(1/3)
 
-    # E.g., S+15, Eq 10.
-    Tdur_s  = 13*u.hr * np.sqrt(1 - b_s**2)
-    Tdur_d1 = 13*u.hr * np.sqrt(1 - b_d1**2)
-    ρ_sun = 3*u.Msun/(4*π*u.Rsun**3)
-    ρ_d2  = 3*M_d2/(4*π*R_d2**3)
-    Tdur_d2 = 13*u.hr * (ρ_d2 / ρ_sun)**(-1/3) * np.sqrt(1 - b_d1**2)
+        ones = np.ones_like(np.array(doubles['r']))
 
-    # 
-    #FIXME
-    #
-    # you need to compute a S/N for all the transiting planets. You already did
-    # this in the commented stuff below (!)
+        f_d1g = (R_d1/a_d1).cgs.value * ones
+        d1_has_transiting_planet = (np.random.rand(N_d) < f_d1g) & primary_has_planet
+        doubles['primary_has_transiting_planet'] = d1_has_transiting_planet
 
+        f_d2g = (R_d2/a_d2).cgs.value * ones
+        d2_has_transiting_planet = (np.random.rand(N_d) < f_d2g) & secondary_has_planet
+        doubles['secondary_has_transiting_planet'] = d2_has_transiting_planet
 
+        ##########################
+        # COMPUTE COMPLETENESSES #
+        ##########################
+        f_sc = 1*np.ones_like(np.array(singles['r']))
+        singles['single_has_detected_planet'] = \
+                (np.random.rand(N_s) < f_sc) \
+                & s_has_transiting_planet
 
+        f_d1c = (1+np.array(doubles['γ_R']))**(-3)
+        f_d2c = (1+np.array(doubles['γ_R'])**(-1))**(-3)
 
+        doubles['primary_has_detected_planet'] = \
+                (np.random.rand(N_d) < f_d1c) \
+                & d1_has_transiting_planet
 
+        doubles['secondary_has_detected_planet'] = \
+                (np.random.rand(N_d) < f_d2c) \
+                & d2_has_transiting_planet
 
+        ##########################
+        # COMPUTE SURVEY RESULTS #
+        ##########################
 
-    ones = np.ones_like(np.array(singles['r']))
-    f_s = R_1/a_1
-    singles['f_s'] = f_s * ones
+        N_det_s = np.sum(np.array(singles['single_has_detected_planet']))
+        N_det_d1 = np.sum(np.array(doubles['primary_has_detected_planet']))
+        N_det_d2 = np.sum(np.array(doubles['secondary_has_detected_planet']))
 
+        N_det_d = N_det_d1 + N_det_d2
 
-    ones = np.ones_like(np.array(doubles['r']))
-    doubles['f_d'] = 0.5 * ( (R_1/a_1 * ones).cgs +    (R_d2 / a_d2).cgs )
+        ###############
+        # COMPUTE X_Γ #
+        ###############
 
+        Γ_t = N_planets/N_stars
+        Γ_a = (N_det_s + N_det_d)/(N_s + N_d) * (1/f_sg[0])
 
+        X_Γ = Γ_t/Γ_a
 
-    #########################################################################
-    # YOU HAVE SINGLES AND DOUBLES. COMPUTE TRANSIT PROBABILITIES, ASSUMING #
-    # EQUAL OCCURRENCE RATES                                                #
-    #########################################################################
+        ######################
+        # INTERESTING OUTPUT #
+        ######################
+        outdict = {'seed':seed,
+                   'N_s':N_s,
+                   'N_d':N_d,
+                   'β':N_d/N_s,
+                   'N_det_s':N_det_s,
+                   'N_det_d':N_det_d,
+                   'N_planets':N_planets,
+                   'N_stars':N_stars,
+                   'Γ_t':Γ_t,
+                   'Γ_a':Γ_a,
+                   'X_Γ':X_Γ,
+                   'f_sg':f_sg[0],
+                   'm_lim':m_lim
+                   }
 
+        outdf = pd.DataFrame(outdict, index=[0])
+        print(outdf)
 
-    N_det_s = N_s * Γ_ts * f_s
-    N_det_s = N_det_s.cgs
+        outfname = 'model2_results.csv'
 
-    N_det_d = 2 * Γ_td * np.sum(doubles['f_d'])
+        if not os.path.exists(outfname):
+            outdf.to_csv(outfname, index=False, header=True)
+        else:
+            with open(outfname, 'a') as f:
+                outdf.to_csv(f, index=False, header=False)
 
-    print('\nN_s: {:d}\n'.format(int(N_s)))
-    print('N_d: {:d}\n'.format(int(N_d)))
-    print('N_det,s: {:d}\n'.format(int(N_det_s)))
-    print('N_det,d: {:d}\n'.format(int(N_det_d)))
-
-    print('fraction misclassified')
-    print( N_det_d / (N_det_s + N_det_d) )
-    print('\n')
-
-    print('ratio of geometric transit probabilities, f_d/f_s')
-    print( ((1/N_d) * np.sum(doubles['f_d']) / f_s).cgs )
-    print('\n')
-
-
-
-
-
-#
-#
-#    # Stellar luminosities, radii, Teffs, and masses.
-#    L_2 = L_d - L_1
-#    R_2 = 1*u.Rsun
-#    T_eff2 = (1/c.sigma_sb * L_2 / (4*π*R_2**2))**(1/4)
-#    M_2 = 1*u.Msun
-#
-#    # Dilution parameter
-#    dil = L_1 / L_d
-#
-#    # Surface photon number fluxes
-#    u1_lower = c.h*c.c/(λ_max*c.k_B*T_eff1)
-#    u1_upper = c.h*c.c/(λ_min*c.k_B*T_eff1)
-#    u1 = np.linspace(u1_lower, u1_upper, num=5e4)
-#    integral = np.trapz( u1*u1/(np.exp(u1) - 1),  u1)
-#    F_s1γ_N = 8*π*c.c * (c.k_B * T_eff1 / (c.h * c.c))**3 * integral
-#
-#    u2_lower = c.h*c.c/(λ_max*c.k_B*T_eff2)
-#    u2_upper = c.h*c.c/(λ_min*c.k_B*T_eff2)
-#    u2 = np.linspace(u2_lower, u2_upper, num=5e4)
-#    integral = np.trapz( u2*u2/(np.exp(u2) - 1),  u2)
-#    F_s2γ_N = 8*π*c.c * (c.k_B * T_eff2 / (c.h * c.c))**3 * integral
-#
-#    c_s = R_1**2 * F_s1γ_N
-#    c_d = R_1**2 * F_s1γ_N  +  R_2**2 * F_s2γ_N
-#
-#    #####################
-#    # PLANET POPULATION #
-#    #####################
-#
-#    R_p = 1*c.R_earth
-#    P = 100*u.day
-#
-#    assert M_1 == M_2, 'currently a is written independent of which star '+\
-#                       'is being transited'
-#    a = (P**2 * c.G * M_1 / (4*π*π) )**(1/3)
-#    assert R_1 == R_2, 'currently T_dur is written independent of which star'+\
-#                       ' is being transited. δ is too.'
-#    T_dur = R_1 * P / (4*a) # averages over impact parameter
-#
-#    δ = (R_p/R_1)**2
-#
-#
-#
-#    ##################
-#    # BEGIN "SURVEY" #
-#    ##################
-#
-#    doubles = draw_star_positions(d_max_d.to(u.pc), N_d, 'binary')
-#    #stars = pd.concat([singles, doubles])
-#
-#    # Compute received number fluxes for idealized population of singles and
-#    # doubles. N.b. these are the received number fluxes of PLANETS (under the
-#    # assumption that every star gets a planet) not systems. Thus you need to
-#    # double the length of r_d.
-#    r_s = np.array(singles['r'])*u.pc
-#    r_d = np.array(pd.concat([doubles['r'],doubles['r']]))*u.pc
-#    F_sγ_N = c_s / (r_s)**2
-#    F_dγ_N = c_d / (r_d)**2
-#
-#    # Compute analytic SNR distribution of transit events, and number of
-#    # detections.
-#    N_tra = T_obs / P
-#
-#    x_s_a = δ*np.sqrt( F_sγ_N * A * N_tra * T_dur )
-#    x_s_a = x_s_a.cgs
-#    x_d_a = dil*δ*np.sqrt( F_dγ_N * A * N_tra * T_dur )
-#    x_d_a = x_d_a.cgs
-#
-#    prob_x_s_a = 3/(d_max_s**3) * c_s**(3/2) * δ**3 * \
-#                (A*N_tra*T_dur)**(3/2) * x_s_a**(-4)
-#    prob_x_s_a = prob_x_s_a.cgs
-#    prob_x_d_a = 3/(d_max_d**3) * c_d**(3/2) * (dil*δ)**3 * \
-#                (A*N_tra*T_dur)**(3/2) * x_d_a**(-4)
-#    prob_x_d_a = prob_x_d_a.cgs
-#
-#
-#    # INDEPENDENT CHECK SHOWS EQ 31 AND 33, HARD-INTEGRATION, WORKS.
-#    #xs_ordered = [x.value for x,y in sorted(list(zip(x_s_a, prob_x_s_a))) 
-#    #               if x.value > x_min]
-#    #prob_xs_ordered = [y.value for x,y in sorted(list(zip(x_s_a, prob_x_s_a)))
-#    #                    if x.value > x_min]
-#    #xd_ordered = [x.value for x,y in sorted(list(zip(x_d_a, prob_x_d_a))) 
-#    #               if x.value > x_min]
-#    #prob_xd_ordered = [y.value for x,y in sorted(list(zip(x_d_a, prob_x_d_a)))
-#    #                    if x.value > x_min]
-#    #f_s_x_gt_xmin = np.trapz(prob_xs_ordered, xs_ordered)
-#    #f_d_x_gt_xmin = np.trapz(prob_xd_ordered, xd_ordered)
-#    #N_det_s_a = N_s * Γ_ts * f_s_x_gt_xmin
-#    #N_det_d_a = 2 * N_d * Γ_td * f_d_x_gt_xmin
-#
-#    # Equations 32 and 34 are valid only when the SNR distributions lead to
-#    # fractions less than one.
-#    N_det_s_a = N_s * Γ_ts * \
-#                min(1/(d_max_s**3) * c_s**(3/2) * δ**3 * \
-#                    (A*N_tra*T_dur)**(3/2) * x_min**(-3),
-#                    1)
-#    N_det_d_a = 2 * N_d * Γ_td * \
-#                min(1/(d_max_d**3) * c_d**(3/2) * (dil*δ)**3 * \
-#                    (A*N_tra*T_dur)**(3/2) * x_min**(-3),
-#                    1)
-#
-#    N_det_s_a = N_det_s_a
-#    N_det_d_a = N_det_d_a
-#
-#    N_det_a = int(N_det_s_a + N_det_d_a)
-#
-#    # Compute SNR distribution and number of detections, numerically. AKA we
-#    # actually drew the positions from a MC grid in this case.
-#
-#    # First, construct arrays that randomly select which stars get single
-#    # planet systems. 
-#    planet_mask_s, planet_mask_d = [], []
-#    ind = 0
-#    while ind < N_s:
-#        if np.random.rand() < Γ_ts:
-#            planet_mask_s.append(ind)
-#        ind += 1
-#    ind = 0
-#    while ind < 2*N_d:
-#        if np.random.rand() < Γ_td:
-#            planet_mask_d.append(ind)
-#        ind += 1
-#
-#    planet_mask_s = np.array(planet_mask_s)
-#    planet_mask_d = np.array(planet_mask_d)
-#
-#    r_s = np.array(singles['r'])[planet_mask_s]*u.pc
-#    # Need to double the positions because these are now _planet_ positions.
-#    r_d = np.array(pd.concat([doubles['r'], doubles['r']]))[planet_mask_d]*u.pc
-#
-#    F_sγ_N = c_s / (r_s)**2
-#    F_dγ_N = c_d / (r_d)**2
-#
-#    x_s_n = δ*np.sqrt( F_sγ_N * A * N_tra * T_dur )
-#    x_s_n = x_s_n.cgs
-#    # "observed" signal to noise distribution for doubles.
-#    x_d_n = dil*δ*np.sqrt( F_dγ_N * A * N_tra * T_dur )
-#    x_d_n = x_d_n.cgs
-#
-#    # FIXME: we are assuming every planet that exists in this universe transits.
-#    N_det_s_n = len( x_s_n[x_s_n > x_min] )
-#    N_det_d_n = len( x_d_n[x_d_n > x_min] )
-#
-#    N_det_n = N_det_s_n + N_det_d_n
-#
-#    ####################
-#    # SUMMARIZE SURVEY #
-#    ####################
-#    print('N detected numerically: {:d}\n N detected analytically: {:d}\n'.
-#          format(N_det_n, N_det_a))
-#
-#    ####################################################
-#    # COMPARE ANALYTIC AND NUMERICAL SNR DISTRIBUTIONS #
-#    ####################################################
-#    f,ax = plt.subplots()
-#
-#    # Singles
-#    hist_sn, bin_edges = np.histogram(x_s_n,
-#            bins=np.arange(0,500+2.5,2.5), normed=True)
-#    ax.step(bin_edges[:-1], hist_sn, where='post', color='black',
-#            label='bins: singles, numeric', zorder=-1)
-#
-#    snr_ordered = [x.value for x,y in sorted(list(zip(x_s_a, prob_x_s_a)))]
-#    prob_snr_ordered_s = [y.value for x,y in
-#                            sorted(list(zip(x_s_a, prob_x_s_a)))]
-#    ax.plot(snr_ordered, prob_snr_ordered_s, color='black',
-#            label='line: singles, analytic', zorder=0)
-#
-#
-#    # Doubles
-#    hist_sn, bin_edges = np.histogram(x_d_n,
-#            bins=np.arange(0,500+2.5,2.5), normed=True)
-#    ax.step(bin_edges[:-1], hist_sn, where='post', color='black',
-#            label='bins: doubles, numeric', alpha=0.5, lw=1, zorder=-1)
-#
-#    snr_ordered = [x.value for x,y in sorted(list(zip(x_d_a, prob_x_d_a)))]
-#    prob_snr_ordered_d = [y.value for x,y in
-#                            sorted(list(zip(x_d_a, prob_x_d_a)))]
-#    ax.plot(snr_ordered, prob_snr_ordered_d, color='black',
-#            label='line: doubles, analytic', alpha=0.5, lw=1, zorder=0)
-#
-#    ax.vlines(x_min, 0, 1, color='black', alpha=0.2, linestyles='dotted',
-#            label='SNR treshold: {:.1f}'.format(x_min), zorder=-10)
-#
-#    ax.legend(loc='upper right', fontsize='small')
-#
-#    dist_ratio = (d_max_s / d_max_d)**3 * (c_d / c_s)**(-1/2) * (1/dil)
-#
-#    txt = 'm_lim: {:.1f}\n'.format(m_lim)+\
-#          'N_s: {:d} single systems\n'.format(N_s)+\
-#          'N_d: {:d} double systems\n'.format(N_d)+\
-#          'N det planets: {:d} analytic. {:d} single, {:d} double\n'.format(
-#          N_det_a, int(N_det_s_a), int(N_det_d_a))+\
-#          'N det planets: {:d} numeric. {:d} single, {:d} double\n\n'.format(
-#          N_det_n, int(N_det_s_n), int(N_det_d_n))+\
-#          'median(doubles)/median(singles) (numerical): {:.3f}\n'.format(
-#          np.median(prob_snr_ordered_s)/np.median(prob_snr_ordered_d))+\
-#          '25th pct(doubles)/25th pct(singles) (numerical): {:.3f}\n'.format(
-#          np.percentile(prob_snr_ordered_s, 25)/
-#          np.percentile(prob_snr_ordered_d, 25))+\
-#          '75th pct(doubles)/75th pct(singles) (numerical): {:.3f}\n'.format(
-#          np.percentile(prob_snr_ordered_s, 75)/
-#          np.percentile(prob_snr_ordered_d, 75))+\
-#         'ratio of distributions (analytic, fixed distance): {:.3f}'.format(
-#          dist_ratio)
-#
-#    ax.text(0.96,0.5,txt,horizontalalignment='right',
-#            verticalalignment='center',
-#            transform=ax.transAxes, fontsize='xx-small')
-#
-#    ax.set_xlabel('SNR', fontsize='small')
-#    ax.set_ylabel('probability', fontsize='small')
-#    ax.set_title('doubles and singles normalized independently. "numeric"\n'+\
-#        'means draw positions, draw planets, then compute the SNRs of the\n'+\
-#        'planets. "analytic" means I drew positions and evaluted equations',
-#        fontsize='xx-small')
-#    ax.set_xlim([0,100])
-#    ax.set_yscale('log')
-#    ax.set_ylim([1e-4,1])
-#    #ax.set_ylim([0,.1])
-#
-#    f.tight_layout()
-#
-#    f.savefig('simplest_analytic_model_SNR_distribution.pdf', dpi=300)
-#
-#
-
-
-
-
-# MAYBE KEEP: PLOT DISTRIBUTION OF DISTANCES
-
-#hist, bin_edges = np.histogram(r_a, bins=np.arange(0,1+0.05,0.05), normed=True)
-#
-#f,ax = plt.subplots()
-#
-#ax.step(bin_edges[:-1], hist, where='post')
-#
