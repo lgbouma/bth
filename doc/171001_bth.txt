@@ -1,0 +1,200 @@
+As far as I can tell, the current issue has nothing to do with whether we
+formulate the problem in terms of "occurrence rates" or "occurrence rate
+densities".
+
+For the model with fixed planet properties, fixed primary radius, and varying
+secondary light ratio, I am having difficulties evaluating the number of
+planets that an observer would detect. I think that I need this number in order
+to calculate the occurrence rate that they would infer. This is because they
+infer an occurrence rate of
+
+  Γ_a = (N_det/f_g) / (N_s + N_d),
+
+for f_g the geometric correction factor, N_s the number of single star systems,
+and N_d the number of double star systems.
+
+It is helpful to write
+
+  N_det = N_det_single + N_det_double,
+
+where the latter terms correspond to the number of detections in single star
+systems and double star systems respctively.
+
+N_det_single is easy to write out given our laundry list of assumptions.
+
+Equation (1):
+  N_det_single = N_s * Γ_t,s * f_s,g * f_s,c      (1)
+
+where N_s corresponds to the number of single star systems, Γ_t,s is the
+occurrence rate in single star systems, f_s,g is the geometric transit
+probability in single star systems, and f_s,c is the detection efficiency for
+single star systems.
+
+Under our assumptions, 
+
+  f_s,c = 1,
+
+and
+
+  f_s,g = f_g,
+
+which will cancel out when evaluating Γ_a.
+
+##########
+The issue is that computing N_det_double is complicated by the need to account
+for completeness effects at the same time as the inherent random properties of
+the binary stars.
+
+First, note that the number of detections in double star systems will be the
+sum of the number of detection about primaries, and about secondaries.
+
+Equation (2):
+  <N_det_double> = < N_d Γ_t,d f_d1,g f_d1,c > + 
+                   < 0.475 N_d Γ_t,d w_d2 f_d2,g f_d2,c >
+
+                 = Γ_t,d f_d1,g < N_d f_d1,c > + 
+                   0.475 Γ_t,d w_d2 < N_d f_d2,g f_d2,c >
+
+This is entirely analogous to Eq (1) above. The <...> expectation values are
+needed because the number of double star systems, and their corresponding
+properties, are random variables. The factor of 0.475 is the fraction of
+"desireable stars" that are that are secondaries of binary systems.  (This can
+be made nicer by using occurrence rate densities, but it's really tangential to
+the problem at hand).
+
+You've argued for ignoring the number of detections about secondaries; I'm not
+sure that this is a good idea. However, even if we throw out any detections
+around secondaries as you've advocated, i.e. we assume a universe in which
+w_d2=0, this problem does not go away.
+
+I'm currently stuck trying to evaluate < N_d f_d1,c >.
+(I haven't yet tried to evaluate  < N_d f_d2,g f_d2,c >).
+
+##########
+Why we need to evaluate < N_d f_d1,c > to begin with:
+
+To express the number of detected planets around primaries of binary systems,
+we need < N_d f_d1,c > because it's the probabilistically correct solution, as
+far as I can tell.
+
+In general N_d and f_d1,c are correlated. (E.g., if the draw of stars is such that
+you get only very low mass ratio stars, and no high mass ratio stars, the
+completeness will be higher than "usual").
+
+Thus we need to average over the distribution prob( N_d * f_d1,c ). This means
+we need to find the distribution first.
+
+##########
+What I've done so far:
+
+To recap, we are saying the mass ratio of any given binary star system is a
+random variable drawn from the distribution prob(q|magnitude limited).
+
+I've shown for L~M^{3.5}, where ~ denotes proportionality, that if
+
+  prob(q|volume limited) ~ constant       (if 0.1<q<1)
+
+then in a magnitude limited sample 
+
+  prob(q|magnitude limited) ~ (1 + q^3.5)^1.5       (if 0.1<q<1)
+
+and otherwise 0.
+
+For any given survey, the realized number of double stars is a draw from the
+ensemble of all possible surveys, i.e. N_d is a draw from 
+prob(N_d|magnitude limited).  I've shown
+
+Equation (3)
+  prob(N_d|mag limited) ~ N_d^(2/3) R^(5/2) * (R*N_d^(2/3) - 1)^(-5/7)
+
+for
+  (0.1^(3.5) + 1)^(3/2) R^(-3/2) < N_d < 2^(3/2) R^(-3/2)
+
+and
+  R := (3/(4 pi n_d))^(2/3) * d_max,s^(-2).
+
+Note that R^(-3/2) is the number of stars in single star systems.
+
+This isn't a particularly friendly expression. However it does yield the
+expected value of the number of double star systems,
+
+  <N_d> = 1.59 * N_s * n_d/n_s.
+
+which becomes 1.25*N_s in our G dwarf regime. This is cool -- it shows we can
+analytically get the expected value of the number of double star systems
+observed.
+
+I can write out independent distributions for prob(N_d|mag limited), as above,
+and also for prob(f_d1,c|mag limited), the completeness for primaries in binary
+systems. 
+
+The latter requires noting that the completeness for planets around the
+primaries will be
+
+  f_d1,c = (1+γ_R)^(-3),
+
+because the completeness is the ratio of the maximum distance at which a planet
+can be detected, accounting for dilution, to the chosen maximum _selected_
+distance (which ignored dilution).
+
+Again OFC, γ_R is a random variable, so getting prob(f_d1,c|mag limited)
+requires transforming through the probability distributions.
+
+Using the two independent distributions prob(N_d|mag limited) and
+prob(f_d1,c|mag limited), I can express prob( N_d * f_d1,c ) in terms of an
+integral that I cannot evaluate analytically, or even semianalytically.
+
+The integral involves a polynomial with fractional powers, in which the
+substitution tricks that enable <N_d> to be evaluated do not work.
+
+It takes the form
+
+  prob(N_d * f_d1,c) = integral over f_d1,c, over known bounds, of (integrand),
+
+for
+  integrand ~ ( f_{d1,c}^(-1) R - f_{d1,c}^(-2/3) R - f_{d1,c}^(-1/3) + 1 )^(5/7)
+
+where R = N_s^(-2/3).
+
+##########
+What I think needs to be done
+
+My bet would be that you already think this is too complicated.
+
+I'm not sure we can go much simpler in our assumptions.
+
+If we can, I'd be interested to discuss how.
+
+The main issue is that I can't write out an analytic expression for
+<N_det_double>, because N_d * f_d1,c has a messy distribution, and I need that
+distribution in order to find its expected value. I'm sure 
+N_d * f_d2,g * f_d2,c is messier, and I haven't tried evaluating it yet.
+
+
+One approach might be semianalytic. I can numerically compute 
+prob(N_d * f_d1,c) given the value of N_s, because of the mixed-in R depends of
+the integrand above. I.E. I can find
+
+  prob(N_d * f_d1,c | N_s).
+
+If I did, it might be useful. Perhaps I could marginalize over it? The issue is
+that N_s is set by survey-specific things, which I am trying to avoid.
+
+Maybe the issue though is that the completeness is an inherently
+"survey-specific thing", to the degree that you need to say _something_ about
+the survey's properties in order to include the completeness in any expression
+of the occurrence rate.
+
+Another way to do this might be to throw in the towel on analytics, and to
+numerically assess the following quantities:
+
+1. prob(N_d * f_d1,c)
+2. < N_d * f_d1,c >
+3. prob(N_d * f_d2,g * f_d2,c)
+4. < N_d * f_d2,g * f_d2,c>
+
+I think this would need to be done via full-blown Monte Carlo.
+#2 and #4 should still be expressed in terms of N_s after doing the analytics.
+
+The issue with "full-blown Monte Carlo" is that it also requires saying
+somethign about the survey's properties.

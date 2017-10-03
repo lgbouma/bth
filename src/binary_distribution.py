@@ -320,7 +320,7 @@ if __name__ == '__main__':
     # STELLAR POPULATION #
     ######################
     # Binary fraction. BF = n_d / n_s.
-    BF = 0.45
+    BF = 0.44
     # Bovy (2017) gives n_tot = n_s + n_d. We want the number density of single
     # star systems, n_s, and the number density of double star systems, n_d.
     #n_tot = 4.76e-4 / (u.pc**3)

@@ -6,3 +6,4 @@ jnw_overview_paper*
 *synctex.gz
 *.log
 *aux
+src/prob_curly_?_checks*

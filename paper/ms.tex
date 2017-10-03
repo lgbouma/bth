@@ -144,10 +144,10 @@ $N_\star$ is over-counted by one for every such system.
 
 One might also imagine an apparently-searchable star which in no stellar 
 component is of the desired type.
-For single stars, this may simply be from erroneous stellar parameters.
-In binaries, one might imagine the combined light of two stars somehow making 
-them resemble a single star of the desired type.  We will 
-not consider errors of this type.  We will assume that all the 
+%For single stars, this may simply be from erroneous stellar parameters.
+%In binaries, one might imagine the combined light of two stars somehow making 
+%them resemble a single star of the desired type.  
+We will not consider errors of this type.  We will assume that all the 
 apparently-searchable stars are either single stars of
 the desired type, or binaries in which either the primary or else both 
 components are of the desired type.
@@ -481,7 +481,19 @@ detection distances for a population of single stars and twin binaries:
     (1 + \gamma_R)^{-1} d_{{\rm max},d}.
   \end{equation}
   For $\gamma_R = 1$, this means only 1 in 8 apparently-searchable stars which 
-  are in fact binary systems can yield detectable planets.
+  are in fact binary systems can yield detectable planets (the ratio of 
+  volume in which planets can be detected to the actual selected volume).
+  For a more realistic sample, $\gamma_R \approx 0.1$, and there is an 
+  interesting asymmetry.
+  One finds the completeness for planets which orbit the primary star, 
+  $f_{d1,c}$ to be
+  \begin{equation}
+  f_{d1,c} = (1+\gamma_R)^{-3} \approx 3/4.
+  \end{equation}
+  However, for planets which orbit the secondary star, the completeness is
+  \begin{equation}
+    f_{d2,c} = (1+\gamma_R^{-1})^{-3} \approx 3/4000.
+  \end{equation}  
   
 \end{enumerate}
 
@@ -711,9 +723,9 @@ the denominator remains identical.
 secondaries}
 \label{sec:model_2}
 
-The model of Sec.~\ref{sec:model_1} is of course idealized, but it helps
-for developing intuition.
-We now let the light ratio $\gamma_R = L_2/L_1$ vary across the population 
+The model of Sec.~\ref{sec:model_1} is idealized, but it helps
+develop intuition.
+Now, we let the light ratio $\gamma_R = L_2/L_1$ vary across the population 
 of star systems.
 It does so because the underlying mass ratio $q=M_2/M_1$ varies.
 We keep the primary mass fixed as $M_1$, which is also the mass of all single 
@@ -726,7 +738,7 @@ binary mass ratios in a volume-limited sample is $f(q)\propto q^\gamma$.
 Examining only the binary systems of Rhagavan et al 2010, Fig 16, the 
 distribution is roughly uniform,
 \begin{equation}
-f(q) =
+{\rm prob}(q) =
 \Bigg\{\begin{array}{lr}
 c_q & 0.1 < q \leq 1  \\
 0 & {\rm otherwise},
@@ -735,22 +747,22 @@ c_q & 0.1 < q \leq 1  \\
 \end{equation}
 provided we ignore the peak at high mass ratios for analytic convenience. $c_q 
 = 1/9$ is the normalization.
-We use this latter mass ratio distribution.
+We choose this latter mass ratio distribution.
 
 For the mass-luminosity relation, for analytic convenience we assume 
 $L \propto M^\alpha$, with the lore-value of $\alpha$ being $3.5$.
-As a simple check, we fit lines to mass-luminosity data collected by 
-Torres et al. [2009] for dwarfs earlier than spectral class M, and Benedict 
-et al. [2016] for dwarfs later than spectral class M.
-To convert Benedict et al. [2016]'s reported $M_V$ values to absolute 
-luminosities, we interpolated over E. Mamajek's 
-table\footnote{
+As a simple check, we fit lines to mass-luminosity data\footnote{
+    Data collected by Torres et al. [2009] for dwarfs earlier than 
+    spectral class M, and Benedict et al. [2016] for dwarfs later than 
+    spectral class M.
+    To convert Benedict et al. [2016]'s reported $M_V$ values to absolute 
+    luminosities, we interpolated over E. Mamajek's 
+    table
 	\texttt{pas.rochester.edu/\textasciitilde 
 		emamajek/EEM\_dwarf\_UBVIJHK\_colors\_Teff.txt},
 	downloaded 2017.08.02}.
-In log-log space, we let the intersection point of the lines float, and made 
-various cuts on the data as indicated in Fig~\ref{fig:mass_luminosity}. The 
-fit parameters are available in a footnote\footnote{
+In log-log space, we let the intersection point of the lines float. The 
+resulting fit parameters are available in a footnote\footnote{
 	m lo: 1.8818719873988132~--~
 	c lo: -0.9799647314108376~--~
 	m hi: 5.1540712426599882~--~
@@ -764,6 +776,12 @@ The final addition to our model is that we must assume a stellar mass-radius
 relation.
 This affects the transit probabilities and signal sizes about the 
 secondaries of binary star systems.
+Since again, our main purpose is to develop intuition about observational 
+biases, we approximate this as 
+\begin{equation}
+R\propto M.
+\end{equation}
+\begin{comment}
 [Demircan \& Kahraman 1991]'s empirical fit to eclipsing 
 binary data,
 \begin{equation}
@@ -772,8 +790,7 @@ R = 1.06 M^{0.945}
 \end{equation}
 applies for all the stars in our desired mass range ($M < 1.66M_\odot$, D\&K 
 1991's stated bounds), where each quantity is given in solar units. 
-Since again, our main purpose is to develop intuition about observational 
-biases, we approximate this as $R\propto M$.
+\end{comment}
 
 In passing, we note that while $w_{d2}=1$ was a reasonable assumption in 
 Sec.~\ref{sec:model_1} (since secondaries were identical to primaries), in 
@@ -810,19 +827,20 @@ stars hosts.
 Counting the number of desired stars, $N_s$ is the same as in 
 Sec.~\ref{sec:model_1}. However
 \begin{equation}
-N_d(\gamma_R) = n_d \frac{4\pi}{3} d_{\rm max,d}^3(\gamma_R)
+N_d(\gamma_R) = n_d \frac{4\pi}{3} d_{\rm max,d}^3
 \end{equation}
 for
 \begin{equation}
-d_{\rm max,d}(\gamma_R) =
+d_{\rm max,d} =
 d_{\rm max,s}\times (1+\gamma_R)^{1/2},
 \end{equation}
 where $d_{\rm max,s}$ is given by Eq.~\ref{eq:d_max}.
 
-For a given binary system, $q$, $\gamma_R$, and $d_{\rm 
+For a given binary system, $q$, $\gamma_R$, and thus $d_{\rm 
 	max,d}(\gamma_R)$ are all random variables.
 Since $N_d$ is a function of $d_{\rm max,d}$, 
-the number of double star systems becomes a random variable.
+the number of double star systems becomes a random variable, drawn from the 
+ensemble of all possible transit surveys.
 Applying the chain rule for probability density functions, the distribution 
 function for the number of binary systems,
 ${\rm prob}(N_d)$, can be written 
@@ -831,6 +849,7 @@ ${\rm prob}(N_d)$, can be written
 \left| \frac{{\rm d}q}{{\rm d}\gamma_R}  \right|
 \left| \frac{{\rm d}\gamma_R}{{\rm d}d_{\rm max,d}}  \right|				
 \left| \frac{{\rm d}d_{\rm max,d}}{{\rm d}N_d}  \right|.
+\label{eq:prob_Nd_raw}
 \end{equation}
 
 \paragraph{Necessary aside on biases in mass ratio distributions}
@@ -840,8 +859,8 @@ ${\rm prob}(N_d)$, can be written
 		\includegraphics[scale=.8]{figures/joint_prob_r_q.pdf}
 	\end{center}
 	\caption{The joint probability distribution of a binary star's position and 
-		mass ratio in a magnitude-limited sample. This plot assumes a different 
-		$M(L)$ relation than previous plots: $L=M^3$. Note that the marginalized 
+		mass ratio in a magnitude-limited sample. This plot assumes $L\propto 
+		M^{3.5}$. Note that the marginalized 
 		mass ratio distribution is uniform at any given distance.}
 	\label{fig:joint_prob_r_q}
 \end{figure}
@@ -894,39 +913,36 @@ Explicitly, using `ml' as a subscript for `magnitude-limited',
 \begin{equation}
 {\rm prob}_{\rm ml}(r,q) = {\rm prob}(q|r){\rm prob}_{\rm ml}(r),
 \end{equation} 
-where ${\rm prob}(q|r)$ is given by Eq.~\ref{eq:mass_ratio}, and 
-\begin{align}
-{\rm prob}_{\rm ml}(r) &= \int_{0}^{1} {\rm prob}_{\rm ml}(r|q)\,{\rm 
-	prob}(q)\,{\rm d}q
-\\
-&= \int_{0.1}^{1} \frac{1}{3} \frac{r^2}{d_{\rm max,d}^3(q)}\,{\rm d}q
-\quad {\rm if\ }r<d_{\rm max}(q),
-\end{align}
+where ${\rm prob}(q|r)$ is given by Eq.~\ref{eq:mass_ratio}.
+One can show
+\begin{equation}
+{\rm prob}_{\rm ml}(r,q) \propto r^2 \quad{\rm if}\ r<d_{\rm max,d}(q)\ {\rm 
+and}\ 0.1<q<1, 
+\end{equation}
 and otherwise zero. The resulting joint probability distribution is plotted in 
 Fig.~\ref{fig:joint_prob_r_q}.
-
 Marginalizing the joint distribution over distance, and assuming $L\propto 
-M^{3.5}$,
+M^\alpha$, one finds
 \begin{align}
-{\rm prob}_{\rm ml}(q) &= 
-\int_{0}^{d_{\rm max}(q)} {\rm prob}_{\rm ml}(r,q) \,{\rm d}r \\
-&= \mathcal{Z}\cdot (1+q^{7/2})^{3/2}\quad {\rm if\ }0.1<q\leq 1,
+{\rm prob}_{\rm ml}(q) \propto (1+q^\alpha)^{3/2}\quad {\rm if\ 
+}0.1<q\leq 1,
 \label{eq:pdf_q_mag_limited}
 \end{align}
-and otherwise 0, for $\mathcal{Z}$ the appropriate normalization constant.
+and otherwise 0.
 This marginalized distribution~--~the distribution function of mass ratios for 
 binaries in a magnitude-limited sample~--~is plotted in 
 Fig.~\ref{fig:q_distribn_mag_limited}.
+Reworded, the probability of drawing a binary of mass ratio 
+$q$ in a magnitude-limited sample scales as $d_{\rm max,d}^3(q)$.
 
-More correctly then, we must write
+Applying Eq.~\ref{eq:prob_Nd_raw} with the correct magnitude-limited 
+distributions gives
 \begin{equation}
-{\rm prob}(N_d) = {\rm prob_{ml}}(q(\gamma_R)) 
-\left| \frac{{\rm d}q}{{\rm d}\gamma_R}  \right|
-\left| \frac{{\rm d}\gamma_R}{{\rm d}d_{\rm max,d}}  \right|				
-\left| \frac{{\rm d}d_{\rm max,d}}{{\rm d}N_d}  \right|.
+{\rm prob}(N_d) \propto N_d^{2/3} 
+\left( \left(\frac{N_d n_s}{N_s n_d}\right)^{2/3} - 1
+\right)^{\frac{1-\alpha}{\alpha}}
 \end{equation}
-
-Doing some algebra, and assuming $\gamma_R = q^\alpha$, this can be shown to be
+\begin{comment}
 \begin{align}
 {\rm prob}(N_d) \propto N_d^{2/3} &\left(\frac{3}{4\pi 
 	n_d}\right)^{5/3} d_{\rm max,s}^{-5} \ \nonumber\\
@@ -934,9 +950,11 @@ Doing some algebra, and assuming $\gamma_R = q^\alpha$, this can be shown to be
 	\left(\frac{3 N_d}{4\pi n_d}\right)^{2/3}  d_{\rm max,s}^{-2} - 1
  \right]^{\frac{1-\alpha}{\alpha} }
 \end{align}
+\end{comment}
 over the interval
 \begin{equation}
-N_d^{\rm lower} = \frac{4 \pi n_d}{3} (\sqrt{0.1^3 + 1} d_{\rm max,s})^3,
+N_d^{\rm lower} = \frac{4 \pi n_d}{3} (\sqrt{(0.1)^\alpha + 1} d_{\rm 
+max,s})^3,
 \end{equation}
 \begin{equation}
 N_d^{\rm upper} = \frac{4 \pi n_d}{3} (\sqrt{2}d_{\rm max,s})^3,
@@ -957,7 +975,9 @@ Fig.~\ref{fig:gammaR_distribn_mag_limited}.
 
 The reason we derived all this is that we wanted to know the number of 
 searchable binary stars.
-The expected value for the number of double star systems in the sample is
+For any given realization of the survey, this number is a random draw.
+Computing the \textit{expected value} for the number of double star systems in 
+the sample,
 \begin{equation}
 \langle N_d \rangle = \int_{0}^{\infty} N_d\, {\rm prob}(N_d) \,{\rm d}N_d.
 \end{equation}
@@ -967,9 +987,12 @@ Letting $\alpha=3.5$, this can be expressed as
 \int_{0.1^{7/2} + 1}^{2} u^3 (u-1)^{-5/7} \,{\rm d}u ,
 \label{eq:integral_Nd}
 \end{equation}
-where non-dimensional constants are not shown, and $\mathcal{R}$ is defined as
+where non-dimensional constants are not shown,
+$u = \mathcal{R} N_d^{2/3}$,
+and $\mathcal{R}$ is defined as
 \begin{equation}
-\mathcal{R} \equiv \left(\frac{3}{4\pi n_d}\right)^{2/3} d_{\rm max,s}^{-2}.
+\mathcal{R} \equiv \left(\frac{3}{4\pi n_d}\right)^{2/3} d_{\rm max,s}^{-2}
+= \left(\frac{n_s}{N_s n_d}\right)^{2/3}.
 \end{equation}
 The integral in Eq.~\ref{eq:integral_Nd} has a closed-form solution in terms 
 of polynomials. Once evaluated, and after 
@@ -979,8 +1002,7 @@ normalizing ${\rm prob}(N_d)$, to 4 significant digits it gives
 \end{equation}
 This gives the useful expression
 \begin{align}
-\frac{\langle N_d \rangle}{N_s} &= 1.590\, \frac{n_d}{n_s} \\
-&= 1.590 \left(\frac{{\rm BF}}{1-{\rm BF}}\right).
+\frac{\langle N_d \rangle}{N_s} &= 1.590\, \frac{n_d}{n_s}
 \end{align}
 Taking the sun-like star binary fraction of ${\rm BF} = 0.44$, this gives
 $\langle N_d \rangle / N_s = 1.25$.
@@ -992,35 +1014,42 @@ previously 1, it is now $\langle \gamma_R \rangle \approx 0.27$.
 
 \paragraph{What is the true occurrence rate?}
 
-Returning to the original question, the total number of stars in the sample is
+Returning to the original question, the total number of stars for any given 
+realization of the survey is
 \begin{equation}
-\langle N_{\rm stars,tot} \rangle = N_s + 2 \langle N_d \rangle.
+N_{\rm stars,tot} = N_s + 2 N_d.
 \end{equation}
-For stars in binary systems, only a fraction of them are of the desired type.
-Defining the ``desired type'' to be $0.7<M_\star/M_\odot<1.3$, this can be 
-evaluated by integrating Eq.~\ref{eq:pdf_q_mag_limited} from $0.7M_\odot$ to 
-$M_\odot$.
-The result is that $47.5\%$ of secondaries are of the desired type.
-Thus the expected number of stars of the desired type in the sample is
+Since $N_d$ is a random number, so is the total number of stars.
+By assumption all primaries are of the desired type, but for secondaries only 
+a fraction $f_{\rm desired}$ of them are of the desired type:
 \begin{equation}
-\langle N_{\rm stars} \rangle = N_s + 1.475 \langle N_d \rangle.
+N_{\rm stars} = N_s + (1+f_{\rm desired}) N_d.
 \end{equation}
+Explicitly,
+\begin{equation}
+f_{\rm desired} = \frac{\int_{M_{\rm min}}^{M_{\rm max}} {\rm prob}_{\rm 
+ml}(q)\,{\rm d}q }
+{\int_{0.1M_\odot}^{M_\odot} {\rm prob}_{\rm 
+        ml}(q)\,{\rm d}q}.
+\end{equation}
+For instance, if we define the ``desired type'' to be 
+$0.7<M_\star/M_\odot<1.3$, we find $f_{\rm desired}\approx0.475$.
 
-The number of planets of the desired type is then
+For a given survey draw, the number of planets of the desired type is 
+then
 \begin{equation}
-\langle N_{\rm planets} \rangle = 
-\Gamma_{t,s}N_s + \Gamma_{t,d}\langle N_d\rangle + 
-0.475\Gamma_{t,d}w_{d2} \langle N_d\rangle,
+N_{\rm planets} = 
+\Gamma_{t,s}N_s + \Gamma_{t,d} N_d + 
+f_{\rm des}\Gamma_{t,d}w_{d2} N_d,
 \end{equation}
-and the true occurrence rate is
+and the drawn ``true occurrence rate'' is
 \begin{align}
-\Gamma_t &= \frac{\langle N_{\rm planets} \rangle }{\langle N_{\rm stars} 
-\rangle} \\
+\Gamma_t &= \frac{ N_{\rm planets}  }{ N_{\rm stars} } \\
 \Gamma_t &= 
 \frac{
-	\Gamma_{t,s}N_s + (1+0.475w_{d2})\Gamma_{t,d}\langle N_d\rangle
+	\Gamma_{t,s}N_s + (1+f_{\rm desired}w_{d2})\Gamma_{t,d} N_d
 	}{
-	N_s + 1.475 \langle N_d \rangle
+	N_s + (1+f_{\rm desired}) N_d
 	}.
 \end{align}
 
@@ -1036,11 +1065,18 @@ with mass $0.7<M_\star/M_\odot < 1.3$ (with corresponding stellar radii and
 luminosities).
 They detected $N_{\rm det}$ transit signals that appear to be from planets of 
 this desired type.
-The occurrence rate they then find, {\it i.e.} the number of planets divided 
-by number of ``stars'' (really, stellar systems) is
+The occurrence rate they then find, {\it i.e.} the apparent number of planets 
+divided by the apparent number of ``stars'' (really, stellar systems) is
+\begin{comment}
 \begin{equation}
 \Gamma_{\rm a } = \frac{N_{\rm det}}{N_s + N_d} \times \frac{1}{f_g}.
 \end{equation}
+\end{comment}
+\begin{equation}
+\Gamma_{\rm a } =
+\frac{N_{\rm det}}{N_s + N_d} \times \frac{1}{f_{s,g}}.
+\end{equation}
+
 
 Unlike in Sec.~\ref{sec:model_1}, where the observer saw signals of only two 
 apparent radii (undiluted and diluted), they will now find signals with a 
@@ -1060,12 +1096,12 @@ R_{p,{\rm a}} = R_p
 \,\mathcal{D}^{1/2}.
 \end{equation}
 
-The total number of planet detections of the desired type is 
+The drawn number of planet detections of the desired type is 
 \begin{equation}
-\langle N_{\rm det}\rangle = 
+N_{\rm det} = 
 N_{{\rm det},s} 
 + 
-\langle N_{{\rm det},d}\rangle.
+N_{{\rm det},d}.
 \end{equation}
 As in Sec.~\ref{sec:model_1},
 \begin{equation}
@@ -1082,48 +1118,83 @@ and $f_{s,c}=1$.
 
 For planets detected in binary systems, only a fraction will be ``of the 
 desired type'', since only a fraction of the stars are of the desired type.
-This is the same factor $f_{\rm desired}$ that we have shown is 0.475. Thus
+This is the same factor $f_{\rm desired}$ as previously discussed. Accounting 
+for this and the independent geometric and completeness probabilities,
 \begin{equation}
-\langle N_{{\rm det},d} \rangle
+N_{{\rm det},d}
 = 
-(1+0.475w_{d2}) \langle N_d\rangle \Gamma_{t,d} f_{d,g} f_{d,c}.
+N_d \Gamma_{t,d} (f_{d1,g}f_{d1,c} + f_{\rm desired}w_{d2}f_{d2,g}f_{d2,c}).
 \label{eq:N_det_d_model2}
 \end{equation}
-Now $(1+0.475w_{d2}) \langle N_d\rangle \Gamma_{t,d}$ is the number of 
-planets of the desired type in the double star systems of the sample.
-The geometric transit probability $f_{d,g}$ and completeness $f_{d,c}$ require 
-more careful evaluation.
-First, separate them into their sub-components about primaries ``d1'' and 
-secondaries ``d2'':
+
+For any given system,
 \begin{align}
-\langle N_{{\rm det},d} \rangle
-= 
-\langle N_d\rangle \Gamma_{t,d} ( f_{d1,g} f_{d1,c} 
-+
-0.475w_{d2}  f_{d2,g} f_{d2,c}
-)
+f_{d1,c} &= (1+\gamma_R)^{-3} \\
+f_{d1,g} &= f_{s,g} \\
+f_{d2,c} &= (1+\gamma_R^{-1})^{-3} \\
+f_{d2,g} &= f_{s,g}q^{2/3}
 \end{align}
 
+\subsection{Errors on derived occurrence rates}
 
-The geometric transit probability $f_{d,g}=R_1/a$ 
-for our twin-binary survey, and $f_{d,c}=1/8$ by the geometric argument 
-presented in the initial discussion of limiting distances.
+Recall $X_\Gamma = \Gamma_t / \Gamma_a$. Let $f_{\rm desired} = f_{\rm d}$ for 
+brevity.
+Combining the above results, for any draw from the ensemble of transit 
+surveys the necessary correction to the derived occurrence rate is
+\begin{align}
+X_\Gamma =
+&\frac{\Gamma_{t,s}N_s + (1+f_{\rm d}w_{d2})\Gamma_{t,d}N_d }{N_s + (1+f_{\rm 
+d})N_d}
+\nonumber \\
+&\times
+\frac{(N_s + N_d)f_{s,g}}{N_s \Gamma_{t,s} f_{s,g} + N_d \Gamma_{t,d}
+      (f_{d1,g}f_{d1,c} + f_{\rm d}w_{d2}f_{d2,g}f_{d2,c})  }.
+\end{align}
+Letting $\beta = N_d/N_s$, 
+\begin{align}
+X_\Gamma =
+&\frac{1+\beta}{1 + \beta(1+f_{\rm d})} 
+\nonumber \\
+&\times
+\frac{ 1+ \beta (\Gamma_{t,d}/\Gamma_{t,s}) (1+f_{\rm d}w_{d2}) }
+{1 +\beta(\Gamma_{t,d}/\Gamma_{t,s})(f_{d1,c} + f_{\rm 
+d}w_{d2}f_{d2,g}f_{d2,c}/f_{s,g})}.
+\end{align}
 
-The occurrence rate this astronomer derives for planets of assumed 
-radius $R_p$ orbiting stars thought to be of the desired type is then
+One typically assumes that $\Gamma_{t,s}=\Gamma_{t,d}$, and that the 
+fraction of secondaries of the desired type with planets, $w_{d2}$ can be set 
+to 1.
+If so,
+\begin{align}
+X_\Gamma =
+&\frac{1+\beta}
+{1 +\beta(f_{d1,c} + f_{\rm d}f_{d2,g}f_{d2,c}/f_{s,g})}.
+\label{eq:model2_xgamma_simple}
+\end{align}
+
+If $\gamma_R \ll 1$, $f_{d1,c}\approx 1$, $f_{d2,c}\ll f_{d1,c}$, and the 
+number of detections from secondaries of binary systems is negligible.
+In this limit, binarity does not affect the derived occurrence rate:
 \begin{equation}
-\Gamma_{\rm a} = \frac{\Gamma_{t,s}N_s}{N_s + N_d}.
+X_\Gamma = 1 \quad ({\rm limit\ of}\ \gamma_R \ll 1).
 \end{equation}
 
+To assess whether it is reasonable to take this limit, we want the mean
+value of $X_\Gamma$, or the median, or else some other summary statistic.
+Recall that all the terms in Eq.~\ref{eq:model2_xgamma_simple} are
+random variables, and note that they are inter-dependent.
+This latter fact impedes analytic progress.
 
-\subsection{Errors on derived occurrence rates for Model \#2}
+Running a Monte Carlo simulation in which we fix the planet and primary star 
+properties, draw the binary mass ratio from Eq.~\ref{eq:pdf_q_mag_limited}, 
+and take 
+the luminosity as $L\propto M^{3.5}$, we find 
+a mean of $\langle X_\Gamma \rangle ={\bf VALUE HERE}$,
+and a median of ${\rm median}(X_\Gamma) ={\bf VALUE HERE}$.
+The distribution is shown in Figure BLAH.
 
 
-
-
-
-
-
+\begin{comment}
 \subsection{How many planets are in the sample?}
 
 The mean number of planets in the sample is
@@ -2154,6 +2225,7 @@ This gives a relative percentage error of $\delta\Gamma_{{\rm D},R_p} \equiv
 	\label{fig:error_vs_occrate}
 \end{figure}
 
+\end{comment}
 
 
 
