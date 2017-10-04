@@ -1179,19 +1179,27 @@ In this limit, binarity does not affect the derived occurrence rate:
 X_\Gamma = 1 \quad ({\rm limit\ of}\ \gamma_R \ll 1).
 \end{equation}
 
-To assess whether it is reasonable to take this limit, we want the mean
+For the stellar population described in this model, with a mean light ratio 
+$\langle \gamma_R \rangle \approx 0.27$, this limit is not strictly applicable.
+To assess the importance of the error, we want the mean
 value of $X_\Gamma$, or the median, or else some other summary statistic.
 Recall that all the terms in Eq.~\ref{eq:model2_xgamma_simple} are
 random variables, and note that they are inter-dependent.
-This latter fact impedes analytic progress.
+This latter fact impedes us from analytically expressing these 
+descriptive statistics.
 
 Running a Monte Carlo simulation in which we fix the planet and primary star 
 properties, draw the binary mass ratio from Eq.~\ref{eq:pdf_q_mag_limited}, 
 and take 
 the luminosity as $L\propto M^{3.5}$, we find 
-a mean of $\langle X_\Gamma \rangle ={\bf VALUE HERE}$,
-and a median of ${\rm median}(X_\Gamma) ={\bf VALUE HERE}$.
-The distribution is shown in Figure BLAH.
+a mean of 
+\begin{equation}
+\langle X_\Gamma \rangle =1.291\quad ({\rm Monte\ Carlo\ result}),
+\end{equation}
+and a median that is essentially the same.
+This value is comparable to what one would guess using the analytic results 
+for $\langle N_d \rangle / N_s$ to substitute $\beta$, and $\gamma_R$ to 
+compute $f_{d1,c}$.
 
 
 \begin{comment}

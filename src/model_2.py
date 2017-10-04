@@ -108,7 +108,7 @@ if __name__ == '__main__':
     #############################
     # !!! BEGIN MONTE CARLO !!! #
     #############################
-    for seed in np.arange(int(4e2),int(5e2),1):
+    for seed in np.arange(int(2e3),int(3e3),1):
 
         ################################################################
         # BEGIN OBNOXIOUS PARAMETERS NEEDED FOR MONTE CARLO SIMULATION #
