@@ -42,5 +42,22 @@ ax.text(
 ax.set_ylabel('prob')
 f.savefig('tests/dist_X_Gamma.pdf')
 
+
+plt.close('all')
+import seaborn as sns
+f,ax = plt.subplots()
+sns.distplot(df['X_Γ_upperlimit'], bins=15, kde=True, norm_hist=True, ax=ax)
+pd.set_option('precision',3)
+txt = repr(df['X_Γ_upperlimit'].describe())
+ax.text(
+        0.96, 0.96, txt,
+        horizontalalignment='right',
+        verticalalignment='top',
+        transform=ax.transAxes, fontsize='small'
+        )
+ax.set_ylabel('prob')
+f.savefig('tests/dist_X_Gamma_upperlimit.pdf')
+
+
 pd.set_option('precision',5)
 print(df.describe())

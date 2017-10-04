@@ -108,7 +108,7 @@ if __name__ == '__main__':
     #############################
     # !!! BEGIN MONTE CARLO !!! #
     #############################
-    for seed in np.arange(int(2e3),int(3e3),1):
+    for index, seed in enumerate(np.arange(int(8e3),int(9e3),1)):
 
         ################################################################
         # BEGIN OBNOXIOUS PARAMETERS NEEDED FOR MONTE CARLO SIMULATION #
@@ -197,6 +197,30 @@ if __name__ == '__main__':
 
         # impose magnitude cut.
         doubles = vl[vl['F'] > F_lim.cgs.value]
+
+        if index==0:
+            import matplotlib.pyplot as plt
+            import seaborn as sns
+            from scipy.integrate import trapz
+
+            f,ax=plt.subplots()
+            sns.distplot(doubles['q'], ax=ax, kde=False, norm_hist=True)
+            q = np.arange(0.1,1+1e-3,1e-3)
+            prob_ml_q = (1+q**(3.5))**(3/2)
+            prob_ml_q /= trapz(prob_ml_q, q)
+            ax.plot(q, prob_ml_q)
+            f.savefig('tests/doubles_q_distribution.pdf')
+
+            plt.close('all')
+            f,ax=plt.subplots()
+            sns.distplot(doubles['γ_R'], ax=ax, kde=False, norm_hist=True)
+            γ_R = np.arange(0.1**3.5,1+1e-3,1e-3)
+            prob_ml_γR = (1+γ_R)**(3/2) * γ_R**(-5/7)
+            prob_ml_γR /= trapz(prob_ml_γR, γ_R)
+            ax.plot(γ_R, prob_ml_γR)
+            ax.set_yscale('log')
+
+            f.savefig('tests/doubles_gammaR_distribution.pdf')
 
         N_d = int(len(doubles))
 
@@ -302,7 +326,12 @@ if __name__ == '__main__':
         Γ_t = N_planets/N_stars
         Γ_a = (N_det_s + N_det_d)/(N_s + N_d) * (1/f_sg[0])
 
+        # the above is in the limit of counting all planets in binaries in the
+        # occ rate. the below does not count any of them.
+        Γ_a_upperlimit = N_det_s/(N_s+N_d)*(1/f_sg[0])
+
         X_Γ = Γ_t/Γ_a
+        X_Γ_upperlimit = Γ_t/Γ_a_upperlimit
 
         ######################
         # INTERESTING OUTPUT #
@@ -319,6 +348,8 @@ if __name__ == '__main__':
                    'Γ_a':Γ_a,
                    'X_Γ':X_Γ,
                    'f_sg':f_sg[0],
+                   'Γ_a_upperlimit':Γ_a_upperlimit,
+                   'X_Γ_upperlimit':X_Γ_upperlimit,
                    'm_lim':m_lim
                    }
 

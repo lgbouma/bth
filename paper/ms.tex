@@ -91,7 +91,7 @@ transit signals that appear to be from planets of the desired type.  They
 calculate the number of stars $N_\star$ that appear to be searchable for the 
 desired type of planet, and also of the desired stellar type.  These 
 ``searchable stars'' are the points on the sky for which they think planets 
-are observed with 100\% detection efficiency. Accounting for the geometric 
+are observed with 100\% detection efficiency. Correcting for the geometric 
 transit probability $f_{\rm g}$, they compute an apparent occurrence rate 
 $\Gamma_{\rm a}$:
 
@@ -111,9 +111,9 @@ type often exist in binaries.
 We assume for simplicity that all binaries in the transit survey are 
 spatially unresolved.
 
-One immediate complication is that~--~due to dynamical stability or some 
-aspect of planet formation~--~ the occurrence rate of planets of the desired 
-type may differ between binary and single-star systems.
+An immediate complication is that~--~due to dynamical stability or some 
+aspect of planet formation~--~ the occurrence rate of planets may differ 
+between binary and single-star systems.
 If ``occurrence rate'' is defined purely as the mean number of planets within 
 set radius and period bounds per star in a given interval $\Delta M_\star, 
 \Delta R_\star, \Delta L_\star$, it must include an implicit marginalization 
@@ -186,57 +186,49 @@ system is correctly counted as ``not searchable'', no correction to $N_{\rm
 det}$ is needed.
 \end{enumerate}
 
-Errors (1)-(3) in calculating $N_{\rm det}$ above broadly fall under ``radius 
-misclassification'', while error (4) falls under ``completeness 
-miscalculation''.
-Note that in the above list, a planet cannot be both ``of desired type'' and 
-``orbiting a star of undesired type''. We ignore this type of error for 
-analytic convenience, but \texttt{reintroduce it later during numerics}.
-
+Errors (1)-(3) in calculating $N_{\rm det}$ can be broadly described as 
+``radius misclassification'', while error (4) is an error in the assumed 
+survey completeness.
+%Note that in the above list, a planet cannot be both ``of desired type'' and 
+%``orbiting a star of undesired type''. We ignore this type of error for 
+%analytic convenience, but \texttt{reintroduce it later during numerics}.
 
 
 Our approach is step-by-step starting from a very simple scenario.
-\begin{itemize}
-\item We consider a universe consisting of only the desired types of stars and
-planets.  We give analytic expressions for eta(apparent)/eta(true) taking
-into account all applicable errors.
-%
-\item We allow for a distribution of the mass ratio $dn/dq \propto q^\gamma$, 
+In Sec.~\ref{sec:model_1} we first consider a universe consisting of only the 
+desired types of stars and planets.  
+We give an analytic expression for $\Gamma_{\rm a}/\Gamma_{\rm t}$, the ratio 
+of the true to apparent occurrence rate, taking into account all applicable 
+errors.
+In Sec.~\ref{sec:model_2} we allow for a distribution of the mass ratio $dn/dq 
+\propto q^\gamma$, 
 and a concurrent power-law distribution in the luminosity ratio, $dn/dL 
 \propto L^\beta$. 
+We give expressions for $\Gamma_{\rm a}/\Gamma_{\rm t}$, and evaluate them 
+numerically for the case of planets orbiting Sun-like dwarf stars.
 %We assume the secondary is not of the desired stellar type.
 %NOTE: LB notes that yes, while analytically simple, it doesn't make sense. 
 %For the twin binaries case, what possible reason could there be for the 
 %secondary to not be of the desired stellar type? Similar for the high mass 
 %ratio binaries -- the stars are ~identical.
-We give analytic expressions for eta(apparent)/eta(true) taking into 
-account errors of type 2.
-%NOTE: empirical L(M) maybe OK for numerics -- not for analytics.
-%
-\item We allow for a nonzero tolerance $\Delta R_p$ in the planet radius, and 
-tolerance $\Delta L_\star$ in stellar luminosity, to qualify as "desirable".  
-We recalculate eta(apparent)/eta(true).
-(LB: I think this has to become numerical to actually evaluate the occurrence
-rate correction factor, $X_\Gamma$.)
-%
-\item We assume the planets have a power-law radius distribution, $d\eta/dR_p
-\propto r^\alpha$.  We calculate the apparent $d\eta/dR_p$ taking into account 
-errors of type 1-3.  We do so for stars of the desired type within some 
-tolerance dL.
-%
-\item Everything up to now is more-or-less analytic, perhaps supported by 
-numerical checking or numerical integration. At the end we summarize the 
-radius-dependence of the occurrence rate shifting.
-"Accounting only for dilution \& its numerator effect, big radius planets have
+In Sec.~\ref{sec:model_3}, 
+we assume the planets have a power-law radius distribution, ${\rm 
+d}N_p/{\rm d}R_p\propto R_p^\alpha$.  We calculate the 
+effects of binarity on the apparent $\Gamma_{\rm a}(R_p)$ taking into account 
+all relevant errors.
+Accounting only for dilution \& its numerator effect, big radius planets have
 underestimated inferred rates, the smallest radius planets have overestimated
-inferred rates, and the in-between radius planets are in-between"
+inferred rates, and the in-between radius planets are in-between.
+One consequence is that the claimed HJ occurrence rate discrepancy between 
+radial velocity \& transit surveys gets much weaker when accounting for 
+binarity.
+In Sec.~\ref{sec:discussion} we summarize these models and discuss their 
+utility in interpreting transit surveys.
 
-\end{itemize}
-
+\begin{comment}
 We then dig in, w/ numerics, to what happens with different assumed
 completeness vs Rp functions.
-We note that the the claimed HJ occ rate discrepency btwn RV \&
-transit surveys gets much weaker when accounting for binarity.
+
 This is b/c the more believable occ rate papers do not heavily rely on their
 completeness calibration -- they know they're complete.
 This is a much more understandable regime than the wonky completeness estimate 
@@ -264,7 +256,7 @@ wrong normalization. Important if we ever manage to convince ourselves
 
 In passing, at the end, we mention how this changes attempts at eta-Earth 
 measurements.
-
+\end{comment}
 
 \begin{comment}
 UNSOLVED PROBLEMS W/ THE NUMERICAL MODEL-
@@ -395,30 +387,27 @@ So YES, need to correct this throughout.
 \section{Model \#1: fixed stars, fixed planets, fixed light-ratio binaries}
 \label{sec:model_1}
 
-Stellar binarity introduces convoluted effects on transit surveys.
-To disentangle them, imagine the following idealized survey.
-
-You observe the entire sky for some duration with a detector of known 
-area and bandpass. Your detector is photon-noise limited.
-You are interested only in detecting planets of radius $R_p$, and orbital 
-period $P$. For instance, $R_p=R_\oplus$, $P={\rm 1\ year}$.
-You are only interested in detecting them around stars of radius $R_1$, 
-and luminosity $L_1$. For instance, G2V dwarfs.
-You can only detect your desired type of planet when you observe signals 
-with ${\rm S/N} > {\rm (S/N)_{min}}$.
+Consider the following idealized survey.
+An astronomer observes the entire sky for some duration with a detector of 
+known area and bandpass.
+The detector is photon-noise limited.
+They are interested only in detecting planets of radius $R_p$, and orbital 
+period $P$. %For instance, $R_p=R_\oplus$, $P={\rm 1\ year}$.
+They are only interested in detecting them around stars of radius $R_1$, 
+and luminosity $L_1$. %For instance, G2V dwarfs.
+They detect the desired type of planet when they observe signals 
+above some signal-to-noise floor.
 For a photon-noise limited survey, this minimum signal to noise ratio is 
 equivalent to a minimum flux required for detection, $F_{\rm min}$.
-
-You get funding, and perform the S/N-limited survey. 
-You observe all the ``points'' on-sky with apparent 
-magnitude $m < m_{\rm min}$, or equivalently with energy flux in your bandpass 
-greater than some limit $F > F_{\rm min}$.
-All planets with ${\rm S/N} > {\rm (S/N)_{min}}$ are detected. The rest are 
-not.
-
-You now wish to derive an occurrence rate for planets of radius $R_p$ and 
+Therefore they observe all of the ``points'' on-sky with apparent 
+magnitude $m < m_{\rm min}$, or equivalently with energy flux in their 
+bandpass greater than the limiting flux $F > F_{\rm min}$.
+After detecting all planets with ${\rm S/N} > {\rm (S/N)_{min}}$, they now 
+wish to derive an occurrence rate for planets of radius $R_p$ and 
 orbital period $P$.
-Assume your universe is a universe in which:
+
+Assume this astronomer lives in a universe in which the following assumptions 
+hold.
 \begin{itemize}
 	\item The true population of ``points'' (stellar systems, all unresolved) 
 	comprises only single and double star systems. Single star systems have 
@@ -428,7 +417,7 @@ Assume your universe is a universe in which:
 	(1+\gamma_R)L_1$, for $\gamma_R = L_2/L_1$ the ratio of the luminosity of 
 	the secondary to the primary. 
 	In this section, $\gamma_R=1$ across the population 
-	of star systems~--~all binaries are assumed to be twin systems.
+	of star systems~--~all binaries are assumed to be twins.
 	The ratio of the number density of binary systems and the number density of 
 	all systems in a volume-limited sample is the binary fraction\footnote{The 
 	binary fraction is equivalent to the multiplicity fraction if there are 
@@ -453,58 +442,59 @@ Assume your universe is a universe in which:
 \end{itemize}
 
 The assumption of [Pepper et al, 2003] in a very similar context was that the 
-observer correctly pre-selects all of the ``searchable stars''.
+observer can correctly pre-select all of the ``searchable stars''.
 This simplification would allow the observer to ignore 
 completeness effects when deriving occurrence rates, since their completeness 
 is 100\%.
 
-The above approach ignores incompleteness for binary systems.
-If we set the limiting flux to give 100\% completeness for single stars, we 
-will unwittingly select binaries near that flux limit, for which dilution 
-will push transit signals below the detection threshold.
-This is because a flux limit maps onto three distinct maximum 
-detection distances for a population of single stars and twin binaries:
-\begin{enumerate}
-\item $d_{{\rm max},s}$: the maximum distance out to which the desired type 
-	of planet is detectable around single stars.
-	These are the selected ``searchable, single stars''.
-%
-\item $d_{{\rm max},d}$: the maximum distance out to which double stars
-  are selected (down to the same minimum flux as that defining $d_{{\rm 
-  max},s}$). 
-  This is different from $d_{{\rm max},d}^{\rm p}$, the maximum
-  distance out to which planets are detectable around double stars. For a 
-  population with fixed  $\gamma_R$, since ${\rm S/N} \propto \mathcal{D} 
-  L^{1/2} d^{-1}$,
-  \begin{equation}
-    d_{{\rm max},d}^{\rm p} = (1 + \gamma_R)^{-1/2} d_{{\rm max},s} = 
-    (1 + \gamma_R)^{-1} d_{{\rm max},d}.
-  \end{equation}
-  For $\gamma_R = 1$, this means only 1 in 8 apparently-searchable stars which 
-  are in fact binary systems can yield detectable planets (the ratio of 
-  volume in which planets can be detected to the actual selected volume).
-  For a more realistic sample, $\gamma_R \approx 0.1$, and there is an 
-  interesting asymmetry.
-  One finds the completeness for planets which orbit the primary star, 
-  $f_{d1,c}$ to be
-  \begin{equation}
-  f_{d1,c} = (1+\gamma_R)^{-3} \approx 3/4.
-  \end{equation}
-  However, for planets which orbit the secondary star, the completeness is
-  \begin{equation}
-    f_{d2,c} = (1+\gamma_R^{-1})^{-3} \approx 3/4000.
-  \end{equation}  
-  
-\end{enumerate}
+However, any signal-to-noise limited survey of a population that includes 
+binaries cannot ignore incompleteness.
+%If we set the limiting flux to give 100\% completeness for single stars, we 
+%will unwittingly select binaries near that flux limit, for which dilution 
+%will push transit signals below the detection threshold.
+This is because any given flux limit maps onto three distinct ``maximum 
+distances'' for a population of single stars and twin binaries.
+First, there is $d_{{\rm max},s}$: the maximum distance out to which the 
+desired type of planet is detectable around single stars. Typically this is 
+set to be the distance out to which stars in a SNR-limited survey are 
+selected, since these are the ``searchable stars''.
+Using the same minimum flux as that defining $d_{{\rm max},s}$, double stars 
+are then selected out to a larger limiting distance, $d_{{\rm 
+max},d}$~--~effectively a Malmquist bias.
 
+However, the distance out to which double stars are {\it selected} is 
+different from the distance $d_{{\rm max},d}^{\rm p}$ out to which planets can 
+be {\it detected} (around the primary of a double star system).
+For a population with fixed  $\gamma_R$, since ${\rm S/N} \propto \mathcal{D} 
+L^{1/2} d^{-1}$,
+\begin{equation}
+d_{{\rm max},d}^{\rm p} = (1 + \gamma_R)^{-1/2} d_{{\rm max},s} = 
+(1 + \gamma_R)^{-1} d_{{\rm max},d}.
+\end{equation}
+For $\gamma_R = 1$, this means only 1 in 8 apparently-searchable stars which 
+are in fact binary systems can yield detectable planets (the ratio of 
+volume in which planets can be detected to the actual selected volume).
+For a more realistic sample, $\gamma_R \approx 0.1$, and there is an 
+interesting asymmetry.
+One finds the completeness for planets which orbit the primary star, 
+$f_{d1,c}$ to be
+\begin{equation}
+f_{d1,c} = (1+\gamma_R)^{-3} \approx 3/4.
+\end{equation}
+However, for planets which orbit the secondary star, the completeness is
+\begin{equation}
+f_{d2,c} = (1+\gamma_R^{-1})^{-3} \approx 3/4000.
+\end{equation}  
+  
+\begin{comment}
 We note in passing that we are considering a SNR-limited survey, which in this 
 case is the same as a magnitude-limited one.
 The observer might prefer to perform a completeness-limited survey, which in 
 this case would be the same as a volume-limited one with limiting distance
 $d_{{\rm max},d}^{\rm p}$.
-This change would likely improve interpretability.
-
-With the stage set, we ask:
+This change might circumvent various biases.
+\end{comment}
+With our model defined, we ask:
 
 \subsection{What is the true occurrence rate?}
 \label{sec:true_rate}
@@ -543,8 +533,8 @@ quantity [Bovy 2017], as is the binary fraction.
 For ``sun-like'' dwarfs with $0.7<M_\star/M_\odot<1.3$,
 ${\rm BF}=0.44\pm0.02$ [Duchene \& Kraus, 2013, Raghavan et al 2010]. 
 Note that these latter authors really quote a {\it multiplicity} fraction of
-0.44 for sun-like dwarfs~--~we count the $\approx 25\%$ of multiple 
-systems that are higher order multiples as doubles.
+0.44 for sun-like dwarfs~--~for simplicity we count the $\approx 25\%$ of 
+multiple systems that are higher order multiples as doubles.
 
 $d_{{\rm max},i}$ in Eq.~\ref{eq:number_systems} is the maximum distance 
 corresponding to the given magnitude limit:
@@ -554,7 +544,7 @@ d_{{\rm max},i} = \left(\frac{L_{i}}{4 \pi F_{{\rm min}}}\right)^{1/2},
 \end{equation}
 where the limiting flux in the bandpass $F_{{\rm min}}$ could equivalently be 
 stated in terms of a limiting magnitude $m_{{\rm min}}$.
-In Eq.~\ref{eq:d_max}, again $i\in{\rm \{single,double\} }$. Simply as a 
+In Eq.~\ref{eq:d_max}, again $i\in{\rm \{single,double\} }$. As a 
 consequence of imposing a magnitude cut, the maximum distance to which binary 
 stars will be selected is greater than that of single stars.
 The ratio of double to single systems in the observed SNR-limited sample is 
@@ -564,6 +554,7 @@ then
 	\frac{n_d}{n_s}
 	\left( \frac{d_{{\rm max}, d} }{d_{{\rm max}, s}} \right)^3 \\
 &= \frac{{\rm BF}}{1 - {\rm BF}} \times (1+\gamma_R)^{3/2}.
+\label{eq:beta_model1}
 \end{align}
 In the case of twin binaries ($\gamma_R = 1$), with a binary fraction 
 ${\rm BF} = 0.5$, there are 
@@ -584,8 +575,7 @@ occurrence rate of planets with radius $R_p$ and period $P$, orbiting stars of
 radius $R_1$ and luminosity $L_1$.
 They detected $N_{\rm det}$ transit signals that appear to be from planets of 
 this desired type.
-The occurrence rate they then find, {\it i.e.} the number of planets divided 
-by number of ``stars'' (really, stellar systems) is
+The occurrence rate they then find is
 \begin{equation}
 \Gamma_{\rm a } = \frac{N_{\rm det}}{N_s + N_d} \times \frac{1}{f_g}.
 \end{equation}
@@ -751,7 +741,8 @@ We choose this latter mass ratio distribution.
 
 For the mass-luminosity relation, for analytic convenience we assume 
 $L \propto M^\alpha$, with the lore-value of $\alpha$ being $3.5$.
-As a simple check, we fit lines to mass-luminosity data\footnote{
+As a simple check, we fit lines to measured masses and luminosities of dwarf 
+stars\footnote{
     Data collected by Torres et al. [2009] for dwarfs earlier than 
     spectral class M, and Benedict et al. [2016] for dwarfs later than 
     spectral class M.
@@ -770,14 +761,14 @@ resulting fit parameters are available in a footnote\footnote{
 	M at merge: 0.4972991257826812~--~
 	L at merge: 0.0281260412126928.
 }. Though the data show a break at $M_\star \approx 0.5M_\odot$, the 
-$L=M^{3.5}$ relation is a reasonable fit for $M\lesssim 2M_\odot$.
+$L\propto M^{3.5}$ relation is a reasonable fit for $M\lesssim 2M_\odot$.
 
 The final addition to our model is that we must assume a stellar mass-radius 
 relation.
 This affects the transit probabilities and signal sizes about the 
 secondaries of binary star systems.
 Since again, our main purpose is to develop intuition about observational 
-biases, we approximate this as 
+biases, we coarsely assume
 \begin{equation}
 R\propto M.
 \end{equation}
@@ -791,23 +782,7 @@ R = 1.06 M^{0.945}
 applies for all the stars in our desired mass range ($M < 1.66M_\odot$, D\&K 
 1991's stated bounds), where each quantity is given in solar units. 
 \end{comment}
-
-In passing, we note that while $w_{d2}=1$ was a reasonable assumption in 
-Sec.~\ref{sec:model_1} (since secondaries were identical to primaries), in 
-binary systems we now have secondaries with different stellar properties from 
-primaries.
-Recall that our occurrence rate is defined for planets of a given type 
-orbiting stars of a given type.
-Assume our universe is one in which the primary mass of all stars is 
-$M_1=M_\odot$.
-If this is the case, we might define our ``stars of interest'' to be 
-those with $0.7<M_\star/M_\odot<1.3$.
-Then, in a volume-limited sample, 1 in 3 secondaries would be ``of interest'', 
-and could contribute to the true occurrence rate.
-The general point is that $w_{d2}$ will be less than 1, unless planets of the 
-desired type are more common around secondaries of lower mass (as may actually 
-be true for small planets around M dwarfs).
-Keeping this in mind, we ask the same questions as for Model \#1.
+With our model specified, we ask:
 
 \subsection{What is the true occurrence rate?}
 
@@ -823,27 +798,39 @@ and the fraction $f_{{\rm desired}}$ is defined so that $f_{{\rm desired}}
 N_d$ is the number of secondaries that are of the desired type, and as before 
 $\Gamma_{t,d}w_{d2}$ is the average number of planets each of these desired 
 stars hosts.
-
-Counting the number of desired stars, $N_s$ is the same as in 
-Sec.~\ref{sec:model_1}. However
+Explicitly,
 \begin{equation}
-N_d(\gamma_R) = n_d \frac{4\pi}{3} d_{\rm max,d}^3
+f_{\rm desired} = \frac{\int_{M_{\rm min}}^{M_{\rm max}} {\rm prob}_{\rm 
+        ml}(q)\,{\rm d}q }
+{\int_{0.1M_1}^{M_1} {\rm prob}_{\rm 
+        ml}(q)\,{\rm d}q}.
 \end{equation}
-for
+For instance, assuming a primary mass of $M_1 = M_\odot$, and defining the 
+``desired type'' of stars being to be $0.7<M_\star/M_\odot<1.3$, we find 
+$f_{\rm desired}\approx0.475$.
+
+Counting the number of desired stars that are single, $N_s$, is the same as in 
+Sec.~\ref{sec:model_1}. However now the maximum selected distance for a binary 
+system is now a function of the system's light ratio,
 \begin{equation}
 d_{\rm max,d} =
 d_{\rm max,s}\times (1+\gamma_R)^{1/2},
 \end{equation}
 where $d_{\rm max,s}$ is given by Eq.~\ref{eq:d_max}.
+This affects our ability to count the number of desired stars that are double,
+since
+\begin{equation}
+N_d(\gamma_R) = n_d \frac{4\pi}{3} d_{\rm max,d}^3.
+\end{equation}
 
 For a given binary system, $q$, $\gamma_R$, and thus $d_{\rm 
 	max,d}(\gamma_R)$ are all random variables.
 Since $N_d$ is a function of $d_{\rm max,d}$, 
 the number of double star systems becomes a random variable, drawn from the 
 ensemble of all possible transit surveys.
-Applying the chain rule for probability density functions, the distribution 
+Transforming the appropriate probability density functions, the distribution 
 function for the number of binary systems,
-${\rm prob}(N_d)$, can be written 
+${\rm prob}(N_d)$, can be expressed as 
 \begin{equation}
 {\rm prob}(N_d) = {\rm prob}(q(\gamma_R)) 
 \left| \frac{{\rm d}q}{{\rm d}\gamma_R}  \right|
@@ -855,52 +842,52 @@ ${\rm prob}(N_d)$, can be written
 \paragraph{Necessary aside on biases in mass ratio distributions}
 
 \begin{figure}[!t]
-	\begin{center}
-		\includegraphics[scale=.8]{figures/joint_prob_r_q.pdf}
-	\end{center}
-	\caption{The joint probability distribution of a binary star's position and 
-		mass ratio in a magnitude-limited sample. This plot assumes $L\propto 
-		M^{3.5}$. Note that the marginalized 
-		mass ratio distribution is uniform at any given distance.}
-	\label{fig:joint_prob_r_q}
+    \begin{center}
+        \includegraphics[width=.5\textwidth]{figures/joint_prob_r_q.pdf}
+    \end{center}
+    \caption{The joint probability distribution of a binary star's position 
+        and 
+        mass ratio in a magnitude-limited sample. This plot assumes $L\propto 
+        M^{3.5}$. Note that the marginalized 
+        mass ratio distribution is uniform at any given distance.}
+    \label{fig:joint_prob_r_q}
 \end{figure}
 
 \begin{figure}[!t]
-	\begin{center}
-		\includegraphics[width=0.5\textwidth]{figures/q_distribn_mag_limited.pdf}
-	\end{center}
-	\caption{The distribution of the mass ratio for a magnitude limited 
-		sample of binary stars. The underlying mass ratios are drawn from 
-		Eq.~\ref{eq:mass_ratio} -- a \textit{uniform} distribution in a 
-		volume-limited sample.
-		The entire bias can be understood analytically 
-		(Eq.~\ref{eq:pdf_q_mag_limited}) to good precision. 
-        The numerical comparison uses the empirical mass-luminosity relation 
-        shown in Fig.~\ref{fig:mass_luminosity}.
-	}
-	\label{fig:q_distribn_mag_limited}
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{figures/q_distribn_mag_limited.pdf}
+    \end{center}
+    \caption{The distribution of the mass ratio for a magnitude limited 
+        sample of binary stars. The underlying mass ratios are drawn from 
+        Eq.~\ref{eq:mass_ratio} -- a \textit{uniform} distribution in a 
+        volume-limited sample.
+        The entire bias can be understood analytically 
+        (Eq.~\ref{eq:pdf_q_mag_limited}) to good precision. 
+        The numerical comparison uses the ``realistic'' empirical 
+        mass-luminosity relation shown in Fig.~\ref{fig:mass_luminosity}.
+    }
+    \label{fig:q_distribn_mag_limited}
 \end{figure}
 
 \begin{figure}[!t]
-	\begin{center}
-		\includegraphics[width=.5\textwidth]{figures/gammaR_distribn_mag_limited.pdf}
-	\end{center}
-	\caption{The distribution of the luminosity ratio for a magnitude limited 
-		sample of binary stars. Despite the preference in the sample towards 
-		large $q$ binaries (Fig.~\protect\ref{fig:q_distribn_mag_limited}), 
-		the bias is towards small $\gamma_R$ binaries because of the steepness 
-		of the mass-luminosity relation.
+    \begin{center}
+        \includegraphics[width=.5\textwidth]{figures/gammaR_distribn_mag_limited.pdf}
+    \end{center}
+    \caption{The distribution of the luminosity ratio for a magnitude limited 
+        sample of binary stars. Despite the preference in the sample towards 
+        large $q$ binaries (Fig.~\protect\ref{fig:q_distribn_mag_limited}), 
+        the bias is towards small $\gamma_R$ binaries because of the steepness 
+        of the mass-luminosity relation.
         The underlying mass ratios are uniform in volume.
         The numerical comparison uses the empirical mass-luminosity relation 
         shown in Fig.~\ref{fig:mass_luminosity}.       
     }
-	\label{fig:gammaR_distribn_mag_limited}
+    \label{fig:gammaR_distribn_mag_limited}
 \end{figure}
 
-
 Before blindly plugging in Eq.~\ref{eq:mass_ratio}'s assumed mass ratio 
-distribution to find the expected number of double systems, we must
-emphasize that Eq.~\ref{eq:mass_ratio}'s distribution applies only for 
+distribution to find the expected number of double systems, it is critical to 
+note that Eq.~\ref{eq:mass_ratio}'s distribution applies only for 
 volume-limited samples.
 If one is interested in a SNR-limited transit survey (or really any
 magnitude-limited survey), the Malmquist-like bias associated with binarity
@@ -909,7 +896,7 @@ must be included.
 The distribution function for the mass ratio of binaries in a magnitude 
 limited sample can be found by marginalizing over the joint 
 distribution for a binary star's position $r$ and mass ratio $q$.
-Explicitly, using `ml' as a subscript for `magnitude-limited',
+Using `ml' as a subscript for `magnitude-limited',
 \begin{equation}
 {\rm prob}_{\rm ml}(r,q) = {\rm prob}(q|r){\rm prob}_{\rm ml}(r),
 \end{equation} 
@@ -973,22 +960,22 @@ For $\alpha=3.5$, ${\rm prob_{ml}}(\gamma_R) \propto
 highly biased towards low-light ratio binaries, as shown in 
 Fig.~\ref{fig:gammaR_distribn_mag_limited}.
 
-The reason we derived all this is that we wanted to know the number of 
-searchable binary stars.
+Our original reason for deriving these expression was that we wanted to know 
+the number of searchable binary stars.
 For any given realization of the survey, this number is a random draw.
-Computing the \textit{expected value} for the number of double star systems in 
-the sample,
+We can compute the \textit{expected value} for the number of double star 
+systems in the sample,
 \begin{equation}
 \langle N_d \rangle = \int_{0}^{\infty} N_d\, {\rm prob}(N_d) \,{\rm d}N_d.
 \end{equation}
-Letting $\alpha=3.5$, this can be expressed as
+Letting $\alpha=3.5$, this becomes
 \begin{equation}
 \langle N_d \rangle \propto \mathcal{R}^{-3/2}
 \int_{0.1^{7/2} + 1}^{2} u^3 (u-1)^{-5/7} \,{\rm d}u ,
 \label{eq:integral_Nd}
 \end{equation}
-where non-dimensional constants are not shown,
-$u = \mathcal{R} N_d^{2/3}$,
+where $u = \mathcal{R} N_d^{2/3}$,
+non-dimensional constants are not shown,
 and $\mathcal{R}$ is defined as
 \begin{equation}
 \mathcal{R} \equiv \left(\frac{3}{4\pi n_d}\right)^{2/3} d_{\rm max,s}^{-2}
@@ -1003,12 +990,13 @@ normalizing ${\rm prob}(N_d)$, to 4 significant digits it gives
 This gives the useful expression
 \begin{align}
 \frac{\langle N_d \rangle}{N_s} &= 1.590\, \frac{n_d}{n_s}
+\label{eq:beta_model2}
 \end{align}
 Taking the sun-like star binary fraction of ${\rm BF} = 0.44$, this gives
 $\langle N_d \rangle / N_s = 1.25$.
-Compared to the binary-twin thought experiment of Sec.~\ref{sec:model_1}, in 
-which the SNR-limited sample had $\approx 2.8$ times more binary systems than 
-single systems, there are now $\approx 1.25$ times as many.
+Compared to Eq.~\ref{eq:beta_model1} from the binary-twin thought experiment, 
+while the SNR-limited sample previously had $\approx 2.8$ times more binary 
+systems than single systems, there are now $\approx 1.25$ times as many.
 This is sensible, because the mean light ratio has decreased; it was 
 previously 1, it is now $\langle \gamma_R \rangle \approx 0.27$.
 
@@ -1025,15 +1013,7 @@ a fraction $f_{\rm desired}$ of them are of the desired type:
 \begin{equation}
 N_{\rm stars} = N_s + (1+f_{\rm desired}) N_d.
 \end{equation}
-Explicitly,
-\begin{equation}
-f_{\rm desired} = \frac{\int_{M_{\rm min}}^{M_{\rm max}} {\rm prob}_{\rm 
-ml}(q)\,{\rm d}q }
-{\int_{0.1M_\odot}^{M_\odot} {\rm prob}_{\rm 
-        ml}(q)\,{\rm d}q}.
-\end{equation}
-For instance, if we define the ``desired type'' to be 
-$0.7<M_\star/M_\odot<1.3$, we find $f_{\rm desired}\approx0.475$.
+
 
 For a given survey draw, the number of planets of the desired type is 
 then
@@ -1061,8 +1041,7 @@ and the drawn ``true occurrence rate'' is
 
 The observer who has never heard of binary star systems wants to find the 
 occurrence rate of planets with radius $R_p$ and period $P$, orbiting stars 
-with mass $0.7<M_\star/M_\odot < 1.3$ (with corresponding stellar radii and 
-luminosities).
+with mass $M_1$.
 They detected $N_{\rm det}$ transit signals that appear to be from planets of 
 this desired type.
 The occurrence rate they then find, {\it i.e.} the apparent number of planets 
@@ -1096,14 +1075,19 @@ R_{p,{\rm a}} = R_p
 \,\mathcal{D}^{1/2}.
 \end{equation}
 
-The drawn number of planet detections of the desired type is 
+The drawn total number of planet detections is 
 \begin{equation}
 N_{\rm det} = 
 N_{{\rm det},s} 
 + 
 N_{{\rm det},d}.
 \end{equation}
-As in Sec.~\ref{sec:model_1},
+Formally, if we are only interested in planets of radius $R_p$ then no planets 
+around binaries are ``of the desired type'' because of dilution.
+For the following development, ignore this caveat~--~consider an 
+observer who is interested in planets of any apparent radius.
+
+Then as in Sec.~\ref{sec:model_1},
 \begin{equation}
 N_{{\rm det},s} = N_s \Gamma_{t,s} f_{s,g} f_{s,c},
 \label{eq:N_det_s_model2}
@@ -1116,23 +1100,23 @@ completeness).
 For our SNR-limited, varying-$\gamma_R$ survey, $f_{s,g} = R_1/a\equiv f_g$, 
 and $f_{s,c}=1$.
 
-For planets detected in binary systems, only a fraction will be ``of the 
-desired type'', since only a fraction of the stars are of the desired type.
-This is the same factor $f_{\rm desired}$ as previously discussed. Accounting 
-for this and the independent geometric and completeness probabilities,
+For planets detected in binary systems,
 \begin{equation}
 N_{{\rm det},d}
 = 
 N_d \Gamma_{t,d} (f_{d1,g}f_{d1,c} + f_{\rm desired}w_{d2}f_{d2,g}f_{d2,c}).
 \label{eq:N_det_d_model2}
 \end{equation}
-
-For any given system,
+The factor $f_{\rm desired}$, as previously discussed, accounts for the 
+fraction of secondaries not of the desired {\it stellar} type. The above 
+counts the total number of detected planets around stars of the desired type, 
+though all these planets have diluted radii.
+The detection and geometric transit probabilities for a given system are
 \begin{align}
 f_{d1,c} &= (1+\gamma_R)^{-3} \\
 f_{d1,g} &= f_{s,g} \\
 f_{d2,c} &= (1+\gamma_R^{-1})^{-3} \\
-f_{d2,g} &= f_{s,g}q^{2/3}
+f_{d2,g} &= f_{s,g}q^{2/3}.
 \end{align}
 
 \subsection{Errors on derived occurrence rates}
@@ -1180,7 +1164,7 @@ X_\Gamma = 1 \quad ({\rm limit\ of}\ \gamma_R \ll 1).
 \end{equation}
 
 For the stellar population described in this model, with a mean light ratio 
-$\langle \gamma_R \rangle \approx 0.27$, this limit is not strictly applicable.
+$\langle \gamma_R \rangle \approx 0.27$, this limit is not applicable.
 To assess the importance of the error, we want the mean
 value of $X_\Gamma$, or the median, or else some other summary statistic.
 Recall that all the terms in Eq.~\ref{eq:model2_xgamma_simple} are
@@ -1188,19 +1172,94 @@ random variables, and note that they are inter-dependent.
 This latter fact impedes us from analytically expressing these 
 descriptive statistics.
 
-Running a Monte Carlo simulation in which we fix the planet and primary star 
-properties, draw the binary mass ratio from Eq.~\ref{eq:pdf_q_mag_limited}, 
-and take 
-the luminosity as $L\propto M^{3.5}$, we find 
+Instead, we run a Monte Carlo simulation in which we fix the planet and 
+primary star properties, draw the binary mass ratio from 
+Eq.~\ref{eq:pdf_q_mag_limited}, 
+and take the luminosity as $L\propto M^{3.5}$. We find 
 a mean of 
 \begin{equation}
-\langle X_\Gamma \rangle =1.291\quad ({\rm Monte\ Carlo\ result}),
+\langle X_\Gamma \rangle =1.289\quad ({\rm lower\ limit\ from\ Monte\ Carlo}),
+\label{eq:X_Gamma_model2_lower}
 \end{equation}
-and a median that is essentially the same.
+and a median that is the same to within one percent.
 This value is comparable to what one would guess using the analytic results 
 for $\langle N_d \rangle / N_s$ to substitute $\beta$, and $\gamma_R$ to 
 compute $f_{d1,c}$.
 
+%WARNING
+%WARNING
+%the reported value of <N_d>/N_s is higher from analytics than vs what 
+%simulations give. means a mistake in one of them.
+
+\paragraph{Varying what is meant by ``planets of the desired type'' }
+The above occurrence rate correction factor is a lower limit for this model, 
+because if we were to be any stricter about the range of allowed apparent 
+radii, the apparent occurrence rate would only decrease.
+
+Taking the opposite limit of not counting any detections that deviate 
+from $R_p$ as ``planets of the desired type'',
+we find
+\begin{equation}
+X_{\Gamma} = \frac{1 + \beta }{1 + \beta f_{d1,c}}.
+\end{equation}
+From the same Monte Carlo simulation, this gives an upper limit on the 
+correction term
+\begin{equation}
+\langle X_\Gamma \rangle = 2.114\quad ({\rm upper\ limit\ from\ Monte\ 
+Carlo}).
+\label{eq:X_Gamma_model2_upper}
+\end{equation}
+
+The general point is that starting from a single planet radius, dilution 
+produces a spectrum of apparent planetary radii. 
+This skews occurrence rate measurements, by an amount between 
+Eqs.~\ref{eq:X_Gamma_model2_lower} and~\ref{eq:X_Gamma_model2_upper},
+depending on the radius bounds set by the analyst.
+We investigate this further in our final model below.
+
+
+\section{Model \#3: allow a distribution of planetary radii}
+\label{sec:model_3}
+
+Keep the same stars as in Sec.~\ref{sec:model_2}.
+Now let the planets have a power-law radius distribution, ${\rm d}N_p/{\rm 
+d}R_p\propto R_p^\delta$. 
+We want to know the effects of binarity on the apparent distribution of 
+planetary radii.
+Specifically, the average number of planets in a given size range per star of 
+the desired type in this universe is
+\begin{equation}
+\frac{N_{\rm planets}(R_p^{\rm min}<R_p <R_p^{\rm max})}{N_{\rm stars}} = 
+\Gamma_0 \int_{R_p^{\rm min}}^{R_p^{\rm max}} R_p^\delta \,{\rm d}R_p,
+\end{equation}
+for $\Gamma_0$ one of $\{\Gamma_{t,s}, \Gamma_{t,d}, w_{d2}\Gamma_{t,d}\}$
+corresponding to single star systems, the primaries of double star systems, 
+and the secondaries of double star systems.
+
+
+
+
+\section{Discussion}
+\label{sec:discussion}
+
+\appendix
+\begin{figure}[!t]
+    \begin{center}
+        \includegraphics[scale=0.9]{figures/mass_luminosity.pdf}
+    \end{center}
+    \caption{Empirical fit to main sequence dwarf mass luminosity data 
+    compiled 
+        from Torres et al. [2009] and Benedict et al. [2016]. The ``low fit'' 
+        is a 
+        least squares fit to data from $0.1-0.5M_\odot$, and the ``high fit'' 
+        is 
+        to 
+        data above that, and below the Kraft break ($1.2M_\odot$).
+        The $L(M)$ relation taken for numerics is the maximum 
+        of the two fits. For analytics, we assume $L\propto M^{3.5}$.
+    }
+    \label{fig:mass_luminosity}
+\end{figure}
 
 \begin{comment}
 \subsection{How many planets are in the sample?}
@@ -1751,7 +1810,7 @@ interesting.}
 
 
 \section{Model \# 3: A Synthetic {\it Kepler} Analog}
-\label{sec:model_3}
+\label{sec:kepler_analog}
 
 \begin{figure}[!t]
 	\begin{center}

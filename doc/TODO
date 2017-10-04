@@ -1,0 +1,5 @@
+* why does analytic <N_d> give a different number than monte carlo in Model 2?
+
+* allow dNstar/dq \propto q^gamma, rather than assuming constant.
+(though this introduces funkiness at the low mass end, it is more flexible)
+
