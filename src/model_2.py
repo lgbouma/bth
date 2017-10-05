@@ -108,7 +108,7 @@ if __name__ == '__main__':
     #############################
     # !!! BEGIN MONTE CARLO !!! #
     #############################
-    for index, seed in enumerate(np.arange(int(8e3),int(9e3),1)):
+    for index, seed in enumerate(np.arange(int(1e3),int(2e3),1)):
 
         ################################################################
         # BEGIN OBNOXIOUS PARAMETERS NEEDED FOR MONTE CARLO SIMULATION #
@@ -206,7 +206,8 @@ if __name__ == '__main__':
             f,ax=plt.subplots()
             sns.distplot(doubles['q'], ax=ax, kde=False, norm_hist=True)
             q = np.arange(0.1,1+1e-3,1e-3)
-            prob_ml_q = (1+q**(3.5))**(3/2)
+            alpha = 3.5
+            prob_ml_q = (1+q**alpha)**(3/2)
             prob_ml_q /= trapz(prob_ml_q, q)
             ax.plot(q, prob_ml_q)
             f.savefig('tests/doubles_q_distribution.pdf')
@@ -230,9 +231,9 @@ if __name__ == '__main__':
         # Fraction of stars in single star systems with planet of (R_p, P). NB this
         # is the same as the average number of planets per star in the single
         # planet system limit. (...)
-        Γ_ts = 0.2
+        Γ_ts = 0.3
         # Fraction per primary of double star systems with planet of (R_p, P).
-        Γ_td = 0.2
+        Γ_td = 0.3
         # Weight of secondaries of desired type with planets of desired type
         w_d2 = 1
 
@@ -265,7 +266,7 @@ if __name__ == '__main__':
         #################################
         # COMPUTE TRANSIT PROBABILITIES #
         #################################
-        P = 0.1*u.year
+        P = 30*u.day
         a_1 = (P**2 * c.G * M_1 / (4*π*π))**(1/3)
         ones = np.ones_like(np.array(singles['r']))
         f_sg = (R_1/a_1).cgs.value * ones
@@ -299,7 +300,9 @@ if __name__ == '__main__':
                 & s_has_transiting_planet
 
         f_d1c = (1+np.array(doubles['γ_R']))**(-3)
-        f_d2c = (1+np.array(doubles['γ_R'])**(-1))**(-3)
+        alpha = 3.5
+        f_d2c = (1+np.array(doubles['γ_R'])**(-1))**(-3) \
+                *np.array(doubles['γ_R'])**(-6/alpha)
 
         doubles['primary_has_detected_planet'] = \
                 (np.random.rand(N_d) < f_d1c) \

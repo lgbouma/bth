@@ -318,7 +318,7 @@ def _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
         ax.tick_params(which='both', direction='in', zorder=0)
 
     f.tight_layout(h_pad=0)
-    f.savefig('prob_Rpobs_{savstr}.pdf'.format(savstr=sstr),
+    f.savefig('prob_Rpobs/prob_Rpobs_{savstr}.pdf'.format(savstr=sstr),
                dpi=250, bbox_inches='tight')
 
 

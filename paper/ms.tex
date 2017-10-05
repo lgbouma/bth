@@ -465,7 +465,7 @@ max},d}$~--~effectively a Malmquist bias.
 However, the distance out to which double stars are {\it selected} is 
 different from the distance $d_{{\rm max},d}^{\rm p}$ out to which planets can 
 be {\it detected} (around the primary of a double star system).
-For a population with fixed  $\gamma_R$, since ${\rm S/N} \propto \mathcal{D} 
+For the binary twin population, since ${\rm S/N} \propto \mathcal{D} 
 L^{1/2} d^{-1}$,
 \begin{equation}
 d_{{\rm max},d}^{\rm p} = (1 + \gamma_R)^{-1/2} d_{{\rm max},s} = 
@@ -474,17 +474,7 @@ d_{{\rm max},d}^{\rm p} = (1 + \gamma_R)^{-1/2} d_{{\rm max},s} =
 For $\gamma_R = 1$, this means only 1 in 8 apparently-searchable stars which 
 are in fact binary systems can yield detectable planets (the ratio of 
 volume in which planets can be detected to the actual selected volume).
-For a more realistic sample, $\gamma_R \approx 0.1$, and there is an 
-interesting asymmetry.
-One finds the completeness for planets which orbit the primary star, 
-$f_{d1,c}$ to be
-\begin{equation}
-f_{d1,c} = (1+\gamma_R)^{-3} \approx 3/4.
-\end{equation}
-However, for planets which orbit the secondary star, the completeness is
-\begin{equation}
-f_{d2,c} = (1+\gamma_R^{-1})^{-3} \approx 3/4000.
-\end{equation}  
+
   
 \begin{comment}
 We note in passing that we are considering a SNR-limited survey, which in this 
@@ -1115,9 +1105,26 @@ The detection and geometric transit probabilities for a given system are
 \begin{align}
 f_{d1,c} &= (1+\gamma_R)^{-3} \\
 f_{d1,g} &= f_{s,g} \\
-f_{d2,c} &= (1+\gamma_R^{-1})^{-3} \\
-f_{d2,g} &= f_{s,g}q^{2/3}.
+f_{d2,c} &= (1+\gamma_R^{-1})^{-3} \gamma_R^{-6/\alpha} 
+\label{eq:f_d2c}\\
+f_{d2,g} &= f_{s,g}q^{2/3},
 \end{align}
+where typically $\alpha=3.5$ (and the second term in Eq.~\ref{eq:f_d2c} comes 
+from the stellar radius correction).
+For a typical binary drawn from the local stellar neighborhood, $\gamma_R 
+\approx 0.2$ (see Fig.~\ref{fig:gammaR_distribn_mag_limited}), and there is an 
+interesting asymmetry.
+One finds the completeness for planets which orbit the primary star, 
+$f_{d1,c}$ to be
+\begin{equation}
+f_{d1,c} = (1+\gamma_R)^{-3} \sim 70\%
+\end{equation}
+However, for planets which orbit the secondary star, the completeness is
+\begin{equation}
+f_{d2,c} = (1+\gamma_R^{-1})^{-3} \gamma_R^{-6/\alpha} \sim 7\%.
+\end{equation}
+Controlling for all other variables, in the typical binary system planets 
+around secondaries are more difficult to detect than those around primaries.
 
 \subsection{Errors on derived occurrence rates}
 
@@ -1230,8 +1237,8 @@ planetary radii.
 Specifically, the average number of planets in a given size range per star of 
 the desired type in this universe is
 \begin{equation}
-\frac{N_{\rm p}(R_p^{\rm min}<R_p <R_p^{\rm max})}{N_{\rm \star}} = 
-\Gamma_0 \int_{R_p^{\rm min}}^{R_p^{\rm max}} R_p^\delta \,{\rm d}R_p,
+\frac{N_{\rm p}(R_p^{\rm \ell}<R_p <R_p^{\rm u})}{N_{\rm \star}} = 
+\Gamma_0 \int_{R_p^{\rm \ell}}^{R_p^{\rm u}} R_p^\delta \,{\rm d}R_p,
 \end{equation}
 for $\Gamma_0$ one of $\{\Gamma_{t,s}, \Gamma_{t,d}, w_{d2}\Gamma_{t,d}\}$
 corresponding to single star systems, the primaries of double star systems, 
