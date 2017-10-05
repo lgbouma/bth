@@ -1099,11 +1099,14 @@ counts the total number of detected planets around stars of the desired type,
 though all these planets have diluted radii.
 The detection and geometric transit probabilities for a given system are
 \begin{align}
-f_{d1,c} &= (1+\gamma_R)^{-3} \\
+f_{d1,c} &= (1+\gamma_R)^{-3} 
+\label{eq:f_d1c}
+\\
 f_{d1,g} &= f_{s,g} \\
 f_{d2,c} &= (1+\gamma_R^{-1})^{-3} \gamma_R^{-5/\alpha} 
 \label{eq:f_d2c}\\
 f_{d2,g} &= f_{s,g}q^{2/3},
+\label{eq:f_d2g}
 \end{align}
 where typically $\alpha=3.5$.
 To derive Eq.~\ref{eq:f_d2c}, one must note that for fixed period, planet 
@@ -1184,7 +1187,7 @@ Eq.~\ref{eq:pdf_q_mag_limited},
 and take the luminosity as $L\propto M^{3.5}$. We find a mean occurrence 
 correction of 
 \begin{equation}
-\langle X_\Gamma \rangle =1.268\quad ({\rm lower\ limit\ from\ Monte\ Carlo}),
+\langle X_\Gamma \rangle =1.273\quad ({\rm lower\ limit\ from\ Monte\ Carlo}),
 \label{eq:X_Gamma_model2_lower}
 \end{equation}
 and a median that is the same to within one percent.
@@ -1227,21 +1230,50 @@ We investigate this further in our final model below.
 \section{Model \#3: allow a distribution of planetary radii}
 \label{sec:model_3}
 
-Keep the same stars as in Sec.~\ref{sec:model_2}.
-Now let the planets have a power-law radius distribution, ${\rm 
+For this model, we keep the same stars as in Sec.~\ref{sec:model_2}, but the 
+planets have a power-law radius distribution, ${\rm 
 d}(N_p/N_\star)/{\rm 
 d}R_p\propto R_p^\delta$. 
 We want to know the effects of binarity on the apparent distribution of 
 planetary radii.
 Specifically, the average number of planets in a given size range per star of 
 the desired type in this universe is
-\begin{equation}
-\frac{N_{\rm p}(R_p^{\rm \ell}<R_p <R_p^{\rm u})}{N_{\rm \star}} = 
+\begin{align}
+\frac{N_{\rm p}(R_p^{\rm \ell}<R_p <R_p^{\rm u})}{N_{\rm \star}} 
+&= 
+\int_{R_p^{\rm \ell}}^{R_p^{\rm u}} \Gamma(R_p) \,{\rm d}R_p
+\\
+&=
 \Gamma_0 \int_{R_p^{\rm \ell}}^{R_p^{\rm u}} R_p^\delta \,{\rm d}R_p,
-\end{equation}
+\end{align}
 for $\Gamma_0$ one of $\{\Gamma_{t,s}, \Gamma_{t,d}, w_{d2}\Gamma_{t,d}\}$
 corresponding to single star systems, the primaries of double star systems, 
 and the secondaries of double star systems.
+More strictly, $\Gamma$ should now be referred to as an occurrence rate 
+density (it always has been, but in previous models the planet-radius 
+dependence was a delta function).
+
+The observer now calculates occurrence rates slightly differently.
+The original survey was of stars with $m<m_{\rm min}$, and the
+planet detections are limited by the achievable signal-to-noise from this 
+sample.
+For a given planet radius, the observer must now count $N_\star (R_p)$ stars 
+that they think were searchable.
+In reality, some of these stars will be binaries:
+\begin{equation}
+N_\star(R_p) = N_s(R_p) + N_d(R_p),
+\end{equation}
+where the number of selected stars in single and double star systems is 
+analogous to those of Sec.~\ref{sec:model_1}, except they scale as the 
+sixth power of planet radius.
+The completeness should now be thought of as
+\begin{equation}
+{\rm completeness} = \frac{{\rm actual\ number\ of\ searchable\ stars}}{{\rm 
+assumed\ number\ of\ searchable\ stars}}.
+\end{equation}
+If the completeness is calculated in this way, 
+Equations~\ref{eq:f_d1c} through~\ref{eq:f_d2g} remain the same.
+
 
 
 
@@ -1249,6 +1281,7 @@ and the secondaries of double star systems.
 \section{Discussion}
 \label{sec:discussion}
 
+\newpage
 \appendix
 \begin{figure}[!t]
     \begin{center}

@@ -1,11 +1,10 @@
 '''
-what is the light ratio distriubtion for binaries in a magnitude limited
-sample, vs a volume limited sample?
-
-fixed Rp. fixed primary L1. varying light ratio (L2/L1).
+fixed primary L1. varying light ratio (L2/L1). varying Rp.
 
 This code is the Monte Carlo simulation needed to produce summary statistics
 for X_Γ.
+
+(To the extent possible, it is the same as model_2.py)
 '''
 from __future__ import division, print_function
 
@@ -13,6 +12,10 @@ import numpy as np, pandas as pd
 from astropy import units as u, constants as c
 from math import pi as π
 import os
+from scipy.interpolate import interp1d
+
+global α
+α = 3.5 # coefficient in the L~M^α power law scaling.
 
 #####################
 # UTILITY FUNCTIONS #
@@ -22,11 +25,72 @@ def get_L(M):
     assume input mass, M, a float or vector, is in solar units.
     '''
 
-    α = 3.5
+    return M**α
 
-    L = M**α
 
-    return L
+def draw_planet_radii(df, singleordouble, δ=None, R_pl=None, R_pu=None):
+    '''
+    Assign planets radii from power law radius probability distribution
+    function:
+    $$
+        ρ_Rpt (R_pt) ~ R_pt^δ
+    $$
+
+    df: DataFrame of singles or doubles
+
+    singleordouble (str): "single" or "double"
+
+    δ (required float): power of the distribution. For instance, Howard et al
+    (2012) find δ=-2.92 +/- 0.11.
+
+    R_pl, R_pu (optional floats): lower and upper bound for truncation. If
+    None, assumed the distribution is not truncated
+    '''
+
+    assert δ
+
+    power = δ
+    ΔR = 0.01
+    R_max = 50 # earth Radii, for grid.
+    R_min = 0
+
+    if isinstance(R_pu,float):
+        assert R_pu < R_max
+    if not isinstance(R_pu,float):
+        R_pu = R_max
+
+    R_pt_grid = np.arange(R_min, R_max+ΔR, ΔR)
+    prob_Rpt = np.zeros_like(R_pt_grid)
+
+    inds = (R_pt_grid > R_pl) & (R_pt_grid < R_pu)
+    prob_Rpt[inds] = (R_pt_grid[inds])**power
+    prob_Rpt /= trapz(prob_Rpt, R_pt_grid)
+
+    # inverse transform sampling to get the true planet radii.
+    cdf_Rpt = np.append(0, np.cumsum(prob_Rpt)/np.max(np.cumsum(prob_Rpt)))
+    func = interp1d(cdf_Rpt, np.append(0,R_pt_grid))
+
+    def _draw_radii(func, df):
+
+        drawn_Rpts = func(np.random.uniform(size=len(df)))
+
+        return drawn_Rpts
+
+    #assign planet radii to star systems of desired type with planets. systems
+    #without planets get a 0 in this column.
+    if singleordouble == 'single':
+        df['R_pt'] = _draw_radii(func, df) * df[singleordouble+'_has_planet']
+
+    elif singleordouble == 'double':
+        #separate draws for primaries and secondaries.
+        df['primary_R_pt'] = _draw_radii(func, df) * df['primary_has_planet']
+        df['secondary_R_pt'] = _draw_radii(func, df) * df['secondary_has_planet']
+
+    else:
+        raise Exception
+
+    return df
+
 
 
 def draw_star_positions(d_max, N_sys, sys_type=None):
@@ -108,25 +172,11 @@ if __name__ == '__main__':
     #############################
     # !!! BEGIN MONTE CARLO !!! #
     #############################
-    for index, seed in enumerate(np.arange(int(0e3),int(2e3),1)):
+    for index, seed in enumerate(np.arange(int(0e3),int(1e3),1)):
 
         ################################################################
         # BEGIN OBNOXIOUS PARAMETERS NEEDED FOR MONTE CARLO SIMULATION #
         ################################################################
-
-        # Those comments below are not needed (now). They may be in the future.
-        ###############
-        ## INSTRUMENT #
-        ###############
-        #A = 50*u.cm**2      # effective observing area
-        #λ_min = 500*u.nm    #
-        #λ_max = 1000*u.nm
-
-        ##################
-        ## SURVEY PARAMS #
-        ##################
-        #T_obs = 4*u.year
-        #x_min = 25 # minimum SNR for detection.
 
         # Zombeck 2007, p.103: Vega, V=0.03 has a wavelength-specific photon flux of
         # 1e3 ph/s/cm^2/angstrom. So for our instrument's bandpass, we
@@ -208,8 +258,7 @@ if __name__ == '__main__':
             f,ax=plt.subplots()
             sns.distplot(doubles['q'], ax=ax, kde=False, norm_hist=True)
             q = np.arange(0.1,1+1e-3,1e-3)
-            alpha = 3.5
-            prob_ml_q = (1+q**alpha)**(3/2)
+            prob_ml_q = (1+q**α)**(3/2)
             prob_ml_q /= trapz(prob_ml_q, q)
             ax.plot(q, prob_ml_q)
             f.savefig('tests/doubles_q_distribution.pdf')
@@ -265,10 +314,35 @@ if __name__ == '__main__':
                     np.sum(primary_has_planet) + \
                     np.sum(secondary_has_planet)
 
+        #####################
+        # DRAW PLANET RADII #
+        #####################
+        # draw radii for stars that are in the sample, and that are of the
+        # desired type.
+
+        singles = draw_planet_radii(singles, 'single', δ=-2.92, R_pl=2, R_pu=20)
+        doubles = draw_planet_radii(doubles, 'double', δ=-2.92, R_pl=2, R_pu=20)
+
+        # compute apparent radii:
+        singles['R_pa'] = singles['R_pt']
+
+        dilution = (1 + np.array(doubles['γ_R']))**(-1)
+        doubles['primary_R_pa'] = doubles['primary_R_pt'] * dilution**(1/2)
+
+        dilution = (1 + np.array(doubles['γ_R'])**(-1))**(-1)
+        doubles['secondary_R_pa'] = doubles['secondary_R_pt'] \
+                * dilution**(1/2) \
+                * np.array(doubles['γ_R'])**(-1/α) # term for R_star_a/R_star_t
+
+        doubles['secondary_R_pa_onlydilution'] = doubles['secondary_R_pt'] \
+                * dilution**(1/2) \
+
+        del dilution
+
         #################################
         # COMPUTE TRANSIT PROBABILITIES #
         #################################
-        P = 30*u.day
+        P = 15*u.day
         a_1 = (P**2 * c.G * M_1 / (4*π*π))**(1/3)
         ones = np.ones_like(np.array(singles['r']))
         f_sg = (R_1/a_1).cgs.value * ones
@@ -293,18 +367,19 @@ if __name__ == '__main__':
         d2_has_transiting_planet = (np.random.rand(N_d) < f_d2g) & secondary_has_planet
         doubles['secondary_has_transiting_planet'] = d2_has_transiting_planet
 
-        ##########################
-        # COMPUTE COMPLETENESSES #
-        ##########################
+        #########################################
+        # COMPUTE COMPLETENESSES AND DETECTIONS #
+        #########################################
+
         f_sc = 1*np.ones_like(np.array(singles['r']))
+
         singles['single_has_detected_planet'] = \
                 (np.random.rand(N_s) < f_sc) \
                 & s_has_transiting_planet
 
         f_d1c = (1+np.array(doubles['γ_R']))**(-3)
-        alpha = 3.5
         f_d2c = (1+np.array(doubles['γ_R'])**(-1))**(-3) \
-                *np.array(doubles['γ_R'])**(-5/alpha)
+                *np.array(doubles['γ_R'])**(-5/α)
 
         doubles['primary_has_detected_planet'] = \
                 (np.random.rand(N_d) < f_d1c) \
@@ -324,9 +399,58 @@ if __name__ == '__main__':
 
         N_det_d = N_det_d1 + N_det_d2
 
-        ###############
-        # COMPUTE X_Γ #
-        ###############
+        ########################################
+        # COMPUTE X_Γ, as a function of radius #
+        ########################################
+
+        singles_R_pt = np.array(
+                singles['R_pt'][singles['single_has_detected_planet']])
+        singles_R_pa = np.array(
+                singles['R_pa'][singles['single_has_detected_planet']])
+
+        primaries_R_pt = np.array(
+                doubles['primary_R_pt'][doubles['primary_has_detected_planet']])
+        primaries_R_pa = np.array(
+                doubles['primary_R_pa'][doubles['primary_has_detected_planet']])
+
+        secondaries_R_pt = np.array(
+                doubles['secondary_R_pt'][doubles['secondary_has_detected_planet']])
+        secondaries_R_pa = np.array(
+                doubles['secondary_R_pa'][doubles['secondary_has_detected_planet']])
+
+        if index==0:
+            import matplotlib.pyplot as plt
+            import seaborn as sns
+            from scipy.integrate import trapz
+
+            f,ax=plt.subplots()
+            sns.distplot(primaries_R_pt, bins=np.arange(0,20+1,1), ax=ax,
+                    kde=False, norm_hist=True, label='true')
+            sns.distplot(primaries_R_pa, bins=np.arange(0,20+1,1), ax=ax,
+                    kde=False, norm_hist=True, label='apparent, $R_{p,a}=R_{p,t}D^{1/2}$')
+            ax.legend(loc='best')
+            ax.set_xlabel('$R_p\ [R_\oplus]$')
+            ax.set_title('primaries')
+            f.savefig('tests/primaries_Rp_distribution.pdf')
+
+            plt.close('all')
+            f,ax=plt.subplots()
+            sns.distplot(secondaries_R_pt, bins=np.arange(0,20+1,1), ax=ax,
+                    kde=False, norm_hist=True, label='true')
+            sns.distplot(secondaries_R_pa, bins=np.arange(0,20+1,1), ax=ax,
+                    kde=False, norm_hist=True,
+                    label='apparent, $R_{p,a}=R_{p,t}R_{\star,a}D^{1/2}/R_{star,t}$')
+            ax.set_xlabel('$R_p\ [R_\oplus]$')
+            ax.set_title('secondaries')
+            ax.legend(loc='best')
+            f.savefig('tests/secondaries_Rp_distribution.pdf')
+
+            raise Exception
+
+
+        #TODO FIXME: bin to compare occ rates? Must do. & bin + compare over
+        #different montecarlo realizations.
+        #TODO below
 
         Γ_t = N_planets/N_stars
         Γ_a = (N_det_s + N_det_d)/(N_s + N_d) * (1/f_sg[0])
