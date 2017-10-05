@@ -84,14 +84,14 @@ which Earth-like planets exist around Sun-like stars.
 An astronomer who does not believe in binaries wants to measure the
 occurrence of planets of a certain type around stars of a certain type.
 In other words, they wish to find the mean number of planets within specific 
-planetary $(R_p, P)$ bounds orbiting the stars in a given volume 
-of stellar $(M_\star, R_\star, L_\star)$ phase-space.
+planetary bounds orbiting the stars in a given volume 
+of stellar phase-space $(\Delta R_p, \Delta P, \Delta M_\star,\ldots$).
 They perform a signal-to-noise limited transit survey and detect $N_{\rm det}$ 
 transit signals that appear to be from planets of the desired type.  They 
-calculate the number of stars $N_\star$ that appear to be searchable for the 
-desired type of planet, and also of the desired stellar type.  These 
-``searchable stars'' are the points on the sky for which they think planets 
-are observed with 100\% detection efficiency. Correcting for the geometric 
+calculate the number of stars $N_\star$ that seem to be of the desired type, 
+and searchable for the planet.  These ``searchable stars'' are the points on 
+the sky for which they think planets are observed with 100\% detection 
+efficiency. Correcting for the geometric 
 transit probability $f_{\rm g}$, they compute an apparent occurrence rate 
 $\Gamma_{\rm a}$:
 
@@ -108,21 +108,20 @@ positives due to blends with background eclipsing binaries. {\it Et cetera}.
 
 Here we focus on problems that arise from the fact that stars of the desired
 type often exist in binaries. 
-We assume for simplicity that all binaries in the transit survey are 
+We assume for simplicity that all binaries in the survey are 
 spatially unresolved.
 
 An immediate complication is that~--~due to dynamical stability or some 
 aspect of planet formation~--~ the occurrence rate of planets may differ 
 between binary and single-star systems.
 If ``occurrence rate'' is defined purely as the mean number of planets within 
-set radius and period bounds per star in a given interval $\Delta M_\star, 
-\Delta R_\star, \Delta L_\star$, it must include an implicit marginalization 
-over stellar multiplicity.
-Otherwise, one must discuss ``occurrence rates in single star systems'', 
+set radius and period bounds per star in a given interval of say $\Delta 
+M_\star$, it must implicitly marginalize over stellar multiplicity.
+Otherwise, one must address ``occurrence rates in single star systems'', 
 ``occurrence rates about primaries of double systems'', and
 ``occurrence rates about secondaries of double star systems''.
 
-Outside of bonafide astrophysical differences, there are observational biases.
+Outside of astrophysical differences, there are observational biases.
 A given apparently-searchable star may truly be a single star of the desired 
 type. If not, and ignoring higher order multiples, one of the following must 
 be true:
@@ -152,8 +151,7 @@ apparently-searchable stars are either single stars of
 the desired type, or binaries in which either the primary or else both 
 components are of the desired type.
 
-The above enumerates possible errors when counting $N_\star$.
-When tallying $N_{\rm det}$, the detected signals from planets of the desired 
+When counting $N_{\rm det}$, the detected signals from planets of the desired 
 type, neglecting binarity introduces the following error cases:
 \begin{enumerate}
 \item 
@@ -163,7 +161,7 @@ incorrectly counted as a planet of desired type.
 %
 \item
 A detected signal is from a star of desired type (the primary or secondary of 
-a binary systems), from a planet of undesired type, and is incorrectly counted 
+a binary), from a planet of undesired type, and is incorrectly counted 
 as a planet of desired type.
 This and the case above occur when the host star parameters are miscalculated 
 ({\it e.g.,} the host star is the faint secondary, but is assumed to be 
@@ -200,8 +198,8 @@ desired types of stars and planets.
 We give an analytic expression for $\Gamma_{\rm a}/\Gamma_{\rm t}$, the ratio 
 of the true to apparent occurrence rate, taking into account all applicable 
 errors.
-In Sec.~\ref{sec:model_2} we allow for a distribution of the mass ratio $dn/dq 
-\propto q^\gamma$, 
+In Sec.~\ref{sec:model_2} {\bf we allow for a distribution of the mass ratio 
+$dn/dq \propto q^\gamma$} {\bf (not done yet)}, 
 and a concurrent power-law distribution in the luminosity ratio, $dn/dL 
 \propto L^\beta$. 
 We give expressions for $\Gamma_{\rm a}/\Gamma_{\rm t}$, and evaluate them 
@@ -222,8 +220,8 @@ inferred rates, and the in-between radius planets are in-between.
 One consequence is that the claimed HJ occurrence rate discrepancy between 
 radial velocity \& transit surveys gets much weaker when accounting for 
 binarity.
-In Sec.~\ref{sec:discussion} we summarize these models and discuss their 
-utility in interpreting transit surveys.
+In Sec.~\ref{sec:discussion} we summarize the models and discuss how they can 
+be used to interpret transit surveys.
 
 \begin{comment}
 We then dig in, w/ numerics, to what happens with different assumed
@@ -418,27 +416,25 @@ hold.
 	the secondary to the primary. 
 	In this section, $\gamma_R=1$ across the population 
 	of star systems~--~all binaries are assumed to be twins.
-	The ratio of the number density of binary systems and the number density of 
-	all systems in a volume-limited sample is the binary fraction\footnote{The 
+	The ratio of the number density of binary systems to all systems in a 
+	volume-limited sample is the binary fraction\footnote{The 
 	binary fraction is equivalent to the multiplicity fraction if there are 
 	no triple, quadruple, $\ldots$ systems.}.
-	\item The true population of planets around these stars is as follows:
-	\begin{itemize}
-	\item A fraction $\Gamma_{t,s}$ of stars in single star systems 
+	\item The true population of planets around these stars is as follows.
+    In single star systems, a fraction $\Gamma_{t,s}$ of stars 
 	have planets of radius $R_p$, with orbital period $P$.
-	\item A fraction $\Gamma_{t,d}$ of primary stars in double star 
-	systems have planets of radius $R_p$, with orbital period $P$. 
-	A fraction $w_{d2}\Gamma_{t,d}$ of secondary stars in a double star 
+	In double star systems, a fraction $\Gamma_{t,d}$ of primary stars have 
+	planets of radius $R_p$, with orbital period $P$. 
+	A fraction $w_{d2}\Gamma_{t,d}$ of secondary stars in double star 
 	systems have the same type of 
 	planet, where the weight factor $w_{d2}$ specifies the secondary star 
 	occurrence rate as a fraction	of the primary star occurrence rate.
 	Any astrophysical difference in planet formation between singles and 
 	binaries is captured by $\Gamma_{t,s}, \Gamma_{t,d},$ and $w_{d2}$.
-	If one assumes the primary and secondary of a binary system host planets at 
-	equal rates, this is the $w_{d2}=1$ limit.
+	If one assumes the primary and secondary of a binary system host planets 
+	at equal rates, this is the $w_{d2}=1$ limit.
 	Similarly, if one assumes  secondaries 
 	cannot host planets, this is the $w_{d2}=0$ limit.
-	\end{itemize}
 \end{itemize}
 
 The assumption of [Pepper et al, 2003] in a very similar context was that the 
@@ -465,7 +461,8 @@ max},d}$~--~effectively a Malmquist bias.
 However, the distance out to which double stars are {\it selected} is 
 different from the distance $d_{{\rm max},d}^{\rm p}$ out to which planets can 
 be {\it detected} (around the primary of a double star system).
-For the binary twin population, since ${\rm S/N} \propto \mathcal{D} 
+For the binary twin population, all planet and stellar radii are identical, so 
+${\rm S/N} \propto \mathcal{D}, and
 L^{1/2} d^{-1}$,
 \begin{equation}
 d_{{\rm max},d}^{\rm p} = (1 + \gamma_R)^{-1/2} d_{{\rm max},s} = 
@@ -522,7 +519,7 @@ The absolute normalization of the number density $n_s + n_d$ is an observed
 quantity [Bovy 2017], as is the binary fraction.
 For ``sun-like'' dwarfs with $0.7<M_\star/M_\odot<1.3$,
 ${\rm BF}=0.44\pm0.02$ [Duchene \& Kraus, 2013, Raghavan et al 2010]. 
-Note that these latter authors really quote a {\it multiplicity} fraction of
+These latter authors really quote a {\it multiplicity} fraction of
 0.44 for sun-like dwarfs~--~for simplicity we count the $\approx 25\%$ of 
 multiple systems that are higher order multiples as doubles.
 
@@ -537,7 +534,7 @@ stated in terms of a limiting magnitude $m_{{\rm min}}$.
 In Eq.~\ref{eq:d_max}, again $i\in{\rm \{single,double\} }$. As a 
 consequence of imposing a magnitude cut, the maximum distance to which binary 
 stars will be selected is greater than that of single stars.
-The ratio of double to single systems in the observed SNR-limited sample is 
+The ratio of double to single systems in the observed sample is 
 then
 \begin{align}
 \frac{N_d}{N_s} &= 
@@ -720,18 +717,18 @@ distribution is roughly uniform,
 \begin{equation}
 {\rm prob}(q) =
 \Bigg\{\begin{array}{lr}
-c_q & 0.1 < q \leq 1  \\
+{\rm constant} & 0.1 < q \leq 1  \\
 0 & {\rm otherwise},
 \end{array}
 \label{eq:mass_ratio}
 \end{equation}
-provided we ignore the peak at high mass ratios for analytic convenience. $c_q 
-= 1/9$ is the normalization.
+though we ignore the peak at high mass ratios for analytic convenience. 
 We choose this latter mass ratio distribution.
 
-For the mass-luminosity relation, for analytic convenience we assume 
+For the mass-luminosity relation, %for analytic convenience 
+we assume 
 $L \propto M^\alpha$, with the lore-value of $\alpha$ being $3.5$.
-As a simple check, we fit lines to measured masses and luminosities of dwarf 
+To check, we fit lines to measured masses and luminosities of dwarf 
 stars\footnote{
     Data collected by Torres et al. [2009] for dwarfs earlier than 
     spectral class M, and Benedict et al. [2016] for dwarfs later than 
@@ -753,11 +750,10 @@ resulting fit parameters are available in a footnote\footnote{
 }. Though the data show a break at $M_\star \approx 0.5M_\odot$, the 
 $L\propto M^{3.5}$ relation is a reasonable fit for $M\lesssim 2M_\odot$.
 
-The final addition to our model is that we must assume a stellar mass-radius 
-relation.
+The final necessary assumption is a stellar mass-radius relation.
 This affects the transit probabilities and signal sizes about the 
 secondaries of binary star systems.
-Since again, our main purpose is to develop intuition about observational 
+Since our main purpose is to develop intuition about observational 
 biases, we coarsely assume
 \begin{equation}
 R\propto M.
