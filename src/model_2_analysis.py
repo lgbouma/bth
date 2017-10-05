@@ -1,3 +1,8 @@
+'''
+run after running model_2.py
+
+(processes those results)
+'''
 import pandas as pd
 import matplotlib.pyplot as plt
 
