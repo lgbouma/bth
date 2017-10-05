@@ -113,18 +113,20 @@ if __name__ == '__main__':
         ################################################################
         # BEGIN OBNOXIOUS PARAMETERS NEEDED FOR MONTE CARLO SIMULATION #
         ################################################################
-        ##############
-        # INSTRUMENT #
-        ##############
-        A = 50*u.cm**2      # effective observing area
-        λ_min = 500*u.nm    #
-        λ_max = 1000*u.nm
 
-        #################
-        # SURVEY PARAMS #
-        #################
-        T_obs = 4*u.year
-        x_min = 25 # minimum SNR for detection.
+        # Those comments below are not needed (now). They may be in the future.
+        ###############
+        ## INSTRUMENT #
+        ###############
+        #A = 50*u.cm**2      # effective observing area
+        #λ_min = 500*u.nm    #
+        #λ_max = 1000*u.nm
+
+        ##################
+        ## SURVEY PARAMS #
+        ##################
+        #T_obs = 4*u.year
+        #x_min = 25 # minimum SNR for detection.
 
         # Zombeck 2007, p.103: Vega, V=0.03 has a wavelength-specific photon flux of
         # 1e3 ph/s/cm^2/angstrom. So for our instrument's bandpass, we
@@ -302,7 +304,7 @@ if __name__ == '__main__':
         f_d1c = (1+np.array(doubles['γ_R']))**(-3)
         alpha = 3.5
         f_d2c = (1+np.array(doubles['γ_R'])**(-1))**(-3) \
-                *np.array(doubles['γ_R'])**(-6/alpha)
+                *np.array(doubles['γ_R'])**(-5/alpha)
 
         doubles['primary_has_detected_planet'] = \
                 (np.random.rand(N_d) < f_d1c) \
