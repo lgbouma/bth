@@ -1,38 +1,27 @@
 '''
-A straight numerical approach would be:
-
-Take all Galaxia stars within 7.5 degrees of the center of Kepler's
-field, and only take stars with r<17.
-
-This is beyond where the KIC is complete, so comparisons between the two
-will be confused.  Then apply analogs of the Batalha+ 2010 Table 1
-prioritization.
-
-This gives the "GIC", and it's Teff distribution is OK. Its binary
-radius distribution is currently a bit wonky, which is not nice.
-
-If you give the GIC a planet population from various obvious options
-(uniform in Rp, uniform in logRp, normal in logRp) you can study what the
-binarity does to the inferred radius distribution.
-
-ALTERNATIVELY
+How does binarity affect the apparent radius distribution? (vs an input true
+radius distribution)
 
 you can do it all semianalytically, following notes of 17/09/03.2-3
+
+and, more ACCURATELY (AKA with math bug fixes) the notes of 17/10/04.3-4
 '''
 
 import numpy as np
 from scipy.integrate import trapz
 import matplotlib.pyplot as plt
 
+global α
+α = 3.5
+
 def prob_gammaR(γ_R):
 
-    Z = 1 # constants seem to work
     prob_γ_R = np.zeros_like(γ_R)
 
-    inds = (γ_R<1) & (γ_R>0.1**3)
-    prob_γ_R[inds] = Z * (1 + γ_R[inds])**(3/2) * (1/3) * γ_R[inds]**(-2/3)
+    inds = (γ_R<1) & (γ_R>0.1**α)
+    prob_γ_R[inds] = (1 + γ_R[inds])**(3/2) * γ_R[inds]**((1-α)/α)
 
-    return prob_γ_R
+    return prob_γ_R/trapz(prob_γ_R, γ_R)
 
 
 def prob_Rpt_uniform(R_pt, R_pu, R_pl):
@@ -138,7 +127,7 @@ def logistic_fn(x, L, k, x_0):
     val = L / (1 + np.exp(-k * (x-x_0)))
     return val
 
-def _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
+def _make_Rpobs_plot(R_pt, prob_Rpts, R_pas, prob_Rpos_d1, prob_Rpos_d2,
         sstr=None, howardpower=False):
 
     nrows = 10
@@ -152,35 +141,35 @@ def _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
     axs[0].set_ylabel(r'$\rho_{R_p^{\mathrm{true}}} (R_p^{\mathrm{true}}) $')
     axs[0].legend(loc='upper right', fontsize='small')
 
-    norm_d1 = trapz(prob_Rpos_d1, R_pos)
+    norm_d1 = trapz(prob_Rpos_d1, R_pas)
     prob_Rpos_d1 /= norm_d1
-    norm_d2 = trapz(prob_Rpos_d2, R_pos)
+    norm_d2 = trapz(prob_Rpos_d2, R_pas)
     prob_Rpos_d2 /= norm_d2
 
     axs[1].plot(R_pt, prob_Rpts, label='s')
-    axs[1].plot(R_pos, prob_Rpos_d1, label='d1')
-    axs[1].plot(R_pos, prob_Rpos_d2, label='d2')
+    axs[1].plot(R_pas, prob_Rpos_d1, label='d1')
+    axs[1].plot(R_pas, prob_Rpos_d2, label='d2')
 
     axs[1].set_ylabel(r'$\rho_{R_p^{\mathrm{obs}}} (R_p^{\mathrm{obs}}) $')
     axs[1].legend(loc='upper right', fontsize='small')
 
     if not howardpower:
-        f_det = logistic_fn(R_pos, 0.95, 1, 10)
+        f_det = logistic_fn(R_pas, 0.95, 1, 10)
     else:
-        f_det = logistic_fn(R_pos, 0.97, 2, 3)
-    axs[2].plot(R_pos, f_det, 'k--')
+        f_det = logistic_fn(R_pas, 0.97, 2, 3)
+    axs[2].plot(R_pas, f_det, 'k--')
     axs[2].set_ylabel('$f_{\mathrm{det}}(R_p^{\mathrm{obs}})$')
 
     prob_det_Rpo_s = prob_Rpts * logistic_fn(R_pt, 0.95, 1, 10)
     prob_det_Rpo_s /= trapz(prob_det_Rpo_s, R_pt)
     prob_det_Rpo_d1 = prob_Rpos_d1 * f_det
-    prob_det_Rpo_d1 /= trapz(prob_det_Rpo_d1, R_pos)
+    prob_det_Rpo_d1 /= trapz(prob_det_Rpo_d1, R_pas)
     prob_det_Rpo_d2 = prob_Rpos_d2 * f_det
-    prob_det_Rpo_d2 /= trapz(prob_det_Rpo_d2, R_pos)
+    prob_det_Rpo_d2 /= trapz(prob_det_Rpo_d2, R_pas)
 
     axs[3].plot(R_pt, prob_det_Rpo_s, label='s')
-    axs[3].plot(R_pos, prob_det_Rpo_d1, label='d1')
-    axs[3].plot(R_pos, prob_det_Rpo_d2, label='d2')
+    axs[3].plot(R_pas, prob_det_Rpo_d1, label='d1')
+    axs[3].plot(R_pas, prob_det_Rpo_d2, label='d2')
 
     axs[3].set_ylabel(r'$\rho_{\mathrm{det}}(R_p^{\mathrm{obs}})$')
     axs[3].legend(loc='upper right', fontsize='small')
@@ -204,11 +193,11 @@ def _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
     w_d2 = N_d2 / N_tot # first assume that secondaries get same input occ rate
 
     axs[4].plot(R_pt, prob_det_Rpo_s*w_s, label='s')
-    axs[4].plot(R_pos, prob_det_Rpo_d1*w_d1, label='d1')
-    axs[4].plot(R_pos, prob_det_Rpo_d2*w_d2, label='d2')
+    axs[4].plot(R_pas, prob_det_Rpo_d1*w_d1, label='d1')
+    axs[4].plot(R_pas, prob_det_Rpo_d2*w_d2, label='d2')
 
     summed = prob_det_Rpo_s*w_s + prob_det_Rpo_d1*w_d1 + prob_det_Rpo_d2*w_d2
-    axs[4].plot(R_pos, summed, label='total', c='black')
+    axs[4].plot(R_pas, summed, label='total', c='black')
 
     txt = '$N_s$: {:d}\n$N_d$ {:d}'.format(
             N_s, N_d1) + '\n$w_i = N_i/N_{\mathrm{tot}}$'
@@ -221,11 +210,11 @@ def _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
 
 
     axs[5].plot(R_pt, prob_det_Rpo_s*w_s, label='s')
-    axs[5].plot(R_pos, prob_det_Rpo_d1*w_d1, label='d1')
-    axs[5].plot(R_pos, prob_det_Rpo_d2*w_d2*frac_d2_sunlike, label='d2')
+    axs[5].plot(R_pas, prob_det_Rpo_d1*w_d1, label='d1')
+    axs[5].plot(R_pas, prob_det_Rpo_d2*w_d2*frac_d2_sunlike, label='d2')
     summed = prob_det_Rpo_s*w_s + prob_det_Rpo_d1*w_d1 + \
                     prob_det_Rpo_d2*w_d2*frac_d2_sunlike
-    axs[5].plot(R_pos, summed, label='total', c='black')
+    axs[5].plot(R_pas, summed, label='total', c='black')
 
     txt = '$N_s$: {:d}\n$N_d$ {:d}\nfrac d2, sunlike {:.3f}'.format(
             N_s, N_d1, frac_d2_sunlike) + \
@@ -239,9 +228,9 @@ def _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
 
     axs[6].plot(R_pt, prob_Rpts, label='true', c='gray')
 
-    norm = trapz(summed/f_det, R_pos)
+    norm = trapz(summed/f_det, R_pas)
     inferred = (summed/f_det)/norm
-    axs[6].plot(R_pos, inferred,
+    axs[6].plot(R_pas, inferred,
             label='inferred = total/f_det\n(normalized. matters!!)', c='black')
 
     txt = 'inference ignoring binaries'
@@ -254,10 +243,10 @@ def _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
 
 
     true = prob_Rpts
-    inds = (true > 0) & (R_pos > 0.1) # odd numerical thing w/ lognormal
-    axs[7].plot(R_pos[inds], (inferred[inds]-true[inds])/true[inds],
+    inds = (true > 0) & (R_pas > 0.1) # odd numerical thing w/ lognormal
+    axs[7].plot(R_pas[inds], (inferred[inds]-true[inds])/true[inds],
                 label='(inferred-true)/true', c='black')
-    axs[7].hlines(0, min(R_pos), max(R_pos), colors='black', alpha=0.2, zorder=-1)
+    axs[7].hlines(0, min(R_pas), max(R_pas), colors='black', alpha=0.2, zorder=-1)
 
     txt = 'inference ignoring binaries'
     axs[7].text(0.03, 0.97, txt, verticalalignment='top',
@@ -282,7 +271,7 @@ def _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
             label=r'$N_p^{\mathrm{true}} = \rho_{R_p^{\mathrm{true}}}'
                    '\cdot (N_s + (1+f_{d2}^{\mathrm{sunlike}})N_d)$',
             c='gray')
-    axs[8].plot(R_pos, inferred*(N_s + N_d),
+    axs[8].plot(R_pas, inferred*(N_s + N_d),
             label=r'$N_p^{\mathrm{inferred}} = \rho_{R_p^{\mathrm{inferred}}}'
                    '\cdot (N_s + N_d)$',
             c='black')
@@ -294,9 +283,9 @@ def _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
 
     tru = prob_Rpts*(N_s + (1+frac_d2_sunlike)*N_d)
     inferre = inferred*(N_s + N_d)
-    axs[9].plot(R_pos, (inferre-tru)/tru,
+    axs[9].plot(R_pas, (inferre-tru)/tru,
                 label='(inferred-true)/true', c='black')
-    axs[9].hlines(0, min(R_pos), max(R_pos), colors='black', alpha=0.2, zorder=-1)
+    axs[9].hlines(0, min(R_pas), max(R_pas), colors='black', alpha=0.2, zorder=-1)
 
     axs[9].legend(loc='upper right', fontsize='x-small')
     axs[9].set_ylabel(r'relative error on N planets'
@@ -326,25 +315,23 @@ def _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
 
 
 
-def case_1(γ_R, R_pt, R_pos):
+def case_1(γ_R, R_pt, R_pas, R_pu=20, R_pl=10, sstr='uniform'):
     ######################################
     # CASE 1: UNIFORM INPUT DISTRIBUTION #
     ######################################
     ρ_γR = prob_gammaR(γ_R)
 
-    R_pu, R_pl = 20, 10
-
     prob_Rpos_d1, prob_Rpos_d2 = [], []
 
-    for ix, R_po in enumerate(R_pos):
+    for ix, R_pa in enumerate(R_pas):
 
         if ix % 500 == 0:
-            print('{:d}/{:d}'.format(ix, len(R_pos)))
+            print('{:d}/{:d}'.format(ix, len(R_pas)))
 
         ρ_Rpt_d1 = prob_Rpt_uniform(
-                        R_po * (1+γ_R)**(1/2), R_pu, R_pl )
+                        R_pa * (1+γ_R)**(1/2), R_pu, R_pl )
         ρ_Rpt_d2 = prob_Rpt_uniform(
-                        R_po * (1+γ_R**(-1))**(1/2), R_pu, R_pl )
+                        R_pa * (1+γ_R**(-1))**(1/2)*γ_R**(1/α), R_pu, R_pl )
 
         ρ_Rpo_at_Rpo_d1 = trapz( ρ_γR * ρ_Rpt_d1, γ_R  )
         ρ_Rpo_at_Rpo_d2 = trapz( ρ_γR * ρ_Rpt_d2, γ_R  )
@@ -354,12 +341,12 @@ def case_1(γ_R, R_pt, R_pos):
 
     prob_Rpts = prob_Rpt_uniform(R_pt, R_pu, R_pl)
 
-    _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
-            sstr='uniform')
+    _make_Rpobs_plot(R_pt, prob_Rpts, R_pas, prob_Rpos_d1, prob_Rpos_d2,
+            sstr=sstr)
     print('did case 1 (uniform)')
 
 
-def case_2(γ_R, R_pt, R_pos):
+def case_2(γ_R, R_pt, R_pas):
     ##########################################
     # CASE 2: LOG-UNIFORM INPUT DISTRIBUTION #
     ##########################################
@@ -369,13 +356,13 @@ def case_2(γ_R, R_pt, R_pos):
 
     prob_Rpos_d1, prob_Rpos_d2 = [], []
 
-    for ix, R_po in enumerate(R_pos):
+    for ix, R_pa in enumerate(R_pas):
 
         if ix % 500 == 0:
-            print('{:d}/{:d}'.format(ix, len(R_pos)))
+            print('{:d}/{:d}'.format(ix, len(R_pas)))
 
-        ρ_Rpt_d1 = prob_Rpt_loguniform( R_po * (1+γ_R)**(1/2), R_pu, R_pl )
-        ρ_Rpt_d2 = prob_Rpt_loguniform( R_po * (1+γ_R**(-1))**(1/2), R_pu, R_pl )
+        ρ_Rpt_d1 = prob_Rpt_loguniform( R_pa * (1+γ_R)**(1/2), R_pu, R_pl )
+        ρ_Rpt_d2 = prob_Rpt_loguniform( R_pa * (1+γ_R**(-1))**(1/2)*γ_R**(1/α), R_pu, R_pl )
 
         ρ_Rpo_at_Rpo_d1 = trapz( ρ_γR * ρ_Rpt_d1, γ_R  )
         ρ_Rpo_at_Rpo_d2 = trapz( ρ_γR * ρ_Rpt_d2, γ_R  )
@@ -385,11 +372,11 @@ def case_2(γ_R, R_pt, R_pos):
 
     prob_Rpts = prob_Rpt_loguniform(R_pt, R_pu, R_pl)
 
-    _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2, sstr='loguniform')
+    _make_Rpobs_plot(R_pt, prob_Rpts, R_pas, prob_Rpos_d1, prob_Rpos_d2, sstr='loguniform')
     print('did case 2 (loguniform)')
 
 
-def case_3(γ_R, R_pt, R_pos):
+def case_3(γ_R, R_pt, R_pas):
     ########################################
     # CASE 3: LOG-NORMAL INPUT DISTIBUTION #
     ########################################
@@ -399,13 +386,13 @@ def case_3(γ_R, R_pt, R_pos):
 
     prob_Rpos_d1, prob_Rpos_d2 = [], []
 
-    for ix, R_po in enumerate(R_pos):
+    for ix, R_pa in enumerate(R_pas):
 
         if ix % 500 == 0:
-            print('{:d}/{:d}'.format(ix, len(R_pos)))
+            print('{:d}/{:d}'.format(ix, len(R_pas)))
 
-        ρ_Rpt_d1 = prob_Rpt_lognormal( R_po * (1+γ_R)**(1/2), μ, σ)
-        ρ_Rpt_d2 = prob_Rpt_lognormal( R_po * (1+γ_R**(-1))**(1/2), μ, σ)
+        ρ_Rpt_d1 = prob_Rpt_lognormal( R_pa * (1+γ_R)**(1/2), μ, σ)
+        ρ_Rpt_d2 = prob_Rpt_lognormal( R_pa * (1+γ_R**(-1))**(1/2)*γ_R**(1/α), μ, σ)
 
         ρ_Rpo_at_Rpo_d1 = trapz( ρ_γR * ρ_Rpt_d1, γ_R  )
         ρ_Rpo_at_Rpo_d2 = trapz( ρ_γR * ρ_Rpt_d2, γ_R  )
@@ -415,11 +402,11 @@ def case_3(γ_R, R_pt, R_pos):
 
     prob_Rpts = prob_Rpt_lognormal(R_pt, μ, σ)
 
-    _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2, sstr='lognormal')
+    _make_Rpobs_plot(R_pt, prob_Rpts, R_pas, prob_Rpos_d1, prob_Rpos_d2, sstr='lognormal')
     print('did case 3 (lognormal)')
 
 
-def case_4(γ_R, R_pt, R_pos):
+def case_4(γ_R, R_pt, R_pas):
     ##################################################
     # CASE 4: TRUNCATED LOG-NORMAL INPUT DISTIBUTION #
     ##################################################
@@ -430,14 +417,14 @@ def case_4(γ_R, R_pt, R_pos):
 
     prob_Rpos_d1, prob_Rpos_d2 = [], []
 
-    for ix, R_po in enumerate(R_pos):
+    for ix, R_pa in enumerate(R_pas):
 
         if ix % 500 == 0:
-            print('{:d}/{:d}'.format(ix, len(R_pos)))
+            print('{:d}/{:d}'.format(ix, len(R_pas)))
 
-        ρ_Rpt_d1 = prob_Rpt_trunclognormal( R_po * (1+γ_R)**(1/2), R_pl, R_pu,
+        ρ_Rpt_d1 = prob_Rpt_trunclognormal( R_pa * (1+γ_R)**(1/2), R_pl, R_pu,
                                             μ, σ)
-        ρ_Rpt_d2 = prob_Rpt_trunclognormal( R_po * (1+γ_R**(-1))**(1/2), R_pl,
+        ρ_Rpt_d2 = prob_Rpt_trunclognormal( R_pa * (1+γ_R**(-1))**(1/2)*γ_R**(1/α), R_pl,
                                             R_pu, μ, σ)
 
         ρ_Rpo_at_Rpo_d1 = trapz( ρ_γR * ρ_Rpt_d1, γ_R  )
@@ -448,11 +435,11 @@ def case_4(γ_R, R_pt, R_pos):
 
     prob_Rpts = prob_Rpt_trunclognormal(R_pt, R_pl, R_pu, μ, σ)
 
-    _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2, sstr='trunclognormal')
+    _make_Rpobs_plot(R_pt, prob_Rpts, R_pas, prob_Rpos_d1, prob_Rpos_d2, sstr='trunclognormal')
     print('did case 4 (trunclognormal)')
 
 
-def case_5(γ_R, R_pt, R_pos):
+def case_5(γ_R, R_pt, R_pas):
     ########################################################
     # CASE 5: HOWARD+12 CLAIMED P<50D POWER LAW FOR GIANTS #
     ########################################################
@@ -464,13 +451,13 @@ def case_5(γ_R, R_pt, R_pos):
 
     prob_Rpos_d1, prob_Rpos_d2 = [], []
 
-    for ix, R_po in enumerate(R_pos):
+    for ix, R_pa in enumerate(R_pas):
 
         if ix % 500 == 0:
-            print('{:d}/{:d}'.format(ix, len(R_pos)))
+            print('{:d}/{:d}'.format(ix, len(R_pas)))
 
-        ρ_Rpt_d1 = prob_Rpt_Howardpower( R_po * (1+γ_R)**(1/2), R_pl, R_pu )
-        ρ_Rpt_d2 = prob_Rpt_Howardpower( R_po * (1+γ_R**(-1))**(1/2),
+        ρ_Rpt_d1 = prob_Rpt_Howardpower( R_pa * (1+γ_R)**(1/2), R_pl, R_pu )
+        ρ_Rpt_d2 = prob_Rpt_Howardpower( R_pa * (1+γ_R**(-1))**(1/2)*γ_R**(1/α),
                                                                 R_pl, R_pu )
 
         ρ_Rpo_at_Rpo_d1 = trapz( ρ_γR * ρ_Rpt_d1, γ_R  )
@@ -481,7 +468,7 @@ def case_5(γ_R, R_pt, R_pos):
 
     prob_Rpts = prob_Rpt_Howardpower(R_pt, R_pl, R_pu)
 
-    _make_Rpobs_plot(R_pt, prob_Rpts, R_pos, prob_Rpos_d1, prob_Rpos_d2,
+    _make_Rpobs_plot(R_pt, prob_Rpts, R_pas, prob_Rpos_d1, prob_Rpos_d2,
             sstr='howardpower', howardpower=True)
     print('did case 5 (howardpower)')
 
@@ -491,12 +478,13 @@ if __name__ == '__main__':
 
     γ_R = np.logspace(-4, 0, num=int(4e3))
     R_pt = np.linspace(0, 30, int(3e3)) # Re units
-    R_pos = np.linspace(0, 30, int(3e3)) # Re units
+    R_pas = np.linspace(0, 30, int(3e3)) # Re units
 
-    #case_1(γ_R, R_pt, R_pos)
-    #case_2(γ_R, R_pt, R_pos)
-    #case_3(γ_R, R_pt, R_pos)
-    #case_4(γ_R, R_pt, R_pos)
-    case_5(γ_R, R_pt, R_pos)
+    case_1(γ_R, R_pt, R_pas, R_pu=15, R_pl=14.99, sstr='uniform_narrow')
+    case_1(γ_R, R_pt, R_pas)
+    case_2(γ_R, R_pt, R_pas)
+    case_3(γ_R, R_pt, R_pas)
+    case_4(γ_R, R_pt, R_pas)
+    case_5(γ_R, R_pt, R_pas)
 
     #TODO: bin it. 
