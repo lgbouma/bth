@@ -140,6 +140,8 @@ def _make_Rpobs_plot(R_pt, prob_Rpts, R_pas, prob_Rpos_d1, prob_Rpos_d2,
 
     axs[0].set_ylabel(r'$\rho_{R_p^{\mathrm{true}}} (R_p^{\mathrm{true}}) $')
     axs[0].legend(loc='upper right', fontsize='small')
+    if sstr == 'uniform_narrow':
+        axs[0].set_ylim([0,1])
 
     norm_d1 = trapz(prob_Rpos_d1, R_pas)
     prob_Rpos_d1 /= norm_d1
@@ -152,6 +154,8 @@ def _make_Rpobs_plot(R_pt, prob_Rpts, R_pas, prob_Rpos_d1, prob_Rpos_d2,
 
     axs[1].set_ylabel(r'$\rho_{R_p^{\mathrm{obs}}} (R_p^{\mathrm{obs}}) $')
     axs[1].legend(loc='upper right', fontsize='small')
+    if sstr == 'uniform_narrow':
+        axs[1].set_ylim([0,1])
 
     if not howardpower:
         f_det = logistic_fn(R_pas, 0.95, 1, 10)
@@ -476,15 +480,15 @@ def case_5(γ_R, R_pt, R_pas):
 
 if __name__ == '__main__':
 
-    γ_R = np.logspace(-4, 0, num=int(4e3))
-    R_pt = np.linspace(0, 30, int(3e3)) # Re units
-    R_pas = np.linspace(0, 30, int(3e3)) # Re units
+    γ_R = np.logspace(-4, 0, num=int(1e4))
+    R_pt = np.linspace(0, 30, int(1e4)) # Re units
+    R_pas = np.linspace(0, 30, int(1e4)) # Re units
 
     case_1(γ_R, R_pt, R_pas, R_pu=15, R_pl=14.99, sstr='uniform_narrow')
-    case_1(γ_R, R_pt, R_pas)
-    case_2(γ_R, R_pt, R_pas)
-    case_3(γ_R, R_pt, R_pas)
-    case_4(γ_R, R_pt, R_pas)
-    case_5(γ_R, R_pt, R_pas)
+    #case_1(γ_R, R_pt, R_pas)
+    #case_2(γ_R, R_pt, R_pas)
+    #case_3(γ_R, R_pt, R_pas)
+    #case_4(γ_R, R_pt, R_pas)
+    #case_5(γ_R, R_pt, R_pas)
 
     #TODO: bin it. 
