@@ -1,0 +1,152 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.integrate import trapz
+from scipy.integrate import quad
+
+global α, β
+β = 0 # p(q)~q^β vol limited
+α = 3.5 # M~L^α
+
+r_p = 1
+
+############################################################
+############################################################
+#SECONDARIES
+#case 1, eqn 17/10/10.2 top
+
+## Method #1: actually minimize q**2 + q**(-α+2) - (rp/ra)**2 = 0
+#from scipy.optimize import minimize
+#r_a = np.linspace(0,r_p/np.sqrt(2), num=int(1e3))
+#
+#coeffs = (r_p / r_a)**2
+#min_vals, q_vals = [], []
+#
+#global coeff
+#for ix, coeff in enumerate(coeffs):
+#    if ix%100==0:
+#        print(ix, len(coeffs))
+#
+#    def F(q):
+#        if q < 1 and q>0:
+#            return abs( q**2 + q**(2-α) - coeff )
+#        else:
+#            return np.inf
+#
+#    q_ini = 1e-1
+#    out = minimize(F, [q_ini], method='Nelder-Mead', options={'xatol':1e-12})
+#    q = F(out.x[0])
+#
+#    min_vals.append(q)
+#    q_vals.append(out.x[0])
+#
+#q_of_ra = np.array(q_vals)
+#if r_a[0]==0:
+#    q_of_ra[0] == 0
+#min_vals = np.array(min_vals)
+
+# Method #2: compute r_a(q). Invert it.
+from scipy.interpolate import interp1d
+
+q = np.logspace(-8,0,num=int(1e4))
+r_a = r_p * (q**2 + q**(-α+2))**(-1/2)
+
+#this function fails at the turnaround, unsurprisingly.
+q_of_ra = interp1d(r_a, q)
+r_a_new = np.logspace(-5, np.log10(np.max(r_a)),num=int(1e3))
+q_new = q_of_ra(r_a_new)
+
+#from scipy.misc import derivative
+#def r_a_of_q(q):
+#    r_p=1
+#    return r_p * (q**2 + q**(-α+2))**(-1/2)
+#dq_dra = derivative(r_a_of_q, q, dx=1e-12)
+
+#dq_dra = np.diff(q)/np.diff(r_a)
+#dra_dq = 1/dq_dra
+dra_dq = np.diff(r_a)/np.diff(q)
+dq_dra = 1/dra_dq
+
+plt.close('all')
+f,ax=plt.subplots()
+ax.plot(q, r_a, label='$r_a(q)$')
+ax.plot(q[1:], np.log10(abs(dra_dq)), label='$\log_{10}(|dr_a/dq|)$')
+#ax.plot(r_a_new, q_new, label='with 1/q')
+ax.legend(loc='best',fontsize='x-small')
+ax.set(xlabel='q')
+ax.set_xscale('linear')
+#ax.set_yscale('log')
+f.savefig('ra_of_q_numerical.pdf')
+
+plt.close('all')
+f,ax=plt.subplots()
+ax.plot(r_a, q, label='$q(r_a)$ with $R_2$ correction')
+_ = np.linspace(0,r_p*2**(-1/2),num=int(1e4))
+ax.plot(_, ((r_p/_)**2-1)**(-1/α), label='$q(r_a)$ no $R_2$ correction')
+ax.plot(r_a[1:], np.log10(abs(dq_dra)),
+    label='$\log_{10}(|dq/dr_a|)$ (with correction)',
+    lw=0.5)
+#ax.plot(r_a_new, q_new, label='with 1/q')
+ax.legend(loc='best',fontsize='x-small')
+ax.set_xlabel('$r_a$')
+#ax.set_xscale('log')
+ax.set_yscale('linear')
+ax.set_ylim([-1,1.8])
+f.savefig('q_of_ra_numerical.pdf')
+
+#plt.show()
+
+############################################################
+############################################################
+plt.close('all')
+f,ax = plt.subplots()
+
+#SECONDARIES
+#case 1, stupid numerics above
+p2_ra_case1 = q[1:]**β * (1+q[1:]**α)**(3/2) * abs(dq_dra)
+yval = p2_ra_case1/trapz(p2_ra_case1, r_a[1:])
+ax.plot(r_a[1:]/r_p, yval, label='secondaries (including $R_2$ correction)')
+
+#case 2, eqn 17/10/10.2 middle
+r_a = np.linspace(0,r_p/np.sqrt(2), num=int(1e4))
+
+p2_ra_case2 = lambda r_a: \
+            (( (r_p/r_a)**2 -1 )**(-1/α))**β * (1+(( (r_p/r_a)**2 -1 )**(-1/α))**α)**(3/2) * \
+            ( (r_p/r_a)**2 -1 )**((-1-α)/α) * \
+            r_p**2/(r_a**3)
+
+yval = p2_ra_case2(r_a)/quad(p2_ra_case2, 0, r_p/np.sqrt(2))[0]
+
+ax.plot(r_a/r_p, yval, label='secondaries (ignoring $R_2$ correction)')
+
+#PRIMARIES
+#boxed eqn 17/10/10.1 bottom. Define a lambda function for p1_ra so that you
+#can use quad to integrate over the inf.
+p1_ra = lambda r_a: (r_p/r_a)**3 * r_p**2/(r_a**3) * \
+          ( (r_p/r_a)**2 -1 )**((β-α+1)/α)
+
+r_a = np.linspace(r_p/np.sqrt(2), r_p, num=int(1e4))
+
+yval = p1_ra(r_a)/quad(p1_ra, r_p/np.sqrt(2), r_p)[0]
+
+ax.plot(r_a/r_p, yval, label='primaries')
+
+
+
+ax.legend(loc='best',fontsize='x-small')
+
+ax.set_xlabel('$r_a/r_p$; apparent planet radius / true radius')
+ax.set_ylabel('$\mathrm{p}_{r_a}(r_a/r_p)$; probability density')
+
+ax.set_title(
+'''each line normalized independently; lines above top diverge.
+note double-valued blue line'''
+)
+#ax.set_ylim([0,20])
+ax.set_yscale('log')
+ax.set_ylim([1e-1,1e2])
+f.savefig('prob_r_a.pdf')
+
+
+##########
+##########
+

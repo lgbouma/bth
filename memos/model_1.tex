@@ -1,0 +1,236 @@
+\section*{Generalities}
+
+Define the occurrence rate density, $\Gamma$,
+as the expected number of planets per star per natural logarithmic bin 
+of planetary and stellar phase space:
+\begin{equation}
+\Gamma(\vec{x}) \equiv \frac{{\rm d}^n(N_p/N_\star)}{\prod_{i=1}^{n} {\rm d} 
+\ln x_i}
+= \frac{d^n\Lambda}{\prod_{i=1}^{n} {\rm d} \ln x_i  }.
+\end{equation}
+$\vec{x}$ is an $n$-dimensional list of the continuous physical properties 
+that might affect the occurrence rate density. For example,
+$\vec{x}=(r,P,R)$ where $r$ is the planet radius, $P$ is its orbital period, 
+and $R$ is the host star radius.
+In the latter equality, $\Lambda$ is the occurrence rate~--~a quantity found 
+by integrating the rate density over a specified volume of phase space ({\it 
+e.g.}, Foreman-Mackey et al, 2014).
+
+According to the previous definition, the rate density implicitly marginalizes 
+over stellar multiplicity.
+For simplicity, this work only considers single and binary star systems.
+Then for a selected population of stars and planets the rate density can be 
+written
+\begin{equation}
+\Gamma(\vec{x}) = \sum_{i=0}^{2} w_i \Lambda_i p_i(\vec{x}) \equiv \sum_i 
+\Gamma_i(\vec{x}),
+\end{equation}
+where $i=0$ corresponds to single star systems, $i=1$ primaries of a binaries, 
+and $i=2$ secondaries of binaries.
+$\Lambda_i$ is the occurrence rate for the $i^{\rm th}$ system 
+type, $p_i(\vec{x})$ is the corresponding joint probability density function, 
+and the weights are given by 
+\begin{equation}
+w_i = N_i/N_{\rm tot},
+\end{equation}
+for $N_{\rm tot} = \sum_i N_i$ the total number of selected stars, and 
+$N_0,N_1,N_2$ the number of selected single stars, primaries, and 
+secondaries respectively.
+
+A transit survey will have a rate density of detected planets $\hat{\Gamma}$, 
+which will be the (dot) product of the rate density and the detection 
+efficiency $Q(\vec{x})$:
+\begin{equation}
+\hat{\Gamma}(\vec{x}) = \sum_i Q_i(\vec{x}) \Gamma_i(\vec{x}) 
+\equiv \sum_i \hat{\Gamma}_i(\vec{x}),
+\label{eq:detected_rate_density}
+\end{equation}
+where again the index $i$ is over each type of system (singles, primaries, 
+and secondaries).
+The detection efficiency includes the geometric transit probability, as well 
+as any incompleteness effects.
+
+
+
+
+\section{Model \#1: fixed stars, fixed planets, twin binaries}
+\label{sec:model_1}
+
+Consider a universe in which all planets are identical, and all stars are 
+either single or twin stars with otherwise identical physical properties.
+Then $\vec{x} = (r,R,a)$, and 
+\begin{equation}
+p_i(\vec{x})= \delta(r-r_p)\delta(R-R_\star)\delta(a-a_p)
+\equiv \delta^3(r_p,R_\star,a_p),
+\label{eq:model_1_prob}
+\end{equation}
+for $r_p$ and $R_\star$ some fixed planet and stellar radii, $a_p$ a fixed 
+semi-major axis, and $\delta$ the Dirac delta function, whose latter compact 
+form will be used for brevity.
+
+The occurrence rate density for this model is
+\begin{equation}
+\Gamma(r,R,a) = \sum_i w_i \Lambda_i \delta^3(r_p,R_\star,a_p),
+\label{eq:model1_occ_rate_density}
+\end{equation}
+and the occurrence rate over any interval that includes $r_p$, $R_\star$, and 
+$a_p$ is
+\begin{equation}
+\Lambda = \sum_i w_i \Lambda_i = \frac{ \sum_i N_i \Lambda_i }{N_{\rm tot}}.
+\end{equation}
+The rate is zero over intervals that do not.
+
+To express the rate density of detected planets, $\hat{\Gamma} = \sum 
+Q_i\Gamma_i$, we need the detection efficiencies for each system type, which 
+are products of the geometric and selection probabilities:
+\begin{align}
+Q_i(\vec{x}) &= Q_{g,i}(\vec{x}) Q_{c,i}(\vec{x}),\quad {\rm where}\ 
+\vec{x}=(r,R,a).
+\label{eq:general_detection_efficiency}
+\end{align}
+Similar to Pepper et al. (2003), but in a new context, we take $Q_c$ as the 
+ratio of the number of stars that were searchable to the number of stars that 
+were selected.
+Assuming a homogeneous distribution of stars, this gives
+\begin{equation}
+Q_{c,i}(\vec{x}) = \left(
+\frac{d_{{\rm det},i}(\vec{x})}{d_{\rm sel}(\vec{x})}
+\right)^3,
+\end{equation}
+for $d_{\rm sel}$ the maximum distance to which surveyed stars are selected, 
+and $d_{{\rm det},i}$ the maximum distance to which planets can actually be 
+detected about the $i^{\rm th}$ system type.
+Note that $d_{\rm sel} \geq d_{{\rm det},i}$.
+In a signal-to-noise limited transit survey in which the observer does not 
+know which stars are binaries, 
+\begin{equation}
+d_{\rm sel} \propto (r/R)^2 (L_{\rm sys} T_{\rm dur} A N_{\rm tra})^{1/2},
+\end{equation}
+for $L_{\rm sys}=L_1(1+\gamma_R)$ the system luminosity, $T_{\rm dur}$ the 
+transit duration, $A$ the detector area, and $N_{\rm tra}$ 
+the number of observed transits.
+However,
+\begin{equation}
+d_{{\rm det},i} \propto \mathcal{D}_i(r/R)^2 (L_{\rm sys} T_{\rm dur} A N_{\rm 
+tra})^{1/2},
+\label{eq:d_det_i}
+\end{equation}
+for the dilution $\mathcal{D}_i$ given by
+\begin{align}
+\mathcal{D}_i
+&=
+\left.
+\begin{cases}
+1 & \text{for } i=0,\ {\rm single} \\
+L_1 / L_d = (1+\gamma_R)^{-1}, & \text{for } i=1,\ {\rm primary} \\
+\gamma_R L_1 / L_d = (1 + \gamma_R^{-1})^{-1}, & \text{for } i=2,\ {\rm 
+secondary},
+\end{cases}
+\right.
+\label{eq:dilution}
+\end{align}
+where the light ratio $\gamma_R$ of a given binary is defined as the ratio of 
+the luminosity of the secondary to the primary.
+
+The maximum detectable distance to single stars is assumed to be known, and so 
+$d_{{\rm sel},0} = d_{{\rm det},0}$.
+For binary systems there is a necessary incompleteness, and combining 
+Eqs.~\ref{eq:general_detection_efficiency} through~\ref{eq:dilution} in the 
+case of twin binaries yields
+\begin{align}
+Q_i(\vec{x})
+&=
+\left.
+\begin{cases}
+R/a, & \text{for } i=0\ {\rm single} \\
+(R/a) (1+\gamma_R)^{-3} = (R/8a), & \text{for } i=1\ {\rm primary} \\
+(R/a) (1+\gamma_R^{-1})^{-3}\gamma_R^{-5/\alpha} = (R/8a), & \text{for } i=2\ 
+{\rm 
+secondary}.
+\end{cases}
+\right.
+\label{eq:model1_detection_efficiency}
+\end{align}
+
+The factor of $\gamma_R^{-5/\alpha}$ in the latter expression of 
+Eq.~\ref{eq:model1_occ_rate_density} comes from the mass-luminosity-radius 
+relation of stars in the model: we assume $R\propto M \propto L^{1/\alpha}$.
+For $\gamma_R=1$ this term is unimportant, but it will later become relevant.
+
+Summarizing, since we have written the rate density for each system type
+(Eq.~\ref{eq:model1_occ_rate_density}) and the detection efficiency for each 
+system type (Eq.~\ref{eq:model1_detection_efficiency}), we have fully 
+specified the rate density of detected planets, $\hat{\Gamma}=\sum Q_i 
+\Gamma_i$, in addition to the true rate density.
+
+
+\subsection{What does an observer ignoring binarity infer? }
+
+Consider an observer who ignores binarity.
+They assume a detection efficiency $\tilde{Q}=Q_0$,
+measure a detected planet rate density $\tilde{\Gamma}$, 
+and infer an apparent rate density $\Gamma_a$.
+Analogous to Eq.~\ref{eq:detected_rate_density},
+\begin{equation}
+\tilde{\Gamma} = \Gamma_a \tilde{Q}.
+\end{equation}
+Accounting for dilution, one can show
+\begin{equation}
+\Gamma_a = 
+w_a \Lambda_0 \delta^3(r_p, R_\star, a_p) +
+w_b (\Lambda_1 Q_{c,1} + \Lambda_2 Q_{c,2}) 
+				\delta^3(r_p/\sqrt{2}, R_\star, a_p),
+\end{equation}
+for $w_a = N_0/(N_0+N_1)$, and $w_b = N_1/(N_0+N_1)$.
+This observer miscounts the number of total searched stars, does not correct 
+for completeness, and misclassifies the planetary radii because of dilution.
+
+\subsection{Correction to inferred rate density and inferred rate}
+
+Define the rate density correction factor, $X_\Gamma$, as the ratio of the 
+apparent to true rate densities:
+\begin{equation}
+X_\Gamma \equiv \frac{\Gamma_a}{\Gamma}.
+\end{equation}
+This factor can be a function of whatever parameters $\Gamma_a$ and $\Gamma$ 
+depend on; in this study, the planet radius is most relevant.
+For the twin-binaries model,
+\begin{equation}
+X_\Gamma(r)
+=
+\frac{w_a \Lambda_0\delta^3(r_p) + 
+	w_b(\Lambda_1 Q_{c,1} + \Lambda_2 Q_{c,2}) \delta^3(r_p/\sqrt{2})  }
+	{(w_0\Lambda_0 + w_1\Lambda_1 + w_2\Lambda_2)\delta^3(r_p)}
+	\label{eq:model1_correction}
+	\end{equation}
+where $\delta^3(r_p)$ is shorthand for $\delta^3(r-r_p,R-R_\star,a-a_p)$.
+
+If we take the rates $\Lambda_i$ to be equal, applying the definitions of 
+the weights gives a rate density correction factor at $r=r_p$ of
+$X_\Gamma(r_p) = (1+\mu)^{-1}$, where 
+\begin{align}
+\mu \equiv \frac{N_1}{N_0} &=
+\frac{n_b}{n_s} \left(\frac{d_{\rm sel,b}}{d_{\rm sel,s}}\right)^3 = 
+\frac{{\rm BF}}{1-{\rm BF}} (1+\gamma_R)^{3/2},
+\label{eq:mu_definition}
+\end{align}
+for $n_b$ and $n_s$ the number density of binaries and singles in a 
+volume limited sample.
+Using Raghavan et al. (2010)'s $0.7-1.3M_\odot$ multiplicity fraction as our 
+binary fraction, we set ${\rm BF}=0.44$.
+The resulting correction to the rate density is $X_\Gamma(r_p) \approx 0.31$. 
+The correction at $r_p/\sqrt{2}$ is infinite.
+%beta = 2.2223355980148636
+
+
+If we assume that $\Lambda_0 = \Lambda_1$, but that $\Lambda_2=0$, we find 
+$X_\Gamma(r_p) = (1+2\mu)/(1+\mu)^2$.
+Taking the same binary fraction, this evaluates to $X_\Gamma(r_p)\approx 0.53$.
+
+In passing, note that a correction to the inferred rate, $X_\Lambda$, can be 
+defined analogously:
+\begin{equation}
+X_\Lambda \equiv \frac{\Lambda_a}{\Lambda}.
+\end{equation}
+For the twin binary model, the correction to the rate is the same as that to 
+the rate density.
