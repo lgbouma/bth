@@ -7,3 +7,4 @@ jnw_overview_paper*
 *.log
 *aux
 src/prob_curly_?_checks*
+nb/.ipynb*
