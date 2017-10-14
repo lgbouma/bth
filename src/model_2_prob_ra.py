@@ -151,4 +151,4 @@ ax.set_ylim([1e-1,1e2])
 ax.tick_params(which='both', direction='in', zorder=0)
 
 f.tight_layout(h_pad=0)
-f.savefig('prob_r_a.pdf', dpi=300, bbox_inches='tight')
+f.savefig('../results/prob_r_a.pdf', dpi=300, bbox_inches='tight')
