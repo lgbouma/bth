@@ -91,4 +91,4 @@ if __name__ == '__main__':
         make_plot(model_number)
 
     make_plot(2, logy=True)
-    make_plot(3, withtext=True, stdout=False)
+    make_plot(3, withtext=True, stdout=True)

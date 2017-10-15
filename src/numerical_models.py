@@ -202,12 +202,13 @@ if __name__ == '__main__':
         df.loc[df['has_planet'] == False, 'r'] = np.nan
 
     elif model_number == 3:
-        r_pl, r_pu = 2, 22.5 # [Rearth]. Lower and upper bound for truncation.
+        r_pl, r_pu = 2, 20 # [Rearth]. Lower and upper bound for truncation.
 
         # Inverse transform sample to get radii. Drawing from powerlaw
         # distribution above r_pl, and constant below (to avoid pileup).
         Δr = 1e-3
-        r_grid = np.arange(0, r_pu+Δr, Δr)
+        #fine-tune lower bound to get Howard's HJ rate
+        r_grid = np.arange(0.5, r_pu+Δr, Δr)
         prob_r = np.minimum( r_grid**δ, r_pl**δ )
         prob_r /= trapz(prob_r, r_grid)
         cdf_r = np.append(0, np.cumsum(prob_r)/np.max(np.cumsum(prob_r)))
