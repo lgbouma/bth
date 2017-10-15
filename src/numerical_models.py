@@ -1,15 +1,34 @@
 '''
+####################
 This program simulates the following toy surveys:
 
 MODEL #1: Fixed stars, fixed planets, twin binaries.
 
 MODEL #2: Fixed planets and primaries, varying secondaries.
 
-For Model #1, there are analytic predictions for the correction at various
-points -- these can be verified.
+MODEL #3: Fixed primaries, varying planets and secondaries.
 
-For Model #2, there are fewer, but there are still good tests we can apply
-along the way to ensure the result is believable.
+####################
+The following tests are implemented:
+
+* γ == 0
+* there are as many selected primaries as secondaries
+* stars in the same system get the same mass ratio
+* all mass ratios are > 0
+* only things with detected planets have an apparent radius
+* the sum of the true distribution's histogrammed rate densities is the true
+  average occurrence rate, to three decimals
+
+Model #1:
+* completeness fractions are very close to 1/8
+* numerical value of X_Γ at r_p matches analytic prediction
+
+Model #2:
+* numerical value of X_Γ at r_p matches analytic prediction
+
+Models #2 and #3:
+* primaries are all more complete than 1/8
+* secondaries are all less complete than 1/8
 '''
 
 from __future__ import division, print_function
@@ -72,7 +91,7 @@ if __name__ == '__main__':
     elif model_number == 2 or model_number == 3:
         integral = 0.484174086070513 # 17/10/14.2 analytic result
         N_d = N_0 * B * (2**(3/2) - 3*integral)
-        N_1 = int(N_d/2)
+        N_1 = int(N_d) # number of primaries = number of double star systems
 
     N_2 = N_1 # number of selected secondaries
 
@@ -150,7 +169,7 @@ if __name__ == '__main__':
             assert np.isclose(_1, 1/8, rtol=1e-2) \
                    and \
                    np.isclose(_2, 1/8, rtol=1e-2)
-    if model_number == 2:
+    elif model_number == 2 or model_number == 3:
         # primaries should be more complete than 1/8
         np.testing.assert_array_less(
                 1/8, #smaller
@@ -178,7 +197,7 @@ if __name__ == '__main__':
 
     if model_number == 1 or model_number == 2:
         # Assign arbitrary planet radius.
-        r_p = 1 
+        r_p = 1
         df['r'] = r_p
         df.loc[df['has_planet'] == False, 'r'] = np.nan
 
@@ -228,7 +247,7 @@ if __name__ == '__main__':
     # ratio (and so the "apparent radius" happens post-detection)
     df['r_a'] = np.nan
 
-    locind = df['star_type']=='single'
+    locind = (df['star_type']=='single') & (df['has_det_planet']==True)
     df.loc[locind, 'r_a'] = df.loc[locind, 'r']
 
     locind = (df['star_type']=='primary') & (df['has_det_planet']==True)
@@ -236,25 +255,19 @@ if __name__ == '__main__':
     this_r = df.loc[locind, 'r']
     df.loc[locind, 'r_a'] = this_r *(1+this_q**α)**(-1/2)
 
-    locind = (df['star_type']=='secondary') & (df['has_det_planet']==True) 
+    locind = (df['star_type']=='secondary') & (df['has_det_planet']==True)
     this_q = df.loc[locind, 'q']
     this_r = df.loc[locind, 'r']
     df.loc[locind, 'r_a'] = this_r *(1+this_q**(-α))**(-1/2) * (1/this_q)
 
     # Only things with detected planets should have an apparent radius.
-    assert np.all(np.isfinite(np.array(
-        df[(df['star_type']=='primary') & \
-        (df['has_det_planet']==True)]['r_a'])))
-    assert np.all(~np.isfinite(np.array(
-        df[(df['star_type']=='primary') & \
-        (df['has_det_planet']==False)]['r_a'])))
-
-    assert np.all(np.isfinite(np.array(
-        df[(df['star_type']=='secondary') & \
-        (df['has_det_planet']==True)]['r_a'])))
-    assert np.all(~np.isfinite(np.array(
-        df[(df['star_type']=='secondary') & \
-        (df['has_det_planet']==False)]['r_a'])))
+    for type_i in ['single', 'primary', 'secondary']:
+        assert np.all(np.isfinite(np.array(
+            df[(df['star_type']==type_i) & \
+            (df['has_det_planet']==True)]['r_a'])))
+        assert np.all(~np.isfinite(np.array(
+            df[(df['star_type']==type_i) & \
+            (df['has_det_planet']==False)]['r_a'])))
 
 
     ##############################################
@@ -271,10 +284,13 @@ if __name__ == '__main__':
 
     true_dict = {}
     inferred_dict = {}
+    N_p_at_r_p_inferred = 0
+    N_p_at_r_p_true = 0
 
     types = ['single','primary','secondary']
     for type_i in types:
 
+        # True rate densities
         r = df[(df['star_type']==type_i) & (df['has_planet'])]['r']
         N_p, edges = np.histogram(r, bins=radius_bins)
 
@@ -282,14 +298,17 @@ if __name__ == '__main__':
         true_dict[type_i]['N_p'] = N_p
         true_dict[type_i]['edges'] = edges
 
-        # Apparent detected rate densities
+        # Inferred rate densities
         r_a = df[(df['star_type']==type_i) & (df['has_det_planet'])]['r_a']
         N_p_det, edges = np.histogram( r_a, bins=radius_bins )
 
-        # Inferred rate densities
         inferred_dict[type_i] = {}
         inferred_dict[type_i]['N_p'] = N_p_det/Q_g0
         inferred_dict[type_i]['edges'] = edges
+
+        if model_number == 1 or model_number == 2:
+            N_p_at_r_p_inferred += (len(r_a[r_a == r_p])/Q_g0)
+            N_p_at_r_p_true += len(r[r == r_p])
 
     N_tot = N_0 + N_1 + N_2
     true_dict['Γ'] = (true_dict['single']['N_p'] + \
@@ -313,12 +332,27 @@ if __name__ == '__main__':
     fname = '../data/results_model_'+repr(model_number)+'.out'
     outdf.to_csv(fname, index=False)
     print('wrote output to {:s}'.format(fname))
-    
+
+    # The sum of the true distribution's histogrammed rate densities is the true
+    # average occurrence rate, to three decimals.
+    np.testing.assert_almost_equal(
+            np.sum(outdf['true_Γ']),
+            (N_0*Λ_0 + N_1*Λ_1 + N_2*Λ_2)/N_tot,
+            decimal=3
+            )
+
     #######################
     # Final sanity checks #
     #######################
-    X_Γ_at_rp = inferred_dict['Γ'][-1] / true_dict['Γ'][-1]
-    print(X_Γ_at_rp)
+    if model_number == 1 or model_number== 2:
+        Γ_inferred = N_p_at_r_p_inferred / N_tot_apparent
+        Γ_true = N_p_at_r_p_true / N_tot
+        X_Γ_rp_numerics =  Γ_inferred / Γ_true
+
+    else:
+        X_Γ_rp_numerics = inferred_dict['Γ'][-1] / true_dict['Γ'][-1]
+
+    print(X_Γ_rp_numerics)
 
     if model_number == 1:
         w_a = (1+μ)**(-1)
@@ -328,13 +362,22 @@ if __name__ == '__main__':
         w1 = μ * (1+2*μ)**(-1)
         w2 = μ * (1+2*μ)**(-1)
 
-        X_Γ_analytic = w_a/(w0+w1+w2)
-        print(X_Γ_analytic)
+        X_Γ_rp_analytic = w_a/(w0+w1+w2)
+        print(X_Γ_rp_analytic)
 
-        # this gets down to 3 or 4 decimals when using more things
+        # when using larger N_0, gets down to 3 or 4 decimals
         np.testing.assert_almost_equal(
-                X_Γ_at_rp,
-                X_Γ_analytic,
-                decimal=2)
+                X_Γ_rp_numerics,
+                X_Γ_rp_analytic,
+                decimal=2
+                )
 
-    #NOTE: it would be great if we had analytic predictions for model #2 output
+    elif model_number == 2:
+        c_0 = 0.494087 # mathematica, 171011_integrals.nb
+        X_Γ_rp_analytic = 3*c_0*Λ_0/(Λ_0+Λ_1+Λ_2)
+
+        np.testing.assert_almost_equal(
+                X_Γ_rp_numerics,
+                X_Γ_rp_analytic,
+                decimal=2
+                )

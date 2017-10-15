@@ -1,7 +1,14 @@
+'''
+first, for models 1,2, 3:
+>>> python numerical_models.py
+then:
+>>> python rate_densities_vs_radius.py
+'''
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def make_plot(model_number, logx=None, logy=None, withtext=None):
+def make_plot(model_number, logx=None, logy=None, withtext=None,
+        stdout=False):
 
     # Make summary plot
     fname = '../data/results_model_'+repr(model_number)+'.out'
@@ -64,7 +71,8 @@ def make_plot(model_number, logx=None, logy=None, withtext=None):
             Λ_inferred,
             Λ_true/Λ_inferred
             )
-            print(txt)
+            if stdout:
+                print(txt)
 
         if withtext:
             ax.text(0.96,0.5,txt,horizontalalignment='right',
@@ -83,4 +91,4 @@ if __name__ == '__main__':
         make_plot(model_number)
 
     make_plot(2, logy=True)
-    make_plot(3, withtext=True)
+    make_plot(3, withtext=True, stdout=False)

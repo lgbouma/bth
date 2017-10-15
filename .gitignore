@@ -8,3 +8,4 @@ jnw_overview_paper*
 *aux
 src/prob_curly_?_checks*
 nb/.ipynb*
+data/*out
