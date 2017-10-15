@@ -3,9 +3,28 @@ first, for models 1,2, 3:
 >>> python numerical_models.py
 then:
 >>> python rate_densities_vs_radius.py
+
+makes plots for paper
 '''
+# -*- coding: utf-8 -*-
+from __future__ import division, print_function
+import matplotlib as mpl
+mpl.use('pgf')
+pgf_with_custom_preamble = {
+    'pgf.texsystem': 'pdflatex', # xelatex is default; i don't have it
+    'font.family': 'serif', # use serif/main font for text elements
+    'text.usetex': True,    # use inline math for ticks
+    'pgf.rcfonts': False,   # don't setup fonts from rc parameters
+    'pgf.preamble': [
+        '\\usepackage{amsmath}',
+        '\\usepackage{amssymb}'
+        ]
+    }
+mpl.rcParams.update(pgf_with_custom_preamble)
+
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 
 def make_plot(model_number, logx=None, logy=None, withtext=None,
         stdout=False):
@@ -16,15 +35,24 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
 
     f, ax = plt.subplots(figsize=(4,4))
 
-    ax.step(df['bin_left'], df['true_Γ'], where='pre', label='true')
+    if model_number == 3:
+        xvals = np.append(0, df['bin_left'])
+        ytrue = np.append(0, df['true_Γ'])
+        yinferred = np.append(0, df['inferred_Γ'])
+    elif model_number == 1 or model_number == 2:
+        xvals = np.append(df['bin_left'],1)
+        ytrue = np.append(df['true_Γ'],0)
+        yinferred = np.append(df['inferred_Γ'],0)
 
-    ax.step(df['bin_left'], df['inferred_Γ'], where='pre', label='inferred')
+    ax.step(xvals, ytrue, where='post', label='true')
 
-    ax.legend(loc='best',fontsize='small')
+    ax.step(xvals, yinferred, where='post', label='inferred')
 
-    ax.set_xlabel('planet radius, $r$ [$R_\oplus$]')
+    ax.legend(loc='best',fontsize='medium')
 
-    ax.set_ylabel('planets per star per bin, $\Gamma(r)$ [$R_\oplus^{-1}$]')
+    ax.set_xlabel('planet radius, $r$ [$R_\oplus$]', fontsize='large')
+
+    ax.set_ylabel('planets per star, $\Lambda$', fontsize='large')
 
     if logx:
         ax.set_xscale('log')
@@ -38,29 +66,36 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
         outname = '../results/rate_density_vs_radius_model_'+\
                  repr(model_number)
 
+    if model_number == 1 or model_number == 2 and not (logx or logy):
+        ax.set_xlim([0.5,1.02])
+
     if model_number == 3:
         # Assess HJ rate difference.
         from scipy.integrate import trapz
 
         #Howard 2012 boundary #1 and boundary #2:
-        for lower_bound in [8,5.6]:
+        for lower_bound in [5.6,8]:
             inds = df['bin_left'] > lower_bound
-            Λ_HJ_true = trapz(df[inds]['true_Γ'], df[inds]['bin_left'])
-            Λ_HJ_inferred = trapz(df[inds]['inferred_Γ'], df[inds]['bin_left'])
+            #Λ_HJ_true = trapz(df[inds]['true_Γ'], df[inds]['bin_left'])
+            #Λ_HJ_inferred = trapz(df[inds]['inferred_Γ'], df[inds]['bin_left'])
+            Λ_HJ_true = np.sum(df[inds]['true_Γ'])
+            Λ_HJ_inferred = np.sum(df[inds]['inferred_Γ'])
 
-            Λ_true = trapz(df['true_Γ'], df['bin_left'])
-            Λ_inferred = trapz(df['inferred_Γ'], df['bin_left'])
+            #Λ_true = trapz(df['true_Γ'], df['bin_left'])
+            #Λ_inferred = trapz(df['inferred_Γ'], df['bin_left'])
+            Λ_true = np.sum(df['true_Γ'])
+            Λ_inferred = np.sum(df['inferred_Γ'])
 
             txt = \
             '''
             with $r>${:.1f}$R_\oplus$,
-            Λ_HJ_true:      {:.4f} planets per star
-            Λ_HJ_inferred:  {:.4f} planets per star
+            $\Lambda$_HJ_true:      {:.4f} planets per star
+            $\Lambda$_HJ_inferred:  {:.4f} planets per star
             true/inferred:  {:.2f}.
 
             Integrated over all $r$,
-            Λ_true:         {:.3f} planets per star
-            Λ_inferred:     {:.3f} planets per star
+            $\Lambda$_true:         {:.3f} planets per star
+            $\Lambda$_inferred:     {:.3f} planets per star
             true/inferred:  {:.2f}.
             '''.format(
             lower_bound,

@@ -8,6 +8,9 @@ MODEL #2: Fixed planets and primaries, varying secondaries.
 
 MODEL #3: Fixed primaries, varying planets and secondaries.
 
+usage:
+    Change parameters in the "inputs" section below. Run with Python3.X
+
 ####################
 The following tests are implemented:
 
@@ -43,7 +46,7 @@ import os
 global α, β, γ
 
 if __name__ == '__main__':
-    np.random.seed(41)
+    np.random.seed(1337)
 
     ##########################################
     # Inputs.
@@ -63,6 +66,8 @@ if __name__ == '__main__':
     Λ_1 = 0.5 # fraction of selected primaries with planet
     Λ_2 = 0.5 # fraction of selected secondaries with planet
     ##########################################
+
+    print('Running Model #{:d}.'.format(model_number))
 
     if γ != 0:
         raise NotImplementedError
@@ -202,13 +207,13 @@ if __name__ == '__main__':
         df.loc[df['has_planet'] == False, 'r'] = np.nan
 
     elif model_number == 3:
-        r_pl, r_pu = 2, 20 # [Rearth]. Lower and upper bound for truncation.
+        r_pl, r_pu = 2, 22.5 # [Rearth]. Lower and upper bound for truncation.
 
         # Inverse transform sample to get radii. Drawing from powerlaw
         # distribution above r_pl, and constant below (to avoid pileup).
         Δr = 1e-3
         #fine-tune lower bound to get Howard's HJ rate
-        r_grid = np.arange(0.5, r_pu+Δr, Δr)
+        r_grid = np.arange(0, r_pu+Δr, Δr)
         prob_r = np.minimum( r_grid**δ, r_pl**δ )
         prob_r /= trapz(prob_r, r_grid)
         cdf_r = np.append(0, np.cumsum(prob_r)/np.max(np.cumsum(prob_r)))
