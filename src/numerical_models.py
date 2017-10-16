@@ -21,9 +21,9 @@ if __name__ == '__main__':
     # Inputs.
     quickrun = False
     slowrun = not quickrun
-    model_number = 3
+    model_number = 2
 
-    BF = 0.44 # binary fraction. BF = n_d / (n_s+n_d). Raghavan+ 2010 solar.
+    BF = 0.44   # binary fraction. BF = n_d / (n_s+n_d). Raghavan+ 2010 solar.
 
     α = 3.5     # exponent in L~M^α
     β = 0       # exponent in p_vol_limited(q) ~ q^β
@@ -245,9 +245,9 @@ if __name__ == '__main__':
             (df['has_det_planet']==False)]['r_a'])))
 
 
-    ##############################################
-    # TRUE RATE DENSITY VS APPARENT RATE DENSITY #
-    ##############################################
+    ##############################################################
+    # TRUE RATE DENSITY VS APPARENT RATE DENSITY (NOMINAL MODEL) #
+    ##############################################################
 
     if model_number == 1 or model_number == 2:
         Δr = 0.01
@@ -316,9 +316,9 @@ if __name__ == '__main__':
             decimal=3
             )
 
-    #######################
-    # Final sanity checks #
-    #######################
+    ###############################
+    # Nominal model sanity checks #
+    ###############################
     if model_number == 1 or model_number== 2:
         Γ_inferred = N_p_at_r_p_inferred / N_tot_apparent
         Γ_true = N_p_at_r_p_true / N_tot
@@ -356,3 +356,116 @@ if __name__ == '__main__':
                 X_Γ_rp_analytic,
                 decimal=2
                 )
+
+    ###############
+    # ERROR CASES #
+    ###############
+    for error_case_number in [1,2,3]:
+        print('Beginning error case {:d}'.format(error_case_number))
+
+        true_dict = {}
+        inferred_dict = {}
+
+        for type_i in types:
+
+            # True rate densities are invariant of error case.
+            r = df[(df['star_type']==type_i) & (df['has_planet'])]['r']
+            N_p, edges = np.histogram(r, bins=radius_bins)
+
+            true_dict[type_i] = {}
+            true_dict[type_i]['N_p'] = N_p
+            true_dict[type_i]['edges'] = edges
+
+            # Inferred rate densities. Error case #3 gets incorrect, other two
+            # are correct.
+            if error_case_number == 1 or error_case_number == 2:
+                r_a = df[(df['star_type']==type_i) & (df['has_det_planet'])]['r']
+            elif error_case_number == 3:
+                r_a = df[(df['star_type']==type_i) & (df['has_det_planet'])]['r_a']
+
+
+            inferred_dict[type_i] = {}
+
+            if error_case_number == 1 or error_case_number == 3:
+                # How does the observer ideally account for Q_gi and Q_ci, the
+                # geometric and completeness terms on a system-type specific
+                # basis?
+
+                df_detd = df[(df['star_type']==type_i) & (df['has_det_planet'])]
+
+                weighted_N_p_det = []
+
+                for j in range(len(radius_bins)-1):
+
+                    this_N_p_det = 0
+
+                    lower_edge = radius_bins[j]
+                    upper_edge = radius_bins[j+1]
+
+                    inds = (r_a > lower_edge) & (r_a <= upper_edge)
+
+                    if len(inds) == 0:
+                        # If there are no detected planets in this bin,
+                        # detection efficiency is irrelevant for inferred rate.
+                        Q = 1
+                        this_N_p_det = 0
+
+                    else:
+                        # This bin has detected planets. Each planet contibutes
+                        # to "N_p_det" inversely weighted by the detection
+                        # efficiency.
+                        q = df_detd[inds]['q']
+
+                        if type_i == 'single':
+                            Q_g = Q_g0
+                            Q_c = 1
+                        elif type_i == 'primary':
+                            Q_g = Q_g1
+                            Q_c = (1+q**α)**(-3)
+                        elif type_i == 'secondary':
+                            Q_g = Q_g0 * q**(2/3)
+                            Q_c = (1+q**(-α))**(-3) * q**(-5)
+
+                        Q = Q_g * Q_c
+
+                        this_weighted_N_p_det = np.sum(1/Q)
+
+                    weighted_N_p_det.append(this_weighted_N_p_det)
+
+                inferred_dict[type_i]['N_p'] = np.array(weighted_N_p_det)
+
+            elif error_case_number == 2:
+
+                N_p_det, edges = np.histogram( r_a, bins=radius_bins )
+                Q = Q_g0
+                inferred_dict[type_i]['N_p'] = N_p_det/Q
+
+            inferred_dict[type_i]['edges'] = edges
+
+        N_tot = N_0 + N_1 + N_2
+        true_dict['Γ'] = (true_dict['single']['N_p'] + \
+                         true_dict['primary']['N_p'] + \
+                         true_dict['secondary']['N_p'])/N_tot
+        true_dict['r'] = radius_bins
+
+        if error_case_number == 2 or error_case_number == 3:
+            N_tot_apparent = N_tot
+        elif error_case_number == 1:
+            N_tot_apparent = N_0 + N_1
+
+        inferred_dict['Γ'] = \
+                         (inferred_dict['single']['N_p'] + \
+                         inferred_dict['primary']['N_p'] + \
+                         inferred_dict['secondary']['N_p'])/N_tot_apparent
+        inferred_dict['r'] = radius_bins
+
+        outdf = pd.DataFrame(
+                {'bin_left': edges[:-1],
+                 'true_Γ': true_dict['Γ'],
+                 'inferred_Γ': inferred_dict['Γ']
+                }
+                )
+        fname = '../data/results_model_{:d}_error_case_{:d}.out'.format(
+                model_number, error_case_number)
+        outdf.to_csv(fname, index=False)
+        print('\twrote output to {:s}'.format(fname))

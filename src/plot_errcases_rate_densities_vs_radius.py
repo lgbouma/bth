@@ -2,7 +2,7 @@
 first, for models 1,2, 3:
 >>> python numerical_models.py
 then:
->>> python plot_rate_densities_vs_radius.py
+>>> python plot_absolute_rate_densities_vs_radius.py
 
 makes plots for paper
 '''
@@ -30,10 +30,10 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
         stdout=False):
 
     # Make summary plot
+    f, ax = plt.subplots(figsize=(4,4))
+
     fname = '../data/results_model_'+repr(model_number)+'.out'
     df = pd.read_csv(fname)
-
-    f, ax = plt.subplots(figsize=(4,4))
 
     if model_number == 3:
         xvals = np.append(0, df['bin_left'])
@@ -46,7 +46,31 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
 
     ax.step(xvals, ytrue, where='post', label='true')
 
-    ax.step(xvals, yinferred, where='post', label='inferred')
+    ax.step(xvals, yinferred, where='post', label='all errors')
+
+    for error_case_number in [1,2,3]:
+
+        fname = '../data/results_model_{:d}_error_case_{:d}.out'.format(
+                model_number, error_case_number)
+        df = pd.read_csv(fname)
+
+        if model_number == 3:
+            xvals = np.append(0, df['bin_left'])
+            ytrue = np.append(0, df['true_Γ'])
+            yinferred = np.append(0, df['inferred_Γ'])
+        elif model_number == 1 or model_number == 2:
+            xvals = np.append(df['bin_left'],1)
+            ytrue = np.append(df['true_Γ'],0)
+            yinferred = np.append(df['inferred_Γ'],0)
+
+        if error_case_number == 1:
+            label = 'only incorrect $N_\star$'
+        elif error_case_number == 2:
+            label = 'only incorrect $Q$'
+        elif error_case_number == 3:
+            label = 'only incorrect $r_a$'
+
+        ax.step(xvals, yinferred, where='post', label=label)
 
     ax.legend(loc='best',fontsize='medium')
 
@@ -60,16 +84,18 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
         ax.set_yscale('log')
 
     if logx or logy:
-        outname = '../results/rate_density_vs_radius_logs_model_'+\
+        outname = '../results/errcases_rate_density_vs_radius_logs_model_'+\
                  repr(model_number)
     else:
-        outname = '../results/rate_density_vs_radius_model_'+\
+        outname = '../results/errcases_rate_density_vs_radius_model_'+\
                  repr(model_number)
 
     if model_number == 1 or model_number == 2 and not (logx or logy):
         ax.set_xlim([0.5,1.02])
 
     if model_number == 3:
+        fname = '../data/results_model_'+repr(model_number)+'.out'
+        df = pd.read_csv(fname)
         # Assess HJ rate difference.
         from scipy.integrate import trapz
 
