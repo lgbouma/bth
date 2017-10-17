@@ -54,6 +54,17 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
                 model_number, error_case_number)
         df = pd.read_csv(fname)
 
+        if error_case_number == 3:
+            try:
+                np.testing.assert_almost_equal(
+                        np.sum(df['inferred_Γ']),
+                        np.sum(df['true_Γ']),
+                        decimal=1
+                        )
+            except:
+                print(model_number, error_case_number)
+                print('assert failed')
+
         if model_number == 3:
             xvals = np.append(0, df['bin_left'])
             ytrue = np.append(0, df['true_Γ'])
@@ -63,12 +74,15 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
             ytrue = np.append(df['true_Γ'],0)
             yinferred = np.append(df['inferred_Γ'],0)
 
+            #if model_number==1:
+            #    import IPython; IPython.embed()
+
         if error_case_number == 1:
-            label = 'only incorrect $N_\star$'
+            label = 'only wrong $N_\star$'
         elif error_case_number == 2:
-            label = 'only incorrect $Q$'
+            label = 'only wrong $Q$'
         elif error_case_number == 3:
-            label = 'only incorrect $r_a$'
+            label = 'only wrong $r_a$'
 
         ax.step(xvals, yinferred, where='post', label=label)
 
@@ -94,49 +108,58 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
         ax.set_xlim([0.5,1.02])
 
     if model_number == 3:
-        fname = '../data/results_model_'+repr(model_number)+'.out'
-        df = pd.read_csv(fname)
-        # Assess HJ rate difference.
+
         from scipy.integrate import trapz
 
+        # Assess HJ rate difference.
         #Howard 2012 boundary #1 and boundary #2:
         for lower_bound in [5.6,8]:
-            inds = df['bin_left'] > lower_bound
-            #Λ_HJ_true = trapz(df[inds]['true_Γ'], df[inds]['bin_left'])
-            #Λ_HJ_inferred = trapz(df[inds]['inferred_Γ'], df[inds]['bin_left'])
-            Λ_HJ_true = np.sum(df[inds]['true_Γ'])
-            Λ_HJ_inferred = np.sum(df[inds]['inferred_Γ'])
+            fname = '../data/results_model_'+repr(model_number)+'.out'
+            df = pd.read_csv(fname)
 
-            #Λ_true = trapz(df['true_Γ'], df['bin_left'])
-            #Λ_inferred = trapz(df['inferred_Γ'], df['bin_left'])
-            Λ_true = np.sum(df['true_Γ'])
-            Λ_inferred = np.sum(df['inferred_Γ'])
+            inds = df['bin_left'] > lower_bound
+
+            inferred_HJ_rates = {}
+
+            Λ_HJ_true = np.sum(df[inds]['true_Γ'])
+            inferred_HJ_rates['allerrs'] = np.sum(df[inds]['inferred_Γ'])
+
+            for error_case_number in [1,2,3]:
+
+                fname = '../data/results_model_{:d}_error_case_{:d}.out'.format(
+                        model_number, error_case_number)
+                df = pd.read_csv(fname)
+
+                inds = df['bin_left'] > lower_bound
+
+                Λ_HJ_inferred = np.sum(df[inds]['inferred_Γ'])
+
+                inferred_HJ_rates[error_case_number] = Λ_HJ_inferred
+
 
             txt = \
             '''
             with $r>${:.1f}$R_\oplus$,
             $\Lambda$_HJ_true:      {:.4f} planets per star
-            $\Lambda$_HJ_inferred:  {:.4f} planets per star
-            true/inferred:  {:.2f}.
-
-            Integrated over all $r$,
-            $\Lambda$_true:         {:.3f} planets per star
-            $\Lambda$_inferred:     {:.3f} planets per star
-            true/inferred:  {:.2f}.
+            $\Lambda$_HJ_all_errors:  {:.4f} planets per star
+            true/(all_errors):  {:.2f}.
+            $\Lambda$_HJ_only_Nstar:  {:.4f} planets per star
+            $\Lambda$_HJ_only_Q:      {:.4f} planets per star
+            $\Lambda$_HJ_only_ra:     {:.4f} planets per star
             '''.format(
             lower_bound,
             Λ_HJ_true,
-            Λ_HJ_inferred,
-            Λ_HJ_true/Λ_HJ_inferred,
-            Λ_true,
-            Λ_inferred,
-            Λ_true/Λ_inferred
+            inferred_HJ_rates['allerrs'],
+            Λ_HJ_true/inferred_HJ_rates['allerrs'],
+            inferred_HJ_rates[1],
+            inferred_HJ_rates[2],
+            inferred_HJ_rates[3]
             )
             if stdout:
                 print(txt)
 
         if withtext:
-            ax.text(0.96,0.5,txt,horizontalalignment='right',
+            ax.text(0.96,0.4,txt,horizontalalignment='right',
                     verticalalignment='center',
                     transform=ax.transAxes, fontsize='x-small')
             outname += '_withtext'
