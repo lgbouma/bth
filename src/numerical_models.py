@@ -15,13 +15,13 @@ import os
 global α, β, γ
 
 if __name__ == '__main__':
-    np.random.seed(1337)
+    np.random.seed(42)
 
     ##########################################
     # Inputs.
     quickrun = False
     slowrun = not quickrun
-    model_number = 2
+    model_number = 3
 
     BF = 0.44   # binary fraction. BF = n_d / (n_s+n_d). Raghavan+ 2010 solar.
 
@@ -52,8 +52,8 @@ if __name__ == '__main__':
     #   * q (float): binary mass ratio, if applicable
     ######################
 
-    # arbitrary number of selected single stars
-    N_0 = int(5e2) if quickrun else int(1e6)
+    # arbitrary number of selected single stars. 1e6 is pretty fast.
+    N_0 = int(5e2) if quickrun else int(5e6)
 
     B = BF / (1-BF) # prefactor in definition of μ
 
@@ -85,7 +85,7 @@ if __name__ == '__main__':
         df['q'] = np.nan
 
         # Inverse transform sampling to get samples of q
-        q_grid = np.arange(0, 1+1e-6, 1e-6)
+        q_grid = np.arange(1e-6, 1+1e-6, 1e-6)
         prob_ml_q = q_grid**β * (1+q_grid**α)**(3/2)
         prob_ml_q /= trapz(prob_ml_q, q_grid)
         cdf_ml_q = np.append(0, np.cumsum(prob_ml_q)/np.max(np.cumsum(prob_ml_q)))
@@ -383,7 +383,6 @@ if __name__ == '__main__':
             elif error_case_number == 3:
                 r_a = df[(df['star_type']==type_i) & (df['has_det_planet'])]['r_a']
 
-
             inferred_dict[type_i] = {}
 
             if error_case_number == 1 or error_case_number == 3:
@@ -404,11 +403,10 @@ if __name__ == '__main__':
 
                     inds = (r_a > lower_edge) & (r_a <= upper_edge)
 
-                    if len(inds) == 0:
+                    if not np.any(inds):
                         # If there are no detected planets in this bin,
                         # detection efficiency is irrelevant for inferred rate.
-                        Q = 1
-                        this_N_p_det = 0
+                        this_weighted_N_p_det = 0
 
                     else:
                         # This bin has detected planets. Each planet contibutes
@@ -417,7 +415,8 @@ if __name__ == '__main__':
                         q = df_detd[inds]['q']
 
                         if type_i == 'single':
-                            Q_g = Q_g0
+                            #Need this for above weighting to be fulfilled.
+                            Q_g = Q_g0*np.ones(len(inds[inds]))
                             Q_c = 1
                         elif type_i == 'primary':
                             Q_g = Q_g1
