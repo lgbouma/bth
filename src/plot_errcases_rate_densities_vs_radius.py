@@ -26,11 +26,24 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
+from brokenaxes import brokenaxes
+
 def make_plot(model_number, logx=None, logy=None, withtext=None,
-        stdout=False):
+        stdout=False, brokenx=False):
 
     # Make summary plot
-    f, ax = plt.subplots(figsize=(4,4))
+    if not brokenx:
+        f, ax = plt.subplots(figsize=(4,4))
+    else:
+        #cf https://github.com/bendichter/brokenaxes/blob/master/brokenaxes.py
+        f = plt.figure(figsize=(4,4))
+        bigax = brokenaxes(
+                xlims=((0.695, .715), (.985, 1.005)),
+                d=0.02,
+                tilt=85,
+                hspace=.05,
+                despine=True)
+        ax=bigax
 
     fname = '../data/results_model_'+repr(model_number)+'.out'
     df = pd.read_csv(fname)
@@ -40,9 +53,9 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
         ytrue = np.append(0, df['true_Γ'])
         yinferred = np.append(0, df['inferred_Γ'])
     elif model_number == 1 or model_number == 2:
-        xvals = np.append(df['bin_left'],1)
-        ytrue = np.append(df['true_Γ'],0)
-        yinferred = np.append(df['inferred_Γ'],0)
+        xvals = np.append(df['bin_left'],[1,1.1])
+        ytrue = np.append(df['true_Γ'],[0,0])
+        yinferred = np.append(df['inferred_Γ'],[0,0])
 
     ax.step(xvals, ytrue, where='post', label='true')
 
@@ -70,12 +83,9 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
             ytrue = np.append(0, df['true_Γ'])
             yinferred = np.append(0, df['inferred_Γ'])
         elif model_number == 1 or model_number == 2:
-            xvals = np.append(df['bin_left'],1)
-            ytrue = np.append(df['true_Γ'],0)
-            yinferred = np.append(df['inferred_Γ'],0)
-
-            #if model_number==1:
-            #    import IPython; IPython.embed()
+            xvals = np.append(df['bin_left'],[1,1.1])
+            ytrue = np.append(df['true_Γ'],[0,0])
+            yinferred = np.append(df['inferred_Γ'],[0,0])
 
         if error_case_number == 1:
             label = 'only wrong $N_\star$'
@@ -86,7 +96,10 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
 
         ax.step(xvals, yinferred, where='post', label=label)
 
-    ax.legend(loc='best',fontsize='medium')
+    if brokenx:
+        ax.legend(loc='upper left',fontsize='medium')
+    else:
+        ax.legend(loc='best',fontsize='medium')
 
     ax.set_xlabel('planet radius, $r$ [$R_\oplus$]', fontsize='large')
 
@@ -103,9 +116,14 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
     else:
         outname = '../results/errcases_rate_density_vs_radius_model_'+\
                  repr(model_number)
+    if brokenx:
+        outname += '_brokenx'
 
-    if model_number == 1 or model_number == 2 and not (logx or logy):
-        ax.set_xlim([0.5,1.02])
+    if not brokenx:
+        if (model_number == 1 or model_number == 2) and not (logx or logy):
+            ax.set_xlim([0.5,1.02])
+        elif (model_number == 1 or model_number == 2) and (logx or logy):
+            ax.set_xlim([-0.02,1.02])
 
     if model_number == 3:
 
@@ -174,5 +192,7 @@ if __name__ == '__main__':
 
         make_plot(model_number)
 
+    make_plot(1, brokenx=True)
     make_plot(2, logy=True)
+    make_plot(3, logy=True)
     make_plot(3, withtext=True, stdout=True)
