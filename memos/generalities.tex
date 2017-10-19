@@ -1,0 +1,78 @@
+\section*{Generalities}
+
+Define the occurrence rate density, $\Gamma$,
+as the expected number of planets per star per natural logarithmic bin 
+of planetary and stellar phase space:
+\begin{equation}
+\Gamma(\vec{x}) = \frac{d^n\Lambda}{\prod_{i=1}^{n} {\rm d} \ln x_i  }.
+\label{eq:rate_density_defn}
+\end{equation}
+$\vec{x}$ is an $n$-dimensional list of the continuous physical properties 
+that might affect the occurrence rate density. 
+For example,
+$\vec{x}=(r,P,R)$ where $r$ is the planet radius, $P$ is its orbital period, 
+and $R$ is the host star radius.
+The occurrence rate $\Lambda$ is found by integrating the rate density over a 
+specified volume of phase space.
+
+
+The previous definition implicitly marginalizes the rate density over stellar 
+multiplicity.
+For simplicity, this work only considers single and binary star systems.
+Then for a selected population of stars and planets the rate density can be 
+written
+\begin{equation}
+\Gamma(\vec{x})
+= \sum_{i=0}^{2} w_i \Gamma_i(\vec{x})
+= \sum_i w_i \Lambda_i p_i(\vec{x})
+\label{eq:rate_density_marginalized}
+\end{equation}
+where $i=0$ corresponds to single star systems, $i=1$ primaries of binaries, 
+and $i=2$ secondaries of binaries.
+$\Lambda_i$ is the occurrence rate integrated over all possible phase space  
+for the $i^{\rm th}$ system type, $p_i(\vec{x})$ is the joint 
+probability density function so that $\Gamma_i(\vec{x}) = \Lambda_i 
+p_i(\vec{x})$, 
+and the weights are given by 
+\begin{equation}
+w_i = N_i/N_{\rm tot},
+\end{equation}
+for $N_{\rm tot} = \sum_i N_i$ the total number of selected stars, and 
+$N_0,N_1,N_2$ the number of selected single stars, primaries, and 
+secondaries respectively\footnote{
+Eq.~\ref{eq:rate_density_marginalized} follows by writing the $i^{\rm 
+th}$ system type's rate density as some normalization multiplied by a 
+probability density:
+$\Gamma_i(\vec{x}) = \mathcal{Z}_i p_i(\vec{x})$.
+For Eq.~\ref{eq:rate_density_defn} to hold, we must have $\mathcal{Z}_i = 
+\Lambda_i$.
+}.
+The relationship between the rate $\Lambda$ over a desired volume of 
+phase space $\Omega_{\rm desired}$ and $\Lambda_i$ is
+\begin{equation}
+\Lambda = \sum_i
+\left[
+\left(
+w_i \Lambda_i \int_{\Omega_{\rm desired}} p_i(\vec{x}) \,{\rm d}\Omega
+\right)
+\cdot
+\left(
+w_i \Lambda_i \int_{\Omega_{\rm total}} p_i(\vec{x}) \,{\rm d}\Omega
+\right)^{-1}
+\right],
+\label{eq:occ_rate}
+\end{equation}
+where the inverse term is unity if $p_i(\vec{x})$ is appropriately normalized.
+
+A transit survey will have a rate density of detected planets $\hat{\Gamma}$, 
+which will be the (dot) product of the rate density and the detection 
+efficiency $Q(\vec{x})$:
+\begin{equation}
+\hat{\Gamma}(\vec{x}) = \sum_i Q_i(\vec{x}) \Gamma_i(\vec{x}) 
+\equiv \sum_i \hat{\Gamma}_i(\vec{x}),
+\label{eq:detected_rate_density}
+\end{equation}
+where again the index $i$ is over each type of system (singles, primaries, 
+and secondaries).
+The detection efficiency includes the geometric transit probability, as well 
+as any incompleteness effects.
