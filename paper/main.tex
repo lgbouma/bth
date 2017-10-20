@@ -1,23 +1,54 @@
 \documentclass[12pt,modern]{aastex61}
-\usepackage{graphicx}
+\usepackage{graphics,graphicx}
+\usepackage{hyperref}
 \usepackage{amssymb}
 \usepackage{amsmath}
-\usepackage{todonotes}
+\usepackage{comment}
+
 
 \shortauthors{LGB, KM, JNW}
 \shorttitle{Toy transit surveys}
 
 \begin{document}
     
-\title{ Binarity's effects on occurrence rates measured by transit surveys}
+\title{ The effects of binarity on planet occurrence rates measured by transit 
+surveys}
 
 \author{
-LGB, KM, JNW
+L. G. Bouma, K. Masuda, J. N. Winn
 }
 
-\input{generalities}
-\input{model_1}
-\input{model_2}
+\begin{abstract}
 
+The aim of this work is to clarify what biases, if any, stellar binarity 
+introduces to occurrence rates inferred from transit surveys.
+Ignoring binarity leads to diluted planetary radii, overestimated 
+detection efficiencies, and an undercounted number of selected stars.
+These effects skew occurrence rate measurements in different directions, and 
+we develop simplified analytic and numerical models to clarify which are the 
+most important.
+For models in which all planets have the same radii, we find that 
+ignoring binarity leads to an inferred occurrence rate at the true radius two 
+to three times smaller than the actual rate (an upper limit to the possible 
+error).
+%However, the direction and size of the error depend on the assumed 
+%planet population's radius distribution.
+More realistically, using Howard et al. (2012)'s radius distribution and a 
+simple stellar model, we find that ignoring binarity leads to a $\sim10-30\%$ 
+underestimate of the number of planets per star over most planetary radii.
+In particular, the 30\% underestimate applies to hot Jupiter occurrence rates, 
+which suggests that the discrepancy between rates measured by {\it Kepler} and 
+RV surveys might be attributable to the {\it Kepler} sample containing more 
+binaries.
+
+\end{abstract}
+
+\input{introduction}
+\input{methods}
+\input{results}
+\input{discussion}
+
+
+\input{figures.tex}
 
 \end{document}

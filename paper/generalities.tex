@@ -1,4 +1,4 @@
-\section*{Generalities}
+\subsection{Analytic Preliminaries}
 
 Define the occurrence rate density, $\Gamma$,
 as the expected number of planets per star per natural logarithmic bin 
@@ -65,8 +65,8 @@ w_i \Lambda_i \int_{\Omega_{\rm total}} p_i(\vec{x}) \,{\rm d}\Omega
 where the inverse term is unity if $p_i(\vec{x})$ is appropriately normalized.
 
 A transit survey will have a rate density of detected planets $\hat{\Gamma}$, 
-which will be the (dot) product of the rate density and the detection 
-efficiency $Q(\vec{x})$:
+which for each system type will be the product of the rate density and the 
+detection efficiency $Q_i(\vec{x})$:
 \begin{equation}
 \hat{\Gamma}(\vec{x}) = \sum_i Q_i(\vec{x}) \Gamma_i(\vec{x}) 
 \equiv \sum_i \hat{\Gamma}_i(\vec{x}),
@@ -75,4 +75,6 @@ efficiency $Q(\vec{x})$:
 where again the index $i$ is over each type of system (singles, primaries, 
 and secondaries).
 The detection efficiency includes the geometric transit probability, as well 
-as any incompleteness effects.
+as any incompleteness effects. Foreman-Mackey et al. (2014) discuss how this 
+is calculated in practice.
+

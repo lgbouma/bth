@@ -1,24 +1,18 @@
-\section{Model \#1: fixed stars, fixed planets, twin binaries}
+\subsection{Model \#1: fixed stars, fixed planets, twin binaries}
 \label{sec:model_1}
 
 Consider a universe in which all planets are identical, and all stars are 
 either single or twin stars with otherwise identical physical properties.
-Then $\vec{x} = (r,R,a)$, and 
-\begin{equation}
-p_i(\vec{x})= \delta(r-r_p)\delta(R-R_\star)\delta(a-a_p)
-\equiv \delta^3(r_p,R_\star,a_p),
-\label{eq:model_1_prob}
-\end{equation}
-for $r_p$ and $R_\star$ some fixed planet and stellar radii, $a_p$ a fixed 
-semi-major axis, and $\delta$ the Dirac delta function, whose latter compact 
-form will be used for brevity.
-
-The occurrence rate density for this model is
+The occurrence rate density at a planet radius $r$, stellar radius $R$, and 
+semimajor axis $a$ for this model is
 \begin{equation}
 \Gamma(r,R,a) = \sum_i w_i \Lambda_i \delta^3(r_p,R_\star,a_p),
 \label{eq:model1_occ_rate_density}
 \end{equation}
-and the occurrence rate over any interval that includes $r_p$, $R_\star$, and 
+for $r_p$ and $R_\star$ some fixed planet and stellar radii, $a_p$ a fixed 
+semi-major axis, and $\delta$ the Dirac delta function, whose compact
+form will be used for brevity.
+The occurrence rate over any interval that includes $r_p$, $R_\star$, and 
 $a_p$ is
 \begin{equation}
 \Lambda = \sum_i w_i \Lambda_i = \frac{ \sum_i N_i \Lambda_i }{N_{\rm tot}}.
@@ -80,41 +74,32 @@ the luminosity of the secondary to the primary.
 The maximum detectable distance to single stars is assumed to be known, and so 
 $d_{{\rm sel},0} = d_{{\rm det},0}$.
 For binary systems there is a necessary incompleteness, and combining 
-Eqs.~\ref{eq:general_detection_efficiency} through~\ref{eq:dilution} in the 
-case of twin binaries yields
+Eqs.~\ref{eq:general_detection_efficiency} through~\ref{eq:dilution} yields
 \begin{align}
-Q_i(\vec{x})
-&=
-\left.
-\begin{cases}
-R/a, & \text{for } i=0\ {\rm single} \\
-(R/a) (1+\gamma_R)^{-3} = (R/8a), & \text{for } i=1\ {\rm primary} \\
-(R/a) (1+\gamma_R^{-1})^{-3}\gamma_R^{-5/\alpha} = (R/8a), & \text{for } i=2\ 
-{\rm 
-secondary}.
-\end{cases}
-\right.
-\label{eq:model1_detection_efficiency}
+Q_0 &= Q_{g,0}Q_{c,0} = Q_{g,0} \label{eq:detection_efficiency_0}\\
+Q_1 &= Q_{g,1}Q_{c,1} = Q_{g,0} (1+q^\alpha)^{-3} \\
+Q_2 &= Q_{g,2}Q_{c,2} = Q_{g,0} q^{2/3} (1+q^{-\alpha})^{-3} q^{-5}, 
+\label{eq:detection_efficiency_2}
 \end{align}
+for $Q_{g,0}=R/a$, the transit probability in single star systems.
+The factors of $q^{2/3}$ and $q^{-5}$ in
+Eq.~\ref{eq:detection_efficiency_2} come from the assumed stellar 
+mass-luminosity-radius relation: $R\propto M \propto L^{1/\alpha}$.
+For $q=1$ both terms evaluate to unity, but they will later become relevant.
 
-The factor of $\gamma_R^{-5/\alpha}$ in the latter expression of 
-Eq.~\ref{eq:model1_occ_rate_density} comes from the mass-luminosity-radius 
-relation of stars in the model: we assume $R\propto M \propto L^{1/\alpha}$.
-For $\gamma_R=1$ this term is unimportant, but it will later become relevant.
-
-Summarizing, since we have written the rate density for each system type
+Summarizing, we have written the rate density for each system type
 (Eq.~\ref{eq:model1_occ_rate_density}) and the detection efficiency for each 
-system type (Eq.~\ref{eq:model1_detection_efficiency}), we have fully 
-specified the rate density of detected planets, $\hat{\Gamma}=\sum Q_i 
-\Gamma_i$, in addition to the true rate density.
+system type 
+(Eq.~\ref{eq:detection_efficiency_0}-\ref{eq:detection_efficiency_2}),
+and so have fully specified the rate density of detected planets, 
+in addition to the true rate density.
 
 
-\subsection{What does an observer ignoring binarity infer? }
-
-Consider an observer who ignores binarity.
-They assume a detection efficiency $\tilde{Q}=Q_0$,
-measure a detected planet rate density $\tilde{\Gamma}$, 
-and infer an apparent rate density $\Gamma_a$.
+\paragraph{What does an observer ignoring binarity infer?} 
+An observer who ignores binarity assumes a detection efficiency 
+$\tilde{Q}=Q_0$,
+measures a detected planet rate density $\tilde{\Gamma}$, 
+and infers an apparent rate density $\Gamma_a$.
 Analogous to Eq.~\ref{eq:detected_rate_density},
 \begin{equation}
 \tilde{\Gamma} = \Gamma_a \tilde{Q}.
@@ -128,11 +113,11 @@ w_b (\Lambda_1 Q_{c,1} + \Lambda_2 Q_{c,2})
 \end{equation}
 for $w_a = N_0/(N_0+N_1)$, and $w_b = N_1/(N_0+N_1)$.
 This observer miscounts the number of total searched stars, does not correct 
-for completeness, and misclassifies the planetary radii because of dilution.
+for incompleteness, and misclassifies the planetary radii because of dilution.
 
-\subsection{Correction to inferred rate density and inferred rate}
+\paragraph{Correction to inferred rate density and inferred rate}
 
-Define the rate density correction factor, $X_\Gamma$, as the ratio of the 
+Define a rate density correction factor, $X_\Gamma$, as the ratio of the 
 apparent to true rate densities:
 \begin{equation}
 X_\Gamma \equiv \frac{\Gamma_a}{\Gamma}.
@@ -162,20 +147,27 @@ $X_\Gamma(r_p) = (1+\mu)^{-1}$, where
 for $n_b$ and $n_s$ the number density of binaries and singles in a 
 volume limited sample.
 Using Raghavan et al. (2010)'s $0.7-1.3M_\odot$ multiplicity fraction as our 
-binary fraction, we set ${\rm BF}=0.44$.
+binary fraction\footnote{
+The binary fraction is the fraction of systems in a volume-limited sample that 
+are binary. It is equivalent to the multiplicity fraction if there are no 
+triple, quadruple, or higher order multiples.
+}, we set ${\rm BF}=0.44$.
 The resulting correction to the rate density is $X_\Gamma(r_p) \approx 0.31$. 
 The correction at $r_p/\sqrt{2}$ is infinite.
+The numerical realization of this model agrees with these analytic values, and 
+its output is shown in Fig~\ref{fig:errcases_model_1}.
 %beta = 2.2223355980148636
-
-
-If we assume that $\Lambda_0 = \Lambda_1$, but that $\Lambda_2=0$, we find 
+If instead we assume that $\Lambda_0 = \Lambda_1$, but that $\Lambda_2=0$, we 
+find 
 $X_\Gamma(r_p) = (1+2\mu)/(1+\mu)^2$.
 Taking the same binary fraction, this evaluates to $X_\Gamma(r_p)\approx 0.53$.
+Since the correction to the rate is equal to that of rate density, at 
+$r=r_p$, the occurrence rate is underestimated by a factor of roughly 2 to 3.
 
-In passing, note that a correction to the inferred rate, $X_\Lambda$, can be 
-defined analogously:
-\begin{equation}
-X_\Lambda \equiv \frac{\Lambda_a}{\Lambda}.
-\end{equation}
-For the twin binary model, the correction to the rate is the same as that to 
-the rate density.
+%Note that a correction to the inferred rate, $X_\Lambda$, can be 
+%defined analogously:
+%\begin{equation}
+%X_\Lambda \equiv \frac{\Lambda_a}{\Lambda}.
+%\end{equation}
+%For this twin binary model, the correction to the rate is the same as that to 
+%the rate density.

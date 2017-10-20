@@ -1,9 +1,9 @@
-\section{Model \#2: fixed planets and primaries, varying secondaries}
+\subsection{Model \#2: fixed planets and primaries, varying secondaries}
 \label{sec:model_2}
 
-The main use of our binary-twin model was to help develop intuition.
-Gradually introducing complexity, we now let the light ratio $\gamma_R = 
-L_2/L_1$ vary across the binary population.
+The main use of our binary-twin model is to help develop intuition.
+We now let the light ratio $\gamma_R = L_2/L_1$ vary across the binary 
+population.
 It does so because the underlying mass ratio $q=M_2/M_1$ varies.
 We keep the primary mass fixed as $M_1$, which is also the mass of all single 
 stars.
@@ -15,7 +15,7 @@ Duchene and Kraus (2013), fitting all the multiple systems of Raghavan et al.
 (2010)'s Fig 16, find $\beta = 0.28\pm0.05$ for $0.7<M_\star/M_\odot<1.3$.
 Examining only the binary systems of Rhagavan et al 2010, Fig 16, the 
 distribution seems roughly uniform, $\beta \approx 0$, except for a claimed 
-excess of twin binaries with $q\approx 1$, and a deficiency of $q<0.1$ 
+excess of twin binaries with $q\approx 1$, and an obvious lack of $q<0.1$ 
 stellar companions.
 }, $\beta$ is probably between 0 and 0.3.
 Since we assume stars are a one-parameter family, $R \propto M \propto 
@@ -48,6 +48,10 @@ For the second term, since the selected sample at a given $(r,P,a)$ is
 magnitude-limited, $p({\rm secondary\ with\ }q)$ 
 is the product of the volume limited probability and a 
 Malmquist-like bias $(1+q^\alpha)^{3/2}$.
+In passing, we note that various authors (ourselves included) have incorrectly 
+used volume-limited binary distributions in Monte Carlo simulations of 
+transit surveys (Sullivan et al 2015, Hartman and Bakos XX, Guenther et al 
+2017, Bouma et al 2017).
 
 The occurrence rate corresponding to Eq.~\ref{eq:model2_rate_density}'s rate 
 density for a desired volume of phase space $\Omega_{\rm desired}$ is given by 
@@ -73,144 +77,118 @@ f_2 \equiv
 
 The detected rate density, $\hat{\Gamma} = \sum_i Q_i \Gamma_i$, will be 
 specified by the detection efficiencies for each type of system.
-These are nearly identical to Eq.~\ref{eq:model1_detection_efficiency}:
-\begin{align}
-Q_0 &= Q_{g,0}Q_{c,0} = Q_{g,0} \label{eq:model2_Q_0}\\
-Q_1 &= Q_{g,1}Q_{c,1} = Q_{g,0} (1+q^\alpha)^{-3} \\
-Q_2 &= Q_{g,2}Q_{c,2} = Q_{g,0} q^{2/3} (1+q^{-\alpha})^{-3} q^{-5}, 
-\label{eq:model2_Q_2}
-\end{align}
-for $Q_{g,0}=R/a$, the transit probability in single star systems.
-The detection efficiency for secondaries (Eq.~\ref{eq:model2_Q_2}) includes 
-the transit probability from the smaller stellar radius, and combines 
+These are identical to 
+Eqs.~\ref{eq:detection_efficiency_0}-\ref{eq:detection_efficiency_2}.
+The detection efficiency for secondaries (Eq.~\ref{eq:detection_efficiency_2}) 
+includes the transit probability from the smaller stellar radius, and combines 
 dilution, the transit duration, and stellar radius for the completeness
 probability.
 
-\subsection{What does an observer ignoring binarity infer?}
-
+\paragraph{What does an observer ignoring binarity infer?}
 As a reminder, the apparent rate density is found by correcting the detected 
 apparent rate density for the transit probability:
 $\Gamma_a = \tilde{\Gamma} Q_{g,0}^{-1}$.
 The observer's errors are as follows:
 \begin{enumerate}
     \item The true planetary radii $r$ are interpreted as apparent radii $r_a$.
+    The apparent radii depend on the system type:
+    \begin{align}
+    r_a
+    &=
+    \left.
+    \begin{cases}
+    r_p (1+q^\alpha)^{-1/2} & \text{for } i=1,\ {\rm primary} \\
+    r_p (1+q^{-\alpha})^{-1/2} q^{-1}, & \text{for } i=2,\ {\rm secondary}.
+    \end{cases}
+    \right.
+    \label{eq:model2_ra}
+    \end{align}
+    The factor of $q^{-1}$ for the secondary case accounts for the observer 
+    assuming that the host star is the primary.
     \item The true stellar radii $R$ are all thought to be $R_\star$. In 
     ``reality'', this only holds for single stars and primaries.
     \item The selected and searchable stars are miscounted.
 \end{enumerate}
 
-Writing the apparent rate density as a function of $\vec{x}=(r_a,P,a,R)$, 
-where $R$ is written interchangeably with the binary mass ratio $q$,
+To write the apparent rate density as a function of the apparent 
+radius $r_a$, we marginalize out the planet period, semimajor axis, and 
+stellar radius (or equivalently the mass ratio, for binaries):
 \begin{equation}
-\Gamma_a(\vec{x}) =
-Q_0 w_a \Lambda_0 \delta^4(r_p)
+\Gamma_a(r_a) =
+w_a \Lambda_0 \delta(r_p)
 +
-Q_1 w_b \Lambda_1 \delta^3(P_p) p_1(r_a)
+w_b \Lambda_1 I_1(r_a)
 +
-Q_2 w_b \Lambda_2 \delta^2(P_p,a_p) p_2(q) p_2(r_a),
+w_b \Lambda_2 I_2(r_a),
 \label{eq:model2_Gamma_a}
 \end{equation}
 where the detection efficiencies are given in 
-Eqs.~\ref{eq:model2_Q_0}-\ref{eq:model2_Q_2}, $p_2(q)$ is 
-given by Eq.~\ref{eq:model_2_p_2}, and as in the first model, 
-$w_a=N_0/(N_0+N_1)$, $w_b=N_1/(N_0+N_1)$.
-%WARNING: is it actually correct to separate the q and r_a dependence?
-%THEY are dependent on each-other...
-
-The apparent radii depend on the system type:
+Eqs.~\ref{eq:detection_efficiency_0}-\ref{eq:detection_efficiency_2}, and as 
+in the first model, $w_a=N_0/(N_0+N_1)$, $w_b=N_1/(N_0+N_1)$. The ratio of 
+primaries to singles, $\mu$, is now given by a variant of 
+Eq.~\ref{eq:mu_definition}:
+\begin{equation}
+\mu \equiv \frac{N_1}{N_0} = \frac{\rm BF}{1 - {\rm BF}} \left(2^{3/2} - 
+\int_{1}^{\sqrt{2}} u^2 (u^2 -1)^{1/\alpha} \,{\rm d}u\right),
+\label{eq:mu_model_2}
+\end{equation}
+where the latter dimensionless integral is easily found numerically.
+The $I_1(r_a)$ and $I_2(r_a)$ terms marginalize over the joint distribution of 
+apparent radius and mass ratio:
 \begin{align}
-r_a
+I_i(r_a) &= 
+\int_0^1 p({\rm has\ detected\ planet}, r_a, q | {\rm star\ is\ type\ }i)
+    \,{\rm d}q,
+\quad
+{\rm for}\ i\in\{1, 2\}, \\
 &=
-\left.
-\begin{cases}
-r_p (1+q^\alpha)^{-1/2} & \text{for } i=1,\ {\rm primary} \\
-r_p (1+q^{-\alpha})^{-1/2} q^{-1}, & \text{for } i=2,\ {\rm secondary}.
-\end{cases}
-\right.
-\label{eq:model2_ra}
+\int_0^1 
+    p({\rm has\ detected\ planet} | r_a, q, {\rm star\ is\ type\ }i) 
+    \nonumber\\
+    &\quad\quad\quad\quad\times p(r_a | q, {\rm star\ is\ type\ }i)
+    \,p(q | {\rm star\ is\ type\ }i)
+\,{\rm d}q.
 \end{align}
-The factor of $q^{-1}$ for the secondary case accounts for the observer 
-assuming that the host star is the primary.
-
-Since the apparent radii directly depend on the mass ratio, we wish to write
+The first term is the detection efficiency; the second is a $\delta$-function 
+of the apparent radius; the latter is the mass ratio distribution given by 
+Eq.~\ref{eq:model_2_p_2}.
+The analytic solution for $i=1$ is
 \begin{equation}
-p_i (r_a)
-=
-p_i(q(r_a))
-\left|
-    \frac{{\rm d}q}{{\rm d}r_a}
-\right|,
-\quad i\in\{1,2\},
-\label{eq:model2_p_i}
+I_1(r_a) = \frac{1}{\mathcal{N}_1} \left(\frac{r_p}{r_a}\right)^{-3}
+\left( \left(\frac{r_p}{r_a}\right)^2 -1  
+    \right)^{\frac{\gamma+\beta}{\alpha}},
+\quad {\rm for}\ r_p/\sqrt{2} < r_a < r_p,
 \end{equation}
-where $q(r_a)$ must be found by inverting Eq.~\ref{eq:model2_ra}.
-For $i=1$, this gives
+where $\mathcal{N}_1$ is the normalization term of the binary mass ratio 
+distribution (Eq.~\ref{eq:model_2_p_2}): $\mathcal{N}_1 = \int_0^1 
+q^{\gamma+\beta} (1+q^\alpha)^{3/2} {\rm d}q$.
+
+For $i=2$, there is no analytic solution, because evaluating the integral 
+requires imposing the constraint that $r_a  = r_p 
+(1+q^{-\alpha})^{-1/2}q^{-1}$. This equation can be re-written
 \begin{equation}
-p_1(r_a) \propto \frac{r_p^5}{r_a^6}
-\left( 
-    \left(\frac{r_p}{r_a}\right)^2 - 1
-\right)^{\frac{\beta - \alpha + 1}{\alpha}},
+\left(\frac{r_p}{r_a}\right)^2 = q^2 + q^{-\alpha + 2},
 \end{equation}
-but for $i=2$, $r_a(q)$ is not invertible.
-Instead, we find $p_2(r_a)$ numerically\footnote{We 
-sample from $p_2(q)$ (Eq.~\ref{eq:model_2_p_2}), and use 
-Eq.~\ref{eq:model2_p_i} to compute the resulting apparent radii}, 
-and show it in Fig.~\ref{fig:model2_prob_r_a}.
+which has no analytic solution except for special values of $\alpha$, the 
+mass-luminosity exponent.
+For $\alpha=3.5$, our nominal case, semianalytic solutions can be found.
+
+However, since our main interest is in understanding the qualitative behavior 
+of the solutions, we focus instead on a few limiting cases.
 
 
-
-
-\subsection{Correction to inferred rate density}
-
+\paragraph{Correction to inferred rate density}
 Recall that the rate density correction factor, $X_\Gamma$, is the ratio of 
 the apparent to true rate densities.
-Applying Eqs.~\ref{eq:model2_rate_density} and~\ref{eq:model2_Gamma_a},
-\begin{align}
-X_\Gamma(r,q)
-=
-\frac{
-    w_a \Lambda_0 \delta(r_p,R_\star)
-    +
-    Q_{c,1} w_b \Lambda_1 \delta(R_\star) p_1(r_a)
-    +
-    Q_{c,2} q^{2/3} w_b \Lambda_2 p_2(q) p_2(r_a)
-}
-{
-w_0 \Lambda_0 \delta^2(r_p,R_\star) +
-w_1 \Lambda_1 \delta^2(r_p,R_\star) +
-w_2 \Lambda_2 p_2(q) \delta(r_p)
-},
-\label{eq:model2_X_Gamma}
-\end{align}
-where the stellar radius-dependent $\delta$-functions are not important.
-To marginalize over $q$, we must write
-\begin{equation}
-X_\Gamma(r) = \frac{\Gamma_a(r)}{\Gamma(r)}
-= \frac{\sum_i \int_0^1 \Gamma_{a,i}(r,q) \,{\rm d}q}
-{\sum_i \int_0^1 \Gamma_{i}(r,q) \,{\rm d}q}.
-\label{eq:model2_X_Gamma_of_r}
-\end{equation}
-Using the same definition of $\mu = N_1/N_0$ from Eq.~\ref{eq:mu_definition}, 
-it is important when performing each integral to note that $\mu$ is a function 
-of $q$:
-\begin{equation}
-\mu = \mathcal{B} (1+q^\alpha)^{3/2},
-\quad \mathcal{B} \equiv \frac{{\rm BF}}{1 - {\rm BF}} .
-\end{equation}
-Thus the weights in the apparent and actual rate densities, $(w_a,w_b)$ and 
-$(w_0,w_1,w_2)$, are all functions of $q$.
-
-The crucial point of Eq.~\ref{eq:model2_X_Gamma_of_r} is that since both the 
-real and apparent rate densities are separable, the expressions will simplify.
-
-Our ``nominal model'' is a stellar population similar to Sun-like stars in the 
-local neighborhood:
+We consider a ``nominal model'' in which the stellar population is similar to 
+Sun-like stars in the local neighborhood:
 ${\rm BF}=0.44$, $\alpha=3.5$, $\beta=0$.
-We also assume that the occurrence of planets is independent of stellar mass 
-($\gamma=0$).
-Under these nominal assumptions, the planetary rate density is
+Our default assumption is also that the occurrence of planets is independent 
+of stellar mass ($\gamma=0$), so secondaries have the same occurrence rate as 
+primaries and single stars.
+Under these assumptions, the planetary rate density is
 \begin{equation}
-\Gamma(r) \approx \delta(r-r_p) \left( \Lambda_0 + \Lambda_1 + 
+\Gamma(r) \approx \delta(r_p) \left( \Lambda_0 + \Lambda_1 + 
 \Lambda_2 \right) / 3,
 \label{eq:model2_Gamma_r}
 \end{equation}
@@ -218,20 +196,13 @@ where the coefficients of $1/3$ are accurate to within one percent of the true
 coefficients.
 Ignoring binarity, the observer finds an apparent rate density
 \begin{equation}
-\Gamma_a(r) = c_0 \Lambda_0 \delta(r-r_p)
-             +c_1 \Lambda_1 p_1(r_a)
-             +c_2 \Lambda_2 p_2(r_a),
+\Gamma_a(r) = c_0 \Lambda_0 \delta(r_p)
+             +c_1 \Lambda_1 I_1(r_a)
+             +c_2 \Lambda_2 I_2(r_a),
 \label{eq:model2_Gamma_a_r}
 \end{equation}
-for $c_0\approx 0.49$, $c_1\approx 0.32$, $c_2\approx 0.03$, and the two 
-latter apparent-radius dependences are shown in Fig.~\ref{fig:model2_prob_r_a}.
-
-While the detailed radial dependence of the error between 
-Eqs.~\ref{eq:model2_Gamma_r} 
-and~\ref{eq:model2_Gamma_a_r} is interesting, the general point is
-that dilution produces a spectrum of apparent planetary radii, which
-skews occurrence rate and occurrence rate density measurements.
-
+for $c_0\approx 0.49$, $c_1\approx 0.32$, $c_2\approx 0.03$.
+%171011_integrals.nb
 Evaluating the correction term at $r=r_p$, since $\lim_{q\rightarrow0} 
 p_i(r_a)=0$ for $i\in\{1,2\}$,
 \begin{equation}
@@ -240,30 +211,16 @@ X_\Gamma(r=r_p) \approx \frac{3c_0 \Lambda_0}{\Lambda_0+\Lambda_1+\Lambda_2}.
 If all the rates are equal, $X_\Gamma(r=r_p)\approx0.49$.
 If there are no planets around the secondaries, $X_\Gamma(r=r_p)\approx0.74$.
 
+We also run this model in our numerical simulation.
+The results are shown in Figs~\ref{fig:errcases_model_2_linear} 
+and~\ref{fig:errcases_model_2_log}.
+They produce the same correction factors as predicted analytically.
+They also show a peak in the inferred rate at $r_p/\sqrt{2}$ from 
+secondaries.
+This effect requires the observer to incorrectly estimate the host star's 
+radius; if they somehow knew the host star's radius, but did not correct for 
+binary dilution, the peak would instead be at an apparent radius of 0.
 
-
-\section{Model \#3: Fixed primaries, varying planets and secondaries}
-
-
-
-
-
-
-
-
-\begin{figure}[!b]
-    \begin{center}
-        \includegraphics[width=.9\textwidth]{figures/prob_r_a.pdf}
-    \end{center}
-    \caption{Model \#2 (Sec.~\ref{sec:model_2}): 
-    probability of observing an apparent radius $r_a$ given a 
-    planet orbiting the primary, $p_1(r_a)$, or the secondary, $p_2(r_a)$ of a 
-    binary system.
-    The true planet radius is fixed~--~a delta function centered on ``1''.
-    This plot takes $\alpha=3.5, \beta=0$, for $\alpha$ the exponent in 
-    the mass-luminosity relation $L \propto M^\alpha$, and $\beta$ the 
-    exponent in the distribution of mass ratios in a volume-limited sample.
-    Each distribution is separately normalized.
-    }
-    \label{fig:model2_prob_r_a}
-\end{figure}
+To summarize, dilution produces a spectrum of apparent planetary radii. In 
+this model, this produces overestimated rates everywhere except where there 
+are actually planets, where the rate is underestimated by a factor of 2.
