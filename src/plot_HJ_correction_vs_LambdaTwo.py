@@ -52,7 +52,7 @@ if __name__ == '__main__':
     Λ_HJ_true_arr = np.array(Λ_HJ_true_arr)
     Λ_HJ_inferred_arr = np.array(Λ_HJ_inferred_arr)
 
-    X_correction = Λ_HJ_inferred_arr/Λ_HJ_true_arr
+    X_correction = Λ_HJ_true_arr/Λ_HJ_inferred_arr
 
     Λ_0 = 0.5
 
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     ax.plot(Λ_2_arr/Λ_0, X_correction, marker='o')
 
     ax.set_xlabel('$\Lambda_2/\Lambda_0$', fontsize='large')
-    ax.set_ylabel('inferred HJ rate / true HJ rate', fontsize='large')
+    ax.set_ylabel('true HJ rate / inferred HJ rate', fontsize='large')
 
     outname = '../results/HJ_correction_inputrate_vs_HJrate_correction_factor'
     f.savefig(outname+'.pdf', bbox_inches='tight')

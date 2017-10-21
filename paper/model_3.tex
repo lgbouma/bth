@@ -13,8 +13,8 @@ p_r(r)
 &\propto
 \left.
 \begin{cases}
-r^\delta & \text{for } r\geq 2R_\oplus \\
-{\rm constant} & \text{for } r\leq2R_\oplus.
+r^\delta & \text{for } r\geq 2r_\oplus \\
+{\rm constant} & \text{for } r\leq2r_\oplus.
 \end{cases}
 \right.
 \label{eq:model3_radius_distribution}
@@ -32,7 +32,7 @@ The nominal results are shown in Fig.~\ref{fig:errcases_model_3_log}.
 For the assumed planetary and stellar distributions, the inferred rate is 
 underestimated over all radii.
 Taking Fig.~\ref{fig:errcases_model_3_log} and counting the number of planets 
-per star with $r>8R_\oplus$, we can compare the true and inferred hot Jupiter 
+per star with $r>8r_\oplus$, we can compare the true and inferred hot Jupiter 
 occurrence rates.
 Under the previously described assumptions, the true rate is 9.1 hot Jupiters 
 per thousand stars.
@@ -45,8 +45,37 @@ hot Jupiter occurrence rates measured by radial velocity and transit surveys
 
 However, this result only applies under the assumption that $\Lambda_0 = 
 \Lambda_1 = \Lambda_2$.
-Given that hot Jupiters are thought to be less common around less-massive 
-stars, it would be more sensible to consider $\Lambda_2<\Lambda_0$, while 
-letting single stars and primaries host planets at the same rate.
-We show the HJ multiplicative correction factor as a function of 
-$\Lambda_2/\Lambda_0$ in Fig BLAH.
+If hot Jupiters are less common around less-massive stars, it would be more 
+sensible to consider $\Lambda_2<\Lambda_0$, while letting single stars and 
+primaries host planets at the same rate.
+Therefore in Fig.~\ref{fig:HJ_correction_inputrate_vs_HJratevalues}, we let 
+$\Lambda_2$ vary, and show the resulting inferred and true hot Jupiter 
+($r>8r_\oplus$) rates.
+We see that the inferred rate is nearly independent of $\Lambda_2$~--~this is 
+because most ($<1/10$) secondaries are not searchable, and so their 
+completeness fraction is much smaller than that of primaries or single stars.
+This means far fewer detected hot Jupiters orbit secondaries, and so they 
+hardly affect the inferred rate.
+In contrast, the true rate is highly dependent on $\Lambda_2$, as one would 
+expect from Eq.~\ref{eq:occ_rate}..
+
+This means that the ``correction factor'' from an inferred rate to a true 
+rate, in this case for hot Jupiters but also more generally, depends strongly 
+on the intrinsic occurrence of the planet type of interest.
+This is illustrated visually in 
+Fig.~\ref{fig:HJ_correction_inputrate_vs_HJrate_correction_factor}, which 
+shows that for $\Lambda_2 = \Lambda_0$, the inferred rate is underestimated by 
+a factor of $\sim1.3$.
+However if $\Lambda_2 = 0$, the inferred rate is actually an overestimate, 
+by a factor of $\sim1.1$.
+Though the true ratio $\Lambda_2/\Lambda_0$ is unknown for hot Jupiters, a 
+reasonable estimate might be to imagine that only stars with mass 
+$>0.7M_\odot$ might be capable of hosting them.
+For our nominal mass ratio distribution, this is $48\%$ of secondaries, so a 
+reasonable interpretation of 
+Fig.~\ref{fig:HJ_correction_inputrate_vs_HJrate_correction_factor} would be 
+that an observer ignoring binarity might underestimate HJ occurrence rates by 
+a factor of $\sim1.1$.
+Assuming that RV surveys contain far fewer binary systems than transit 
+surveys, this suggests that the effect likely contributes towards the HJ rate 
+discrepancy.
