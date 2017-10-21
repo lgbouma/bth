@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 '''
-see README.md
+See README.md for full description.
+
+Example usage:
+>>> python numerical_models.py --quickrun --modelnumber 3 --LambdaTwo 0.5
+
+Alternatively, write a wrapper like `run_numerical_models.py`.
 '''
 
 from __future__ import division, print_function
@@ -10,35 +15,58 @@ from astropy import units as u, constants as c
 from scipy.integrate import trapz
 from scipy.interpolate import interp1d
 from math import pi as π
-import os
+import os, argparse, decimal
 
-global α, β, γ
+def numerical_transit_survey(
+        quickrun,
+        model_number,
+        Λ_2,
+        BF=0.44,
+        α=3.5,
+        β=0,
+        γ=0,
+        δ=-2.92,
+        Λ_0=0.5,
+        Λ_1=0.5
+        ):
+    '''
+    Inputs:
+        quickrun = False
+        model_number = 3
 
-if __name__ == '__main__':
-    np.random.seed(42)
+        BF = 0.44   # binary fraction. BF = n_d / (n_s+n_d). Raghavan+ 2010 solar.
 
-    ##########################################
-    # Inputs.
-    quickrun = False
+        α = 3.5     # exponent in L~M^α
+        β = 0       # exponent in p_vol_limited(q) ~ q^β
+        γ = 0       # exponent in p(has planet|secondary w/ q) ~ q^γ
+        δ = -2.92   # exponent in p(r) ~ r^δ, from Howard+ 2012
+
+        Λ_0 = 0.5 # fraction of selected singles with planet
+        Λ_1 = 0.5 # fraction of selected primaries with planet
+        Λ_2 = 0.5 # fraction of selected secondaries with planet.
+
+    Outputs:
+        Four data files (in ../data/):
+
+        'results_model_{:d}_Lambda2_{:.2f}'.format( model_number, Λ_2)
+
+        'results_model_{:d}_error_case_{:d}_Lambda2_{:.2f}.out'.format(
+            model_number, error_case_number, Λ_2)
+
+        The output data files contain binned occurrence rates as a function of
+        true and apparent radius.
+
+    '''
+
     slowrun = not quickrun
-    model_number = 3
-
-    BF = 0.44   # binary fraction. BF = n_d / (n_s+n_d). Raghavan+ 2010 solar.
-
-    α = 3.5     # exponent in L~M^α
-    β = 0       # exponent in p_vol_limited(q) ~ q^β
-    γ = 0       # exponent in p(has planet|secondary w/ q) ~ q^γ
-    δ = -2.92   # exponent in p(r) ~ r^δ, from Howard+ 2012
-
-    # planet occ rates (only relative values matter).
-    Λ_0 = 0.5 # fraction of selected singles with planet
-    Λ_1 = 0.5 # fraction of selected primaries with planet
-    Λ_2 = 0.5 # fraction of selected secondaries with planet
-    ##########################################
 
     print('Running Model #{:d}.'.format(model_number))
 
     if γ != 0:
+        raise NotImplementedError
+
+    if abs(decimal.Decimal(str(Λ_2)).as_tuple().exponent) > 2:
+        # File names assume 2 digits of precision for Λ_2.
         raise NotImplementedError
 
     ######################
@@ -53,7 +81,7 @@ if __name__ == '__main__':
     ######################
 
     # arbitrary number of selected single stars. 1e6 is pretty fast.
-    N_0 = int(5e2) if quickrun else int(5e6)
+    N_0 = int(5e3) if quickrun else int(5e6)
 
     B = BF / (1-BF) # prefactor in definition of μ
 
@@ -112,7 +140,7 @@ if __name__ == '__main__':
             )
 
     # Select stars that are searchable. This means they win the completeness
-    # lottery. NB it makes no comment about geometric transit probability.
+    # lottery. NB this is independent of geometric transit probability.
     Q_c0 = 1
     single_is_searchable = np.ones(N_0).astype(bool)
 
@@ -181,7 +209,6 @@ if __name__ == '__main__':
         # Inverse transform sample to get radii. Drawing from powerlaw
         # distribution above r_pl, and constant below (to avoid pileup).
         Δr = 1e-3
-        #fine-tune lower bound to get Howard's HJ rate
         r_grid = np.arange(0, r_pu+Δr, Δr)
         prob_r = np.minimum( r_grid**δ, r_pl**δ )
         prob_r /= trapz(prob_r, r_grid)
@@ -304,18 +331,22 @@ if __name__ == '__main__':
              'inferred_Γ': inferred_dict['Γ']
             }
             )
-    fname = '../data/results_model_{:d}_Lambda2_{:.1f}'.format(
-            model_number, Λ_2)
-    outdf.to_csv(fname+'.out', index=False)
-    print('wrote output to {:s}'.format(fname))
+
+    savdir = '../data/numerics/'
+    fname = 'results_model_{:d}_Lambda2_{:.2f}'.format( model_number, Λ_2)
+    if quickrun:
+        fname = 'quickrun_' + fname
+    outdf.to_csv(savdir+fname+'.out', index=False)
+    print('wrote output to {:s}'.format(savdir+fname+'.out'))
 
     # The sum of the true distribution's histogrammed rate densities is the true
     # average occurrence rate, to three decimals.
-    np.testing.assert_almost_equal(
-            np.sum(outdf['true_Γ']),
-            (N_0*Λ_0 + N_1*Λ_1 + N_2*Λ_2)/N_tot,
-            decimal=3
-            )
+    if slowrun:
+        np.testing.assert_almost_equal(
+                np.sum(outdf['true_Γ']),
+                (N_0*Λ_0 + N_1*Λ_1 + N_2*Λ_2)/N_tot,
+                decimal=3
+                )
 
     ###############################
     # Nominal model sanity checks #
@@ -465,7 +496,33 @@ if __name__ == '__main__':
                  'inferred_Γ': inferred_dict['Γ']
                 }
                 )
-        fname = '../data/results_model_{:d}_error_case_{:d}_Lambda2_{:.1f}.out'.format(
+
+        savdir = '../data/numerics/'
+        fname = 'results_model_{:d}_error_case_{:d}_Lambda2_{:.2f}'.format(
                 model_number, error_case_number, Λ_2)
-        outdf.to_csv(fname, index=False)
-        print('\twrote output to {:s}'.format(fname))
+        if quickrun:
+            fname = 'quickrun_' + fname
+        outdf.to_csv(savdir+fname+'.out', index=False)
+        print('\twrote output to {:s}'.format(savdir+fname+'.out'))
+
+
+if __name__ == '__main__':
+
+    np.random.seed(42)
+
+    parser = argparse.ArgumentParser(
+        description='Run a numerical transit survey.')
+
+    parser.add_argument('-qr', '--quickrun', action='store_true',
+        help='use --quickrun if you want models to run fast.')
+    parser.add_argument('-mn', '--modelnumber', type=int, default=None,
+        help='1, 2 or 3.')
+    parser.add_argument('-ltwo', '--LambdaTwo', type=float, default=None,
+        help='integrated occ rate for secondaries')
+
+    args = parser.parse_args()
+
+    numerical_transit_survey(
+        args.quickrun,
+        args.modelnumber,
+        args.LambdaTwo)
