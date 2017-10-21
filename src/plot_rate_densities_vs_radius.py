@@ -29,10 +29,15 @@ import numpy as np
 from brokenaxes import brokenaxes
 
 def make_plot(model_number, logx=None, logy=None, withtext=None,
-        stdout=False, brokenx=None):
+        stdout=False, brokenx=None, Λ_2=None):
 
     # Make summary plot
-    fname = '../data/results_model_'+repr(model_number)+'.out'
+    if isinstance(Λ_2,float) or isinstance(Λ_2,int):
+        fname = '../data/results_model_{:d}_Lambda2_{:.1f}.out'.format(
+                model_number, Λ_2)
+    else:
+        fname = '../data/results_model_'+repr(model_number)+'.out'
+
     df = pd.read_csv(fname)
 
     if not brokenx:
@@ -136,6 +141,9 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
                     transform=ax.transAxes, fontsize='x-small')
             outname += '_withtext'
 
+        if isinstance(Λ_2,float) or isinstance(Λ_2,int):
+            outname += '_Lambda2_{:.1f}'.format(Λ_2)
+
     f.savefig(outname+'.pdf', bbox_inches='tight')
 
 
@@ -150,3 +158,7 @@ if __name__ == '__main__':
     make_plot(2, logy=True)
     make_plot(3, logy=True)
     make_plot(3, withtext=True, stdout=True)
+
+    make_plot(3, Λ_2=0)
+    make_plot(3, logy=True, Λ_2=0)
+    make_plot(3, withtext=True, stdout=True, Λ_2=0)

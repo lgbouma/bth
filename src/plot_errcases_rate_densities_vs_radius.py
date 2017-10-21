@@ -29,7 +29,7 @@ import numpy as np
 from brokenaxes import brokenaxes
 
 def make_plot(model_number, logx=None, logy=None, withtext=None,
-        stdout=False, brokenx=False):
+        stdout=False, brokenx=False, Λ_2=None):
 
     # Make summary plot
     if not brokenx:
@@ -45,7 +45,12 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
                 despine=True)
         ax=bigax
 
-    fname = '../data/results_model_'+repr(model_number)+'.out'
+    if isinstance(Λ_2,float) or isinstance(Λ_2,int):
+        fname = '../data/results_model_{:d}_Lambda2_{:.1f}.out'.format(
+                model_number, Λ_2)
+    else:
+        fname = '../data/results_model_'+repr(model_number)+'.out'
+
     df = pd.read_csv(fname)
 
     if model_number == 3:
@@ -63,8 +68,12 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
 
     for error_case_number in [1,2,3]:
 
-        fname = '../data/results_model_{:d}_error_case_{:d}.out'.format(
-                model_number, error_case_number)
+        if isinstance(Λ_2,float) or isinstance(Λ_2,int):
+            fname = '../data/results_model_{:d}_error_case_{:d}_Lambda2_{:.1f}.out'.format(
+                    model_number, error_case_number, Λ_2)
+        else:
+            fname = '../data/results_model_{:d}_error_case_{:d}.out'.format(
+                    model_number, error_case_number)
         df = pd.read_csv(fname)
 
         if error_case_number == 3:
@@ -132,7 +141,12 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
         # Assess HJ rate difference.
         #Howard 2012 boundary #1 and boundary #2:
         for lower_bound in [5.6,8]:
-            fname = '../data/results_model_'+repr(model_number)+'.out'
+            if isinstance(Λ_2,float) or isinstance(Λ_2,int):
+                fname = '../data/results_model_{:d}_Lambda2_{:.1f}.out'.format(
+                        model_number, Λ_2)
+            else:
+                fname = '../data/results_model_{:d}.out'.format(
+                        model_number)
             df = pd.read_csv(fname)
 
             inds = df['bin_left'] > lower_bound
@@ -144,8 +158,12 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
 
             for error_case_number in [1,2,3]:
 
-                fname = '../data/results_model_{:d}_error_case_{:d}.out'.format(
-                        model_number, error_case_number)
+                if isinstance(Λ_2,float) or isinstance(Λ_2,int):
+                    fname = '../data/results_model_{:d}_error_case_{:d}_Lambda2_{:.1f}.out'.format(
+                            model_number, error_case_number, Λ_2)
+                else:
+                    fname = '../data/results_model_{:d}_error_case_{:d}.out'.format(
+                            model_number, error_case_number)
                 df = pd.read_csv(fname)
 
                 inds = df['bin_left'] > lower_bound
@@ -182,6 +200,9 @@ def make_plot(model_number, logx=None, logy=None, withtext=None,
                     transform=ax.transAxes, fontsize='x-small')
             outname += '_withtext'
 
+        if isinstance(Λ_2,float) or isinstance(Λ_2,int):
+            outname += '_Lambda2_{:.1f}'.format(Λ_2)
+
     f.savefig(outname+'.pdf', bbox_inches='tight')
 
 
@@ -196,3 +217,7 @@ if __name__ == '__main__':
     make_plot(2, logy=True)
     make_plot(3, logy=True)
     make_plot(3, withtext=True, stdout=True)
+
+    make_plot(3, Λ_2=0)
+    make_plot(3, logy=True, Λ_2=0)
+    make_plot(3, withtext=True, stdout=True, Λ_2=0)

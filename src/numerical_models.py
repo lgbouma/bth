@@ -304,8 +304,9 @@ if __name__ == '__main__':
              'inferred_Γ': inferred_dict['Γ']
             }
             )
-    fname = '../data/results_model_'+repr(model_number)+'.out'
-    outdf.to_csv(fname, index=False)
+    fname = '../data/results_model_{:d}_Lambda2_{:.1f}'.format(
+            model_number, Λ_2)
+    outdf.to_csv(fname+'.out', index=False)
     print('wrote output to {:s}'.format(fname))
 
     # The sum of the true distribution's histogrammed rate densities is the true
@@ -464,7 +465,7 @@ if __name__ == '__main__':
                  'inferred_Γ': inferred_dict['Γ']
                 }
                 )
-        fname = '../data/results_model_{:d}_error_case_{:d}.out'.format(
-                model_number, error_case_number)
+        fname = '../data/results_model_{:d}_error_case_{:d}_Lambda2_{:.1f}.out'.format(
+                model_number, error_case_number, Λ_2)
         outdf.to_csv(fname, index=False)
         print('\twrote output to {:s}'.format(fname))
