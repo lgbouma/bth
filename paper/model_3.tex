@@ -1,4 +1,52 @@
 \subsection{Model \#3: Fixed primaries, varying planets and secondaries}
 \label{sec:model_3}
 
-See Fig.~\ref{fig:errcases_model_3_log}.
+In this model, as in the previous one, all single and primary stars have 
+identical properties.
+Only the secondaries have masses, radii, and luminosities that vary between 
+systems: $M\propto R \propto L^{1/\alpha}$.
+The radii of planets are assigned independently of any host system
+property, and are sampled from an intrinsic radius distribution, which we take 
+as
+\begin{align}
+p_r(r)
+&\propto
+\left.
+\begin{cases}
+r^\delta & \text{for } r\geq 2R_\oplus \\
+{\rm constant} & \text{for } r\leq2R_\oplus.
+\end{cases}
+\right.
+\label{eq:model3_radius_distribution}
+\end{align}
+Following Howard et al. (2012)'s measurement, we take $\delta = -2.92$.
+Our ``nominal model'' remains the same: the binary fraction is 0.44, 
+$\alpha=\beta=\gamma=0$.
+We take $\Lambda_i$, the occurrence rate integrated over all possible phase 
+space for the $i^{\rm th}$ system type, to be equal for singles, primaries, 
+and secondaries. 
+
+For this model, we forgo analytic development and focus only on numerics 
+(Sec.~\ref{sec:numerical_methods}).
+The nominal results are shown in Fig.~\ref{fig:errcases_model_3_log}.
+For the assumed planetary and stellar distributions, the inferred rate is 
+underestimated over all radii.
+Taking Fig.~\ref{fig:errcases_model_3_log} and counting the number of planets 
+per star with $r>8R_\oplus$, we can compare the true and inferred hot Jupiter 
+occurrence rates.
+Under the previously described assumptions, the true rate is 9.1 hot Jupiters 
+per thousand stars.
+The inferred rate is 6.9 per thousand stars.
+This means that the inferred rate underestimates the true rate by a 
+multiplicative factor of $\sim 1.3$.
+This number is suggestively close to the claimed discrepancy between 
+hot Jupiter occurrence rates measured by radial velocity and transit surveys 
+(Wright et al. 2012).
+
+However, this result only applies under the assumption that $\Lambda_0 = 
+\Lambda_1 = \Lambda_2$.
+Given that hot Jupiters are thought to be less common around less-massive 
+stars, it would be more sensible to consider $\Lambda_2<\Lambda_0$, while 
+letting single stars and primaries host planets at the same rate.
+We show the HJ multiplicative correction factor as a function of 
+$\Lambda_2/\Lambda_0$ in Fig BLAH.
