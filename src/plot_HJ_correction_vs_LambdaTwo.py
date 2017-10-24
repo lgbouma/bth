@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
     Λ_2_arr = np.arange(0, 0.5+0.05, 0.05)
 
-    Λ_HJ_true_arr, Λ_HJ_inferred_arr = [], []
+    Λ_HJ_true_arr, Λ_HJ_inferred_arr, Λ_HJ_true_primary_arr = [], [], []
 
     # compute the HJ correction factors for each Λ_2
     for Λ_2 in Λ_2_arr:
@@ -45,12 +45,15 @@ if __name__ == '__main__':
         inds = df['bin_left'] > lower_bound
         Λ_HJ_true = np.sum(df[inds]['true_Γ'])
         Λ_HJ_inferred = np.sum(df[inds]['inferred_Γ'])
+        Λ_HJ_true_primary = np.sum(df[inds]['true_primary_Γ'])
 
         Λ_HJ_true_arr.append(float(Λ_HJ_true))
         Λ_HJ_inferred_arr.append(float(Λ_HJ_inferred))
+        Λ_HJ_true_primary_arr.append(float(Λ_HJ_true_primary))
 
     Λ_HJ_true_arr = np.array(Λ_HJ_true_arr)
     Λ_HJ_inferred_arr = np.array(Λ_HJ_inferred_arr)
+    Λ_HJ_true_primary_arr = np.array(Λ_HJ_true_primary_arr)
 
     X_correction = Λ_HJ_true_arr/Λ_HJ_inferred_arr
 
@@ -61,10 +64,13 @@ if __name__ == '__main__':
 
     f,ax = plt.subplots(figsize=(4,4))
 
-    ax.plot(Λ_2_arr/Λ_0, Λ_HJ_true_arr*1e3, marker='o', label='true')
+    ax.plot(Λ_2_arr/Λ_0, Λ_HJ_true_arr*1e3, marker='o',
+        label='true (whole population)')
     ax.plot(Λ_2_arr/Λ_0, Λ_HJ_inferred_arr*1e3, marker='o', label='inferred')
+    ax.plot(Λ_2_arr/Λ_0, Λ_HJ_true_primary_arr*1e3, marker='o',
+        label='true (only primaries)')
 
-    ax.legend(loc='upper left',fontsize='medium')
+    ax.legend(loc='best',fontsize='medium')
 
     ax.set_xlabel('$\Lambda_2/\Lambda_0$', fontsize='large')
     ax.set_ylabel('HJ rate (planets per thousand stars)', fontsize='large')

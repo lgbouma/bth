@@ -328,7 +328,10 @@ def numerical_transit_survey(
     outdf = pd.DataFrame(
             {'bin_left': edges[:-1],
              'true_Γ': true_dict['Γ'],
-             'inferred_Γ': inferred_dict['Γ']
+             'inferred_Γ': inferred_dict['Γ'],
+             'true_single_Γ': true_dict['single']['N_p']/N_0,
+             'true_primary_Γ': true_dict['primary']['N_p']/N_1,
+             'true_secondary_Γ': true_dict['secondary']['N_p']/N_2
             }
             )
 
@@ -493,7 +496,10 @@ def numerical_transit_survey(
         outdf = pd.DataFrame(
                 {'bin_left': edges[:-1],
                  'true_Γ': true_dict['Γ'],
-                 'inferred_Γ': inferred_dict['Γ']
+                 'inferred_Γ': inferred_dict['Γ'],
+                 'true_single_Γ': true_dict['single']['N_p']/N_0,
+                 'true_primary_Γ': true_dict['primary']['N_p']/N_1,
+                 'true_secondary_Γ': true_dict['secondary']['N_p']/N_2
                 }
                 )
 
