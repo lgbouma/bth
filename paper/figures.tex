@@ -6,12 +6,22 @@
     \caption{
     Inferred planet occurrence rates as a function of planet radius in Model 
     \#1.
-    This model has fixed stars, fixed planets, twin binaries;
-    Note the break in the $x$ axis.
+    This model has fixed stars, fixed planets, and twin binaries.
     If the true planet radius is $r_p$, all planets 
     detected in binaries will have apparent radii $r_a = r_p/\sqrt{2}$.
     Only 1 in 8 selected binaries is actually searchable (see 
     Sec.~\ref{sec:model_1}).
+    To help illustrate the individual effects of errors, we 
+    separated them:
+    ``only wrong $N_\star$'' means the only error is an incorrectly assumed 
+    number of selected stars;
+    ``only wrong $Q$'' means the only error is an incorrectly assumed 
+    detection efficiency (including both miscalculated transit probabilities 
+    and 
+    fraction of selected stars that are searchable);
+    ``only wrong $r_a$'' means the only error is misinterpretation of 
+    planetary radii, due to both transit depth dilution and also wrongly 
+    assumed host star radii.
     }
     \label{fig:errcases_model_1}
 \end{figure}
@@ -56,30 +66,22 @@
 
 \begin{figure}[!tb]
     \centering
-    \includegraphics[width=.6\textwidth]{figures/HJ_correction_inputrate_vs_HJratevalues.pdf}
+    \includegraphics[width=.9\textwidth]{figures/HJ_correction_inputrate_vs_HJratevalues.pdf}
     \caption{
     $\Lambda_i$ is the occurrence rate integrated over all possible phase 
     space for the $i^{\rm th}$ system type. $\Lambda_2/\Lambda_0=1$ 
     corresponds to an equal number of planets per secondary as per single star;
     $\Lambda_2/\Lambda_0=0$ corresponds to secondaries not having any planets.
-    While the true HJ occurrence rate (marginalized over stellar multiplicity, 
-    Eq.~\ref{eq:occ_rate}) is highly dependent on $\Lambda_2$, 
+    In our Model \#3, though the true HJ occurrence rate 
+    (Eq.~\ref{eq:occ_rate}) is highly dependent on $\Lambda_2$, 
     the inferred rate hardly depends on whether secondaries have HJs.
+    This means that the ``correction factor'' between the inferred rate and 
+    the true rate around single stars is underestimated by a factor of 
+    $\sim1.3$, independent of the HJ rate around secondaries.
     }
     \label{fig:HJ_correction_inputrate_vs_HJratevalues}
 \end{figure}
 
-\begin{figure}[!tb]
-    \centering
-    \includegraphics[width=.6\textwidth]{figures/HJ_correction_inputrate_vs_HJrate_correction_factor.pdf}
-    \caption{
-    Ratio of inferred to true HJ rates from 
-    Fig.~\ref{fig:HJ_correction_inputrate_vs_HJratevalues}, for Model \#3.
-    A plausible value for $\Lambda_2/\Lambda_0$ is $\approx 0.5$, 
-    corresponding to an underestimate by a factor of 1.1 (see text).
-    }
-    \label{fig:HJ_correction_inputrate_vs_HJrate_correction_factor}
-\end{figure}
 
 %\begin{figure}[!b]
 %    \begin{center}
