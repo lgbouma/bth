@@ -3,7 +3,7 @@ Given that hot Jupiters are thought to be less common around less-massive
 stars, it would be more sensible to consider Λ_2 < Λ_0 , while letting single
 stars and primaries host planets at the same rate.
 
-This plots the HJ multiplicative correction factor as a function of Λ_2 /Λ_0.
+This plots the rates as a function of Λ_2 /Λ_0.
 '''
 # -*- coding: utf-8 -*-
 from __future__ import division, print_function
@@ -23,7 +23,6 @@ mpl.rcParams.update(pgf_with_custom_preamble)
 
 import matplotlib.pyplot as plt
 import numpy as np, pandas as pd
-import os
 
 if __name__ == '__main__':
 
@@ -59,8 +58,9 @@ if __name__ == '__main__':
 
     Λ_0 = 0.5
 
-    ##########################################
-    # First plot: the inferred rates vs the true values.
+    ######################################################
+    # First plot: the inferred rates vs the true values. #
+    ######################################################
 
     f,ax = plt.subplots(figsize=(4,4))
 
@@ -78,8 +78,9 @@ if __name__ == '__main__':
     outname = '../results/HJ_correction_inputrate_vs_HJratevalues'
     f.savefig(outname+'.pdf', bbox_inches='tight')
 
-    ##########################################
-    # Then plot: the inferred rates vs the ratio.
+    ###############################################
+    # Then plot: the inferred rates vs the ratio. #
+    ###############################################
 
     plt.close('all')
     f,ax = plt.subplots(figsize=(4,4))
