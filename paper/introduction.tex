@@ -1,3 +1,89 @@
 \section{Introduction}
 
-TODO
+{\bf TODO} -- how should we open this? Should I include less on the HJ rate 
+thing below?
+
+\paragraph{Binarity and Occurrence Rates}
+
+
+
+\paragraph{The Hot Jupiter Rate Discrepancy}
+
+Radial velocity surveys of nearby bright Sun-like stars have reported hot 
+Jupiter ($a<0.1\,{\rm AU}, P\lesssim 10\,{\rm day}$) occurrence rates of
+$12\pm 1$, $15\pm 6$, $8.9 \pm 3.6$, and $12.0 \pm 3.8$ per thousand stars
+(Marcy et al 2005, Cumming et al 2008, Mayor et al 2011, Wright et al 2012 
+respectively).
+
+In transit surveys, OGLE-III reported an absolute rate of $3.1^{+ 
+4.3}_{-1.8}$ hot Jupiters with $P<5\,{\rm days}$ per thousand stars (Gould et 
+al 2006).
+The SuperLupus survey quoted $10^{+27}_{-8}$ per thousand stars, allowing 
+planets with periods less than 10 days (Bayliss \& Sackett 2011).
+Through the {\it Kepler}\ survey, Howard et al. (2012) later reported a rate 
+of 
+$4 \pm 1$ per thousand Sun-like stars.
+This rate was for $P<10\,{\rm day}, 8-32r_\oplus$ planets, and 
+was specific to their ``solar subset''\footnote{The ``solar subset'' was 
+defined as $4100<T_{\rm eff}/{\rm K}<6100$, {\it Kepler}\ 
+magnitude $<15$, $4.0 < \log g < 4.9$, and only took planets with measured 
+signal to noise $>10$.
+}.
+Expanding their sample to fainter magnitudes, they quoted a rate of $5 \pm 
+1$.
+Expanding down to $r_p>5.6r_\oplus$, to avoid excluding hot Jupiters reported 
+by RV surveys, they reported $7.6 \pm 1.3$.
+Recent work by Petigura et al. using the updated parameters of the 
+California-{\it Kepler}\ Survey has found a rate of $X.X \pm 
+Y.Y$ (2017, in preparation)
+
+The trend is that hot Jupiter occurrence rates measured by transit 
+surveys seem to be marginally lower than those found by radial velocity 
+surveys.
+While the actual discrepancy is of sub-$3\sigma$ significance,
+one reason to expect a difference in the rates is that the populations have 
+different metallicities.
+As originally argued by Gould et al. (2006), the RV sample is biased towards 
+metal-rich stars, which have been measured by RV surveys to preferentially 
+host more giant planets (Santos et al 2004, Fischer and Valenti 2005).
+The {\it Kepler}\ sample specifically has been measured to be more metal poor 
+than the local neighborhood, with a mean metallicity of $[{\rm M/H}]_{\rm 
+mean}\approx -0.05$ (Dong et al., 2014; Guo et al., 2017).
+Studying the problem in detail, Guo et al. recently argued that the 
+metallicity difference could account for a $\approx 0.1\%$ difference in the 
+measured rates between the CKS and {\it Kepler}\ samples~--~not a $\approx 
+0.5\%$ difference.
+These authors concluded that ``other factors, such as binary contamination and 
+imperfect stellar properties'' must also be at play (Guo et al., 2017).
+
+Aside from surveying stars of different metallicities, radial velocity and 
+transit surveys differ in how they treat binarity.
+Radial velocity surveys typically reject both visual and spectroscopic binaries
+({\it e.g.}, Wright et al. 2012).
+Transit surveys typically observe binaries, but the question of whether they 
+were searchable to begin with is usually left for later interpretation.
+In spectroscopic follow-up of transiting candidates, the prevalence of 
+astrophysical false-positives may also lead to a bias against confirmation of 
+transiting planets in binary systems.
+
+Ignoring these complications, in this work we focus on whether
+binarity might intrinsically bias occurrence rate measurements, simply 
+through its effects on the number of searchable stars and the apparent radii 
+of detected planets.
+
+To progressively gain intuition, we study the following idealized transit 
+surveys:
+\begin{itemize}
+    \item Model \#1: fixed stars, fixed planets, twin binaries;
+    \item Model \#2: fixed planets and primaries, varying secondaries;
+    \item Model \#3: fixed primaries, varying planets and secondaries.
+\end{itemize}
+In Sec.~\ref{sec:numerical_methods}, we introduce our numerical approach 
+to the problem, and in Sec.~\ref{sec:analytic_preliminaries} we clarify our 
+terminology.
+We present the analytic and numerical results in 
+Secs.~\ref{sec:model_1}-\ref{sec:model_3}, where each subsection corresponds 
+to each model above.
+We interpret these calculations throughout, and in 
+Sec.~\ref{sec:discussion} discuss their relevance to various questions in 
+the interpretation of transit survey occurrence rates. 

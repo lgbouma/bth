@@ -1,4 +1,5 @@
 \subsection{Analytic Preliminaries}
+\label{sec:analytic_preliminaries}
 
 Define the occurrence rate density, $\Gamma$,
 as the expected number of planets per star per natural logarithmic bin 
@@ -13,7 +14,7 @@ For example,
 $\vec{x}=(r,P,R)$ where $r$ is the planet radius, $P$ is its orbital period, 
 and $R$ is the host star radius.
 The occurrence rate $\Lambda$ is found by integrating the rate density over a 
-specified volume of phase space.
+specified volume of phase space (e.g., Youdin 2011).
 
 
 The previous definition implicitly marginalizes the rate density over stellar 
@@ -30,10 +31,10 @@ written
 where $i=0$ corresponds to single star systems, $i=1$ primaries of binaries, 
 and $i=2$ secondaries of binaries.
 $\Lambda_i$ is the occurrence rate integrated over all possible phase space  
-for the $i^{\rm th}$ system type, $p_i(\vec{x})$ is the joint 
+for the $i^{\rm th}$ system type, and $p_i(\vec{x})$ is the joint 
 probability density function so that $\Gamma_i(\vec{x}) = \Lambda_i 
-p_i(\vec{x})$, 
-and the weights are given by 
+p_i(\vec{x})$.
+The weights are given by 
 \begin{equation}
 w_i = N_i/N_{\rm tot},
 \end{equation}
@@ -75,6 +76,7 @@ detection efficiency $Q_i(\vec{x})$:
 where again the index $i$ is over each type of system (singles, primaries, 
 and secondaries).
 The detection efficiency includes the geometric transit probability, as well 
-as any incompleteness effects. Foreman-Mackey et al. (2014) discuss how this 
+as any incompleteness effects.
+Foreman-Mackey et al. (2014) discuss how this 
 is calculated in practice.
 

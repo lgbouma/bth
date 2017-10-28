@@ -31,37 +31,77 @@ For this model, we forgo analytic development and focus only on numerics
 The nominal results are shown in Fig.~\ref{fig:errcases_model_3_log}.
 For the assumed planetary and stellar distributions, the inferred rate is 
 underestimated over all radii.
+
+\paragraph{Hot Jupiter Occurrence Rates}
 Taking Fig.~\ref{fig:errcases_model_3_log} and counting the number of planets 
 per star with $r>8r_\oplus$, we can compare the true and inferred hot Jupiter 
 occurrence rates.
-Under the previously described assumptions, the true rate is 9.1 hot Jupiters 
+Under the above assumptions, the true rate is 9.1 hot Jupiters 
 per thousand stars.
 The inferred rate is 6.9 per thousand stars.
 This means that the inferred rate underestimates the true rate by a 
-multiplicative factor of $\sim 1.3$.
-This number is suggestively close to the claimed discrepancy between 
-hot Jupiter occurrence rates measured by radial velocity and transit surveys 
-(Wright et al. 2012).
+multiplicative factor of $\sim\!1.3$.
 
 However, this result only applies under the assumption that $\Lambda_0 = 
 \Lambda_1 = \Lambda_2$.
 If hot Jupiters are less common around lower mass stars, it would be more 
 sensible to consider $\Lambda_2<\Lambda_0$, while letting single stars and 
 primaries host planets at the same rate.
-Therefore in Fig.~\ref{fig:HJ_correction_inputrate_vs_HJratevalues}, we let 
+Therefore in Fig.~\ref{fig:HJ_correction_inputrate_vs_HJratevalues} we let 
 $\Lambda_2$ vary, and show the resulting inferred and true hot Jupiter 
 ($r>8r_\oplus$) rates.
-We see that the inferred rate is nearly independent of $\Lambda_2$~--~this is 
-because most ($<1/10$) secondaries are not searchable, and so their 
-completeness fraction is much smaller than that of primaries or single stars.
+The result is that the inferred rate is nearly independent of 
+$\Lambda_2$~--~this is because most ($<1/10$) secondaries are not searchable, 
+and so their completeness fraction is much smaller than that of primaries or 
+single stars.
 This means far fewer detected hot Jupiters orbit secondaries, and so they 
 hardly affect the inferred rate.
-While the true rate across the entire population is highly dependent on 
+While the ``true rate'' across the entire population is highly dependent on 
 $\Lambda_2$, as one would expect from Eq.~\ref{eq:occ_rate}, the rate around 
 singles and primaries (green line) is independent of that around secondaries.
-
-This means that, in this case, the inferred rate should be revised upward by a 
-factor of $\sim1.3$, independent of the HJ rate around secondaries.
 Assuming that RV surveys are measuring the true rate around single stars (or 
-primaries), this suggests that the effect appreciably contributes to the 
-HJ rate discrepancy.
+primaries), this suggests that binarity might contributes to the 
+HJ rate discrepancy at the $\sim 0.2\%$ level, independent of the HJ rate 
+around secondaries.
+
+\paragraph{The Rate of Earth Analogs}
+The rate (density) of Earth-like planets orbiting Sun-like stars has 
+been independently measured by Youdin, Petigura, Dong \& Zhu, 
+Foreman-Mackey et al., and Burke et al., (2011, 2013, 2013, 2014, and 2015 
+respectively).
+These efforts have found that the one-year terrestrial planet occurrence rate 
+varies between $\approx 0.03$ and $\approx 1$ per Sun-like star, depending on 
+assumptions that are made when retrieving the rate (Burke et al. 2015's 
+Fig.~17).
+
+Our model does not explicitly include the rate density's period-dependence, 
+because stellar binarity does not appreciably bias the period-dependence of 
+occurrence rates measured by transit surveys\footnote{
+    Note that stellar binarity does bias the {\it intrinsic} planet 
+    occurrence as a function of planetary and binary periods. This is expected 
+    from dynamical stability limits in $\geq$3 body systems, and has been 
+    observationally confirmed (theory by Holman \& Wiegert 1999, and others 
+    including Gongjie; confirmation from Wang et al 2014a, 2014b, Kraus et al 
+    2014). 
+    However our statement is that inferred rates as a function of planet     
+    period should be negligibly affected by this, given the geometric bias 
+    against long-period transit detections, and the fact that the period 
+    distribution of solar-type binaries peaks at $\approx 100\,{\rm years}$ 
+    (Raghavan et al 2010, Fig.~13).
+}.
+Instead, it allows us to evaluate the difference in the apparent and true rate 
+as a function of radius 
+(Fig.~\ref{fig:errcases_model_3_log}).
+At Earth's radius, the result is that the inferred rate is $0.84\times$ the 
+true rate around single stars, assuming that the $\Lambda_i$'s are equal.
+Similar to the above case of the hot Jupiters, if we vary the true $\Lambda_2$ 
+while keeping $\Lambda_0 = \Lambda_1$, the ratio of the inferred to true rate 
+around single stars hardly 
+changes; $(\Lambda_{\rm inferred}/\Lambda_1)_{r=r_\oplus} \approx 0.135$, to 
+within a few percent, independent of $\Lambda_2$ (see 
+Fig.~\ref{fig:earth_inputrate_vs_etaearthratevalues}).
+The ratio of the inferred to the true rate, $(\Lambda_{\rm 
+inferred}/\Lambda)_{r=r_\oplus}$ varies substantially, but by at most $50\%$ 
+in the (unrealistic) limiting case that secondaries do not host planets.
+
+

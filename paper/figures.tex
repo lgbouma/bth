@@ -29,7 +29,6 @@
 \begin{figure}[!tb]
     \centering
     \includegraphics[width=.7\textwidth]{figures/errcases_rate_density_vs_radius_model_2.pdf}
-    %\includegraphics[width=1.0\textwidth]{figures/errcases_rate_density_vs_radius_logs_model_2.pdf}
     \caption{
     Inferred planet occurrence rates as a function of planet radius in Model 
     \#2.
@@ -40,7 +39,6 @@
 
 \begin{figure}[!tb]
     \centering
-    %\includegraphics[width=1.0\textwidth]{figures/errcases_rate_density_vs_radius_model_2.pdf}
     \includegraphics[width=.7\textwidth]{figures/errcases_rate_density_vs_radius_logs_model_2.pdf}
     \caption{
     Same as Fig.~\ref{fig:errcases_model_2_linear}, but with logarithmic 
@@ -78,8 +76,29 @@
     This means that the ``correction factor'' between the inferred rate and 
     the true rate around single stars is underestimated by a factor of 
     $\sim1.3$, independent of the HJ rate around secondaries.
+    The ``HJ rate'' is the summed rate from     
+    Fig.~\ref{fig:errcases_model_3_log} above $8r_\oplus$.
     }
     \label{fig:HJ_correction_inputrate_vs_HJratevalues}
+\end{figure}
+
+\begin{figure}[!tb]
+    \centering
+    \includegraphics[width=.9\textwidth]{figures/earth_inputrate_vs_etaearthratevalues.pdf}
+    \caption{
+        Same as Fig.~\ref{fig:HJ_correction_inputrate_vs_HJratevalues}, but 
+        for Earth-sized planets.
+        The absolute values given on the $y$-axis found by summing the rate 
+        from Fig.~\ref{fig:errcases_model_3_log} for planetary radii from 
+        $0.5$ to $1.5r_\oplus$ (this is a toy model, and they do not reflect 
+        an actual determination of $\eta_\oplus$).
+        The relative values show that the inferred rate for Earths is roughly 
+        independent of the occurrence rate (integrated over all radii) around 
+        secondaries.
+        However, it is systematically lower than the true rate around single 
+        and primary stars, by $\approx 20\%$.
+    }
+    \label{fig:earth_inputrate_vs_etaearthratevalues}
 \end{figure}
 
 
