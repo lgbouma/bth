@@ -45,7 +45,7 @@ know which stars are binaries,
 \begin{equation}
 d_{\rm sel} \propto (r/R)^2 (L_{\rm sys} T_{\rm dur} A N_{\rm tra})^{1/2},
 \end{equation}
-for $L_{\rm sys}=L_1(1+\gamma_R)$ the system luminosity, $T_{\rm dur}$ the 
+for $L_{\rm sys}=L_1(1+\ell)$ the system luminosity, $T_{\rm dur}$ the 
 transit duration, $A$ the detector area, and $N_{\rm tra}$ 
 the number of observed transits.
 However,
@@ -61,14 +61,14 @@ for the dilution $\mathcal{D}_i$ given by
 \left.
 \begin{cases}
 1 & \text{for } i=0,\ {\rm single} \\
-L_1 / L_{\rm sys} = (1+\gamma_R)^{-1}, & \text{for } i=1,\ {\rm primary} \\
-\gamma_R L_1 / L_{\rm sys} = (1 + \gamma_R^{-1})^{-1}, & 
+L_1 / L_{\rm sys} = (1+\ell)^{-1}, & \text{for } i=1,\ {\rm primary} \\
+\ell L_1 / L_{\rm sys} = (1 + \ell^{-1})^{-1}, & 
     \text{for } i=2,\ {\rm secondary},
 \end{cases}
 \right.
 \label{eq:dilution}
 \end{align}
-where the light ratio $\gamma_R$ of a given binary is defined as the ratio of 
+where the light ratio $\ell$ of a given binary is defined as the ratio of 
 the luminosity of the secondary to the primary.
 
 The maximum detectable distance to single stars is assumed to be known, and so 
@@ -141,7 +141,7 @@ $X_\Gamma(r_p) = (1+\mu)^{-1}$, where
 \begin{align}
 \mu \equiv \frac{N_1}{N_0} &=
 \frac{n_b}{n_s} \left(\frac{d_{\rm sel,b}}{d_{\rm sel,s}}\right)^3 = 
-\frac{{\rm BF}}{1-{\rm BF}} (1+\gamma_R)^{3/2},
+\frac{{\rm BF}}{1-{\rm BF}} (1+\ell)^{3/2},
 \label{eq:mu_definition}
 \end{align}
 for $n_b$ and $n_s$ the number density of binaries and singles in a 
