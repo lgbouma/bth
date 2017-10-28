@@ -1,0 +1,132 @@
+\section{Introduction}
+
+An astronomer who does not believe in stellar multiplicity wants to measure the
+mean number of planets of a certain type per star of a certain type.
+They perform a signal-to-noise limited transit survey and detect $N_{\rm det}$ 
+transit signals that appear to be from planets of the desired type.  They 
+calculate the apparent number of searchable stars, $N_\star$.  ``Searchable 
+stars'' are the stars for which 
+planets are observed with 100\% detection efficiency. 
+Correcting for the geometric 
+transit probability $f_{\rm g}$, they compute an apparent occurrence rate 
+$\Lambda_{\rm a}$:
+
+\begin{equation}
+\Lambda_{\rm a} = \frac{N_{\rm det}}{N_\star} \times \frac{1}{f_g}.
+\end{equation}
+
+There are many potential pitfalls.  Some genuine transit signals can be missed
+by the detection pipeline.  Some apparent transit signals are spurious, from
+noise fluctuations, failures of `detrending', or instrumental effects.  Stars
+and planets can be misclassified due to statistical and systematic errors in
+the measurements of their properties.  Poor angular resolution causes false
+positives due to blends with background eclipsing binaries. {\it Et cetera}.
+
+Here we focus on problems that arise from the fact that many stars exist in 
+multiple star systems.
+For simplicity, we only consider binaries, and we assume that they are all 
+spatially unresolved.
+
+An immediate complication is that~--~due to dynamical stability or some 
+aspect of planet formation~--~the occurrence rate of planets may differ 
+between binary and single-star systems.
+If ``occurrence rate'' is defined purely as the mean number of planets within 
+set radius and period bounds per star in a given mass interval, it must 
+implicitly marginalize over stellar multiplicity.
+This means marginalizing over ``occurrence rates in single star systems'', 
+``occurrence rates about primaries'', and
+``occurrence rates about secondaries'' (this is discussed by Wang et al., 
+2015).
+
+Outside of astrophysical differences, there are observational biases.
+A given apparently-searchable star may truly be a single star of the desired 
+type. If it is binary, it may contain two, one, or no searchable stars of the 
+desired type, which affects $N_\star$.
+There may be systematic errors in stellar parameter estimates of such 
+systems, but in this work we neglect all but the simplest.
+One might also imagine an apparently-searchable star which in no stellar 
+component is of the desired type. We will not consider errors of this type.  
+We will assume that all the apparently-searchable stars are either single 
+stars of the desired type, or binaries in which either the primary or else 
+both components are of the desired type.
+
+When counting the detected signals from planets of the desired 
+type, $N_{\rm det}$, ignoring binarity leads to errors in planet radius 
+classification, and the assumed survey completeness.
+At a given apparent radius, detected planets in binary systems will have 
+underestimated radii because of the diluting flux from the companions, and 
+possibly because they are assumed to orbit the wrong star.
+The number of selected stars should change dependent on the planet radius 
+and period for which the rate measurement is desired, and on the survey's 
+achieved photometric precision.
+This leads our naive astronomer to an assumed ``completeness'' (fraction of 
+selected stars which are searchable) of 1.
+Binarity confuses this, because the ability to search for planets 
+in binary system depends on which stellar component hosts the planet, and on 
+how much dilution affects the measurement.
+
+\paragraph{How Has Binarity Been Considered in Occurrence Rate Measurements?}
+Many authors have investigated planet occurrence rates\footnote{
+    An online list of occurrence rate papers is maintained at 
+    \url{https://exoplanetarchive.ipac.caltech.edu/docs/occurrence_rate_papers.html}
+}.
+The approach towards binarity is to ignore it.
+(There are some exceptions, {\it e.g.}, Deacon et al. 2015).
+%Burke+ 2015: "In this study, we treat the pipeline completeness as having no 
+%uncertainty due to the incomplete understanding of the stellar parameters, 
+%eccentricity, and stellar binarity."
+Of course, at a system-by-system level that this is wrong, and so for   
+
+
+\paragraph{The Hot Jupiter Rate Discrepancy}
+
+Hot Jupiter occurrence rates measured by transit surveys ($\approx 0.5\%$) are 
+marginally lower than those found by radial velocity surveys ($\approx 1\%$; 
+see Table~\ref{tab:hj_rates}).
+Though the discrepancy is of weak statistical significance ($<3\sigma$),
+one reason to expect a difference in the rates is that the populations have 
+different metallicities.
+As originally argued by Gould et al. (2006), the RV sample is biased towards 
+metal-rich stars, which have been measured by RV surveys to preferentially 
+host more giant planets (Santos et al 2004, Fischer and Valenti 2005).
+The {\it Kepler}\ sample specifically has been measured to be more metal poor 
+than the local neighborhood, with a mean metallicity of $[{\rm M/H}]_{\rm 
+mean}\approx -0.05$ (Dong et al., 2014; Guo et al., 2017).
+Studying the problem in detail, Guo et al. recently argued that the 
+metallicity difference could account for a $\approx 0.1\%$ difference in the 
+measured rates between the CKS and {\it Kepler}\ samples~--~not a $\approx 
+0.5\%$ difference.
+Guo et al. concluded that ``other factors, such as binary contamination and 
+imperfect stellar properties'' must also be at play.
+
+Aside from surveying stars of different metallicities, radial velocity and 
+transit surveys differ in how they treat binarity.
+Radial velocity surveys typically reject both visual and spectroscopic binaries
+({\it e.g.}, Wright et al. 2012).
+Transit surveys typically observe binaries, but the question of whether they 
+were searchable to begin with is usually left for later interpretation.
+In spectroscopic follow-up of candidate transiting planets, the prevalence of 
+astrophysical false-positives may also lead to a bias against confirmation of 
+transiting planets in binary systems.
+
+Ignoring these complications, in this work we focus on whether
+binarity might intrinsically bias occurrence rate measurements, simply 
+through its effects on the number of searchable stars and the apparent radii 
+of detected planets.
+
+To progressively gain intuition, we study the following idealized transit 
+surveys:
+\begin{itemize}
+    \item Model \#1: fixed stars, fixed planets, twin binaries;
+    \item Model \#2: fixed planets and primaries, varying secondaries;
+    \item Model \#3: fixed primaries, varying planets and secondaries.
+\end{itemize}
+In Sec.~\ref{sec:numerical_methods}, we introduce our numerical approach 
+to the problem, and in Sec.~\ref{sec:analytic_preliminaries} we clarify our 
+terminology.
+We present the analytic and numerical results in 
+Secs.~\ref{sec:model_1}-\ref{sec:model_3}, where each subsection corresponds 
+to each model above.
+We interpret these calculations throughout, and in 
+Sec.~\ref{sec:discussion} discuss their relevance to various questions in 
+the interpretation of transit survey occurrence rates. 
